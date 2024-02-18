@@ -1,6 +1,4 @@
-import { spanStyleWidth } from '../../const';
-
-function OfferScreen(): JSX.Element {
+function OfferPage(): JSX.Element {
   return (
     <div className="page">
       <header className="header">
@@ -74,7 +72,7 @@ function OfferScreen(): JSX.Element {
               </div>
               <div className="offer__rating rating">
                 <div className="offer__stars rating__stars">
-                  <span style={spanStyleWidth}></span>
+                  <span style={{width: '80%'}}></span>
                   <span className="visually-hidden">Rating</span>
                 </div>
                 <span className="offer__rating-value rating__value">4.8</span>
@@ -166,7 +164,7 @@ function OfferScreen(): JSX.Element {
                     <div className="reviews__info">
                       <div className="reviews__rating rating">
                         <div className="reviews__stars rating__stars">
-                          <span style={spanStyleWidth}></span>
+                          <span style={{width: '80%'}}></span>
                           <span className="visually-hidden">Rating</span>
                         </div>
                       </div>
@@ -253,7 +251,7 @@ function OfferScreen(): JSX.Element {
                   </div>
                   <div className="place-card__rating rating">
                     <div className="place-card__stars rating__stars">
-                      <span style={spanStyleWidth}></span>
+                      <span style={{width: '80%'}}></span>
                       <span className="visually-hidden">Rating</span>
                     </div>
                   </div>
@@ -285,7 +283,7 @@ function OfferScreen(): JSX.Element {
                   </div>
                   <div className="place-card__rating rating">
                     <div className="place-card__stars rating__stars">
-                      <span style={spanStyleWidth}></span>
+                      <span style={{width: '80%'}}></span>
                       <span className="visually-hidden">Rating</span>
                     </div>
                   </div>
@@ -338,4 +336,4 @@ function OfferScreen(): JSX.Element {
   );
 }
 
-export default OfferScreen;
+export default OfferPage;

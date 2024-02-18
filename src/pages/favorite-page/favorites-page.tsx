@@ -1,6 +1,4 @@
-import { spanStyleWidth } from '../../const';
-
-function FavoritesScreen(): JSX.Element {
+function FavoritesPage(): JSX.Element {
   return (
     <div className="page">
       <header className="header">
@@ -102,7 +100,7 @@ function FavoritesScreen(): JSX.Element {
                       </div>
                       <div className="place-card__rating rating">
                         <div className="place-card__stars rating__stars">
-                          <span style={spanStyleWidth}></span>
+                          <span style={{width: '80%'}}></span>
                           <span className="visually-hidden">Rating</span>
                         </div>
                       </div>
@@ -145,7 +143,7 @@ function FavoritesScreen(): JSX.Element {
                       </div>
                       <div className="place-card__rating rating">
                         <div className="place-card__stars rating__stars">
-                          <span style={spanStyleWidth}></span>
+                          <span style={{width: '80%'}}></span>
                           <span className="visually-hidden">Rating</span>
                         </div>
                       </div>
@@ -170,4 +168,4 @@ function FavoritesScreen(): JSX.Element {
   );
 }
 
-export default FavoritesScreen;
+export default FavoritesPage;
