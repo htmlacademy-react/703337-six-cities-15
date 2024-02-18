@@ -1,15 +1,15 @@
 import MainPage from '../../pages/main-page/main-page';
-import ListItem from '../../pages/main-page/card-page';
+import PlaceCard from '../place-card';
 
 
 function App(): JSX.Element {
   return (
     <MainPage>
-      <ListItem/>
-      <ListItem/>
-      <ListItem/>
-      <ListItem/>
-      <ListItem/>
+      <PlaceCard/>
+      <PlaceCard/>
+      <PlaceCard/>
+      <PlaceCard/>
+      <PlaceCard/>
     </MainPage>
   );
 }

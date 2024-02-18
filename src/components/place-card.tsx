@@ -1,4 +1,4 @@
-function ListItem(){
+function PlaceCard(){
   return (
     <article className="cities__card place-card">
       <div className="place-card__mark">
@@ -37,4 +37,4 @@ function ListItem(){
   );
 }
 
-export default ListItem;
+export default PlaceCard;
