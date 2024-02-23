@@ -8,11 +8,13 @@ import LoginPage from '../../pages/login-page/login-page';
 import FavoritesPage from '../../pages/favorite-page/favorites-page';
 import OfferPage from '../../pages/offer-page/offer-page';
 import PrivateRoute from '../private-route/private-route';
+import ScrollToTop from '../scroll-to-top/scroll-to-top';
 
 function App(): JSX.Element {
   return (
     <HelmetProvider>
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           <Route
             path={AppRoute.Root}
