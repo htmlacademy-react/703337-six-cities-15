@@ -3,7 +3,7 @@ import { HelmetProvider } from 'react-helmet-async';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import MainPage from '../../pages/main-page/main-page';
 import NotFoundPage from '../../pages/not-found-page/not-found-page';
-import PlaceCard from '../place-card';
+
 import LoginPage from '../../pages/login-page/login-page';
 import FavoritesPage from '../../pages/favorite-page/favorites-page';
 import OfferPage from '../../pages/offer-page/offer-page';
@@ -18,7 +18,7 @@ function App(): JSX.Element {
         <Routes>
           <Route
             path={AppRoute.Root}
-            element={<MainPage><PlaceCard /> <PlaceCard/> <PlaceCard/> <PlaceCard/> <PlaceCard/></MainPage>}
+            element={<MainPage />}
           />
           <Route
             path={AppRoute.Login}

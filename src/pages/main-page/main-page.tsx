@@ -1,7 +1,9 @@
-import {PropsWithChildren} from 'react';
+import PlaceCard from '../../components/place-card';
 import Logo from '../../components/logo/logo';
 
-function MainPage({ children }: PropsWithChildren): JSX.Element {
+function MainPage(): JSX.Element {
+  const arrayOffers = [0, 1, 2, 3, 4];
+
   return (
     <div className="page page--gray page--main">
       <header className="header">
@@ -89,7 +91,7 @@ function MainPage({ children }: PropsWithChildren): JSX.Element {
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
-                {children}
+                {arrayOffers.map((item) => <PlaceCard key={item}/>)}
 
               </div>
             </section>
