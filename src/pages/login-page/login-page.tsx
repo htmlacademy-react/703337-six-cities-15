@@ -1,17 +1,11 @@
 
 import Logo from '../../components/logo/logo';
+import Header from '../../components/header/header-component';
 
 function LoginPage(): JSX.Element {
   return (
     <div className="page page--gray page--login">
-      <header className="header">
-        <div className="container">
-          <div className="header__wrapper">
-            <Logo />
-
-          </div>
-        </div>
-      </header>
+      <Header isLoggedIn={false}/>
 
       <main className="page__main page__main--login">
         <div className="page__login-container container">

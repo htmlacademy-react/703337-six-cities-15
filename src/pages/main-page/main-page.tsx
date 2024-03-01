@@ -1,36 +1,17 @@
-import PlaceCard from '../../components/place-card';
-import Logo from '../../components/logo/logo';
+import { CardsType } from '../../types/card';
+import ListOffers from '../../components/main-components/list-offers';
 
-function MainPage(): JSX.Element {
-  const arrayOffers = [0, 1, 2, 3, 4];
+import Header from '../../components/header/header-component';
 
+type MainPageProps = {
+  rentsCard: CardsType;
+}
+
+function MainPage({ rentsCard}: MainPageProps): JSX.Element {
+  const favoritesArray = rentsCard.filter((item) => item.isFavorite);
   return (
     <div className="page page--gray page--main">
-      <header className="header">
-        <div className="container">
-          <div className="header__wrapper">
-            <Logo />
-
-            <nav className="header__nav">
-              <ul className="header__nav-list">
-                <li className="header__nav-item user">
-                  <a className="header__nav-link header__nav-link--profile" href="#">
-                    <div className="header__avatar-wrapper user__avatar-wrapper">
-                    </div>
-                    <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-                    <span className="header__favorite-count">3</span>
-                  </a>
-                </li>
-                <li className="header__nav-item">
-                  <a className="header__nav-link" href="#">
-                    <span className="header__signout">Sign out</span>
-                  </a>
-                </li>
-              </ul>
-            </nav>
-          </div>
-        </div>
-      </header>
+      <Header isLoggedIn={false} countFavorite={favoritesArray.length}/>
 
       <main className="page__main page__main--index">
         <h1 className="visually-hidden">Cities</h1>
@@ -83,17 +64,16 @@ function MainPage(): JSX.Element {
                     <use xlinkHref="#icon-arrow-select"></use>
                   </svg>
                 </span>
-                <ul className="places__options places__options--custom places__options--opened">
+                <ul className="visually-hidden places__options places__options--custom places__options--opened">
                   <li className="places__option places__option--active" tabIndex={0}>Popular</li>
                   <li className="places__option" tabIndex={0}>Price: low to high</li>
                   <li className="places__option" tabIndex={0}>Price: high to low</li>
                   <li className="places__option" tabIndex={0}>Top rated first</li>
                 </ul>
               </form>
-              <div className="cities__places-list places__list tabs__content">
-                {arrayOffers.map((item) => <PlaceCard key={item}/>)}
+              <ListOffers rentsCard={rentsCard} />
 
-              </div>
+
             </section>
             <div className="cities__right-section">
               <section className="cities__map map"></section>

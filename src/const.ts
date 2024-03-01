@@ -11,3 +11,6 @@ export enum AuthorizationStatus {
   Unknown = 'UNKNOWN',
 }
 
+export function ratingCard(scale : number) : string{
+  return `${scale * 20}%`;
+}
