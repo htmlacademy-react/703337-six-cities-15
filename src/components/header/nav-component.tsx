@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 
 type NavProps = {
-  countFavorite: number;
+  countFavorite: number | undefined;
 }
 function NavComponent({countFavorite} : NavProps): JSX.Element {
   return (

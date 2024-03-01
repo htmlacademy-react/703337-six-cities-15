@@ -1,4 +1,3 @@
-import Logo from '../../components/logo/logo';
 import { CardsType } from '../../types/card';
 import Header from '../../components/header/header-component';
 import FavoritesList from '../../components/favorites-component/list-favorites-component';

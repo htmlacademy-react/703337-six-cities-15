@@ -3,7 +3,7 @@ import NavComponent from './nav-component';
 
 type HeaderProps = {
   isLoggedIn: boolean;
-  countFavorite: number;
+  countFavorite?: number;
 }
 function Header({isLoggedIn, countFavorite} : HeaderProps): JSX.Element {
 

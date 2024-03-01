@@ -1,5 +1,4 @@
 
-import Logo from '../../components/logo/logo';
 import Header from '../../components/header/header-component';
 
 function LoginPage(): JSX.Element {
