@@ -45,5 +45,5 @@ function FavoritesCard({cardObj} : FavoriteCardProps): JSX.Element {
     </article>);
 }
 
-export default FavoritesCard
+export default FavoritesCard;
 
