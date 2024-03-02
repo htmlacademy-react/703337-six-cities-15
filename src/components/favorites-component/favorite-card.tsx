@@ -1,12 +1,11 @@
 import { CardType } from '../../types/card';
+import { ratingCard } from '../../const';
+
 type FavoriteCardProps = {
   cardObj: CardType;
 }
 function FavoritesCard({cardObj} : FavoriteCardProps): JSX.Element {
   const {id, isPremium, previewImage, price, rating, title, type} = cardObj;
-  function ratingCard(scale : number){
-    return `${scale * 20}%`;
-  }
 
   return (
     <article className="favorites__card place-card" data-id={id}>
