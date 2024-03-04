@@ -1,16 +1,23 @@
 import { CardType } from '../../types/card';
 import { Link } from 'react-router-dom';
 import { ratingCard } from '../../const';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 type PlaceCardProps = {
   cardObj: CardType;
 }
 
 function PlaceCard({cardObj} : PlaceCardProps){
+  const [cardMouseOver, setCardMouseOver] = useState('');
+  const navigate = useNavigate();
   const {id, isPremium, previewImage, price, isFavorite, rating, title, type} = cardObj;
 
   return (
-    <article className="cities__card place-card" data-id={id}>
+    <article className="cities__card place-card" data-id={id} onMouseOver={() => {
+      setCardMouseOver(id);
+    }} onClick={() => navigate(`/offer/${cardMouseOver}`)}
+    >
       <div className="place-card__mark">
         <span>{isPremium ? 'Premium' : ''}</span>
       </div>

@@ -6,8 +6,8 @@ type FavoritesListProps = {
 }
 
 function FavoritesList({rentsCard} : FavoritesListProps): JSX.Element {
-  const premiumArray = rentsCard.filter((item) => item.isFavorite);
-  const groupedArrays = premiumArray.reduce((result: CardsType[], obj : CardType) => {
+  const favoriteArray = rentsCard.filter((item) => item.isFavorite);
+  const groupedArrays = favoriteArray.reduce((result: CardsType[], obj : CardType) => {
     const existingArray = result.find((arr : CardsType) => arr[0].city.name === obj.city.name);
 
     if (existingArray) {

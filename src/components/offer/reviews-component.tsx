@@ -10,7 +10,7 @@ function Reviews({commentList} : ReviewsProps): JSX.Element {
   const list = commentList.map((item) =>{
     const {id, date, user, comment, rating} = item;
     return (
-      <li key={id} className="reviews__item">
+      <li key={`${id}-reviews`} className="reviews__item">
         <div className="reviews__user user">
           <div className="reviews__avatar-wrapper user__avatar-wrapper">
             <img className="reviews__avatar user__avatar" src={user.avatarUrl} width="54" height="54" alt="Reviews avatar" />
