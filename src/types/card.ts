@@ -28,8 +28,21 @@ export type CardType = {
     avatarUrl: string;
     isPro: boolean;
   };
-  images: [string];
+  images: string[];
   maxAdults: number;
 }
 
-export type CardsType = CardType[];
+export type CommentType = {
+id: string;
+date: string;
+user: {
+  name: string;
+  avatarUrl: string;
+  isPro: boolean;
+};
+comment: string;
+rating: number;
+}
+
+export type CardsType = CardType[] ;
+export type CommentsType = CommentType[];

@@ -26,15 +26,15 @@ const arrayOffers : CardsType = [
     description: 'A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.',
     bedrooms: 3,
     goods: [
-      'Heating'
+      'Heating', 'Washing machine', '-12C'
     ],
     host: {
       name: 'Oliver Conner',
-      avatarUrl: 'img/apartment-02.png',
-      isPro: false
+      avatarUrl: 'img/avatar-max.jpg',
+      isPro: true
     },
     images: [
-      'img/avatar-max.jpg'
+      'img/apartment-02.jpg', 'img/studio-01.jpg', 'img/apartment-01.jpg'
     ],
     maxAdults: 4
   },
@@ -44,7 +44,7 @@ const arrayOffers : CardsType = [
     type: 'студия',
     price: 1340,
     city: {
-      name: 'Ялта',
+      name: 'Минск',
       location: {
         latitude: 52.35514938496378,
         longitude: 4.673877537499948,
@@ -56,10 +56,10 @@ const arrayOffers : CardsType = [
       longitude: 4.673877537499948,
       zoom: 8
     },
-    isFavorite: true,
+    isFavorite: false,
     isPremium: false,
     rating: 3,
-    previewImage: './markup/img/apartment-01.jpg',
+    previewImage: 'img/apartment-01.jpg',
     description: 'Отличное место.',
     bedrooms: 13,
     goods: [
@@ -68,7 +68,7 @@ const arrayOffers : CardsType = [
     host: {
       name: 'Илон Маск',
       avatarUrl: './markup/img/avatar-angelina.jpg',
-      isPro: false
+      isPro: true
     },
     images: [
       './markup/img/avatar-angelina.jpg'
@@ -81,7 +81,7 @@ const arrayOffers : CardsType = [
     type: 'комната',
     price: 1540,
     city: {
-      name: 'Москва',
+      name: 'Минск',
       location: {
         latitude: 52.35514938496378,
         longitude: 4.673877537499948,
@@ -93,7 +93,7 @@ const arrayOffers : CardsType = [
       longitude: 4.673877537499948,
       zoom: 8
     },
-    isFavorite: true,
+    isFavorite: false,
     isPremium: false,
     rating: 2,
     previewImage: './markup/img/apartment-02.jpg',
@@ -104,11 +104,11 @@ const arrayOffers : CardsType = [
     ],
     host: {
       name: 'А.Ткачев',
-      avatarUrl: './markup/img/avatar-angelina.jpg',
-      isPro: false
+      avatarUrl: 'img/avatar-angelina.jpg',
+      isPro: true
     },
     images: [
-      './markup/img/apartment-02.jpg'
+      'img/apartment-02.jpg'
     ],
     maxAdults: 5
   },
@@ -130,22 +130,22 @@ const arrayOffers : CardsType = [
       longitude: 4.673877537499948,
       zoom: 8
     },
-    isFavorite: true,
-    isPremium: false,
+    isFavorite: false,
+    isPremium: true,
     rating: 1,
     previewImage: 'img/apartment-03.jpg',
     description: 'Отличная комната.',
-    bedrooms: 13,
+    bedrooms: 0,
     goods: [
       'Heating', 'wi-fi'
     ],
     host: {
       name: 'А.Лукашенко',
-      avatarUrl: './markup/img/avatar-angelina.jpg',
+      avatarUrl: 'img/avatar-angelina.jpg',
       isPro: false
     },
     images: [
-      './markup/img/apartment-03.jpg'
+      'img/apartment-03.jpg'
     ],
     maxAdults: 3
   },
