@@ -33,7 +33,7 @@ export type CardType = {
 }
 
 export type CommentType = {
-id: string;
+id: string | undefined;
 date: string;
 user: {
   name: string;

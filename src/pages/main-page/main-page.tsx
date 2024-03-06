@@ -1,6 +1,7 @@
 import { CardsType } from '../../types/card';
+import { useState } from 'react';
 import ListOffers from '../../components/main-components/list-offers';
-
+import MapComponent from '../../components/map/map-component';
 import Header from '../../components/header/header-component';
 
 type MainPageProps = {
@@ -9,6 +10,17 @@ type MainPageProps = {
 
 function MainPage({ rentsCard}: MainPageProps): JSX.Element {
   const favoritesArray = rentsCard.filter((item) => item.isFavorite);
+  const [cardMouseOver, setCardMouseOver] = useState<string | undefined>('');
+
+  const handleListItemHover = (listItemCardId: string) => {
+    const currentCard = rentsCard.find((item) => item.id === listItemCardId)?.id;
+    setCardMouseOver(currentCard);
+  };
+
+  const handleListItemOut = () => {
+    setCardMouseOver(undefined);
+  };
+
   return (
     <div className="page page--gray page--main">
       <Header isLoggedIn={false} countFavorite={favoritesArray.length}/>
@@ -71,12 +83,12 @@ function MainPage({ rentsCard}: MainPageProps): JSX.Element {
                   <li className="places__option" tabIndex={0}>Top rated first</li>
                 </ul>
               </form>
-              <ListOffers rentsCard={rentsCard} />
+              <ListOffers rentsCard={rentsCard} onListItemHover={handleListItemHover} onListItemOut={handleListItemOut}/>
 
 
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map"></section>
+              <MapComponent rentsCard={rentsCard} selectedCard={cardMouseOver} />
             </div>
           </div>
         </div>

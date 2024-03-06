@@ -1,22 +1,25 @@
 import { CardType } from '../../types/card';
 import { Link } from 'react-router-dom';
 import { ratingCard } from '../../const';
-import { useState } from 'react';
+import { MouseEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 type PlaceCardProps = {
   cardObj: CardType;
+  onMouseOver: (evt: MouseEvent<HTMLElement>) => void;
+  onMouseOut: () => void;
 }
 
-function PlaceCard({cardObj} : PlaceCardProps){
-  const [cardMouseOver, setCardMouseOver] = useState('');
+function PlaceCard({cardObj, onMouseOver, onMouseOut} : PlaceCardProps){
+
   const navigate = useNavigate();
+
   const {id, isPremium, previewImage, price, isFavorite, rating, title, type} = cardObj;
 
   return (
-    <article className="cities__card place-card" data-id={id} onMouseOver={() => {
-      setCardMouseOver(id);
-    }} onClick={() => navigate(`/offer/${cardMouseOver}`)}
+
+    <article className="cities__card place-card" data-id={id} onMouseOver={onMouseOver}
+      onClick={() => navigate(`/offer/${id}`)} onMouseOut={onMouseOut}
     >
       <div className="place-card__mark">
         <span>{isPremium ? 'Premium' : ''}</span>
@@ -40,7 +43,6 @@ function PlaceCard({cardObj} : PlaceCardProps){
             </svg>
             <span className="visually-hidden">To bookmarks</span>
           </button>
-
 
         </div>
 
