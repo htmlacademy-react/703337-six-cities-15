@@ -3,11 +3,13 @@ import { Icon, Marker, layerGroup } from 'leaflet';
 import { URL_MARKER_DEFAULT, URL_MARKER_CURRENT } from '../../const';
 import useMap from './useMap';
 import { CardsType } from '../../types/card';
+import cn from 'classnames';
 import 'leaflet/dist/leaflet.css';
 
 type MapProps = {
   rentsCard: CardsType;
   selectedCard: string | undefined;
+  params: boolean;
 };
 
 const defaultCustomIcon = new Icon({
@@ -23,7 +25,7 @@ const currentCustomIcon = new Icon({
 });
 
 function MapComponent(props: MapProps): JSX.Element {
-  const {rentsCard, selectedCard} = props;
+  const {rentsCard, selectedCard, params} = props;
   const city = rentsCard[0].city;
   const mapRef = useRef(null);
   const map = useMap(mapRef, city);
@@ -53,7 +55,7 @@ function MapComponent(props: MapProps): JSX.Element {
   }, [map, rentsCard, selectedCard]);
 
   return (
-    <section className="cities__map map " ref={mapRef}></section>
+    <section className={cn('map', {'cities__map': !params, 'offer__map': params})} ref={mapRef}></section>
   );
 }
 

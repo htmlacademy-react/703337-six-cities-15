@@ -1,25 +1,25 @@
 import PlaceCard from './place-card';
 import { CardsType } from '../../types/card';
-import { MouseEvent } from 'react';
+import cn from 'classnames';
 
 type ListOffersProps = {
   rentsCard: CardsType;
   onListItemHover: (listItemCardId: string) => void;
   onListItemOut: () => void;
+  params: boolean;
 }
 
-function ListOffers({ rentsCard, onListItemHover, onListItemOut }: ListOffersProps): JSX.Element {
-  const handleListItemHover = (evt: MouseEvent<HTMLElement>) => {
-    evt.preventDefault();
-
-    onListItemHover((evt.currentTarget as HTMLElement).dataset.id as string);
-  };
-
+function ListOffers({ rentsCard, onListItemHover, onListItemOut, params}: ListOffersProps): JSX.Element {
+  // const handleListItemHover = (evt: MouseEvent<HTMLElement>) => {
+  //   evt.preventDefault();
+  //   onListItemHover((evt.currentTarget as HTMLElement).dataset.id as string);
+  // };
+  //console.log(Boolean(params));
   return (
-    <div className="cities__places-list places__list tabs__content">
+    <div className={cn('places__list', {'cities__places-list tabs__content': params, 'near-places__list': !params})}>
       {rentsCard.map((item) => (
-        <PlaceCard key={item.id} cardObj={item} onMouseOver={handleListItemHover}
-          onMouseOut={onListItemOut}
+        <PlaceCard key={item.id} cardObj={item} onMouseOver={onListItemHover}
+          onMouseOut={onListItemOut} params={params}
         />))}
     </div>
   );

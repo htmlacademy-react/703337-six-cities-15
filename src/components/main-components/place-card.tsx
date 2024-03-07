@@ -3,23 +3,28 @@ import { Link } from 'react-router-dom';
 import { ratingCard } from '../../const';
 import { MouseEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
+import cn from 'classnames';
 
 type PlaceCardProps = {
   cardObj: CardType;
-  onMouseOver: (evt: MouseEvent<HTMLElement>) => void;
+  onMouseOver: (listItemCardId: string) => void;
   onMouseOut: () => void;
+  params: boolean;
 }
 
-function PlaceCard({cardObj, onMouseOver, onMouseOut} : PlaceCardProps){
-
+function PlaceCard({cardObj, onMouseOver, onMouseOut, params} : PlaceCardProps){
   const navigate = useNavigate();
-
   const {id, isPremium, previewImage, price, isFavorite, rating, title, type} = cardObj;
+
+  const handleListItemHover = (evt: MouseEvent<HTMLElement>) => {
+    evt.preventDefault();
+    onMouseOver(id);
+  };
 
   return (
 
-    <article className="cities__card place-card" data-id={id} onMouseOver={onMouseOver}
-      onClick={() => navigate(`/offer/${id}`)} onMouseOut={onMouseOut}
+    <article className={cn('place-card', {'near-places__card': params, 'cities__card': !params})}
+      data-id={id} onMouseOver={handleListItemHover} onClick={() => navigate(`/offer/${id}`)} onMouseOut={onMouseOut}
     >
       <div className="place-card__mark">
         <span>{isPremium ? 'Premium' : ''}</span>

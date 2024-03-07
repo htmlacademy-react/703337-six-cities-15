@@ -3,8 +3,11 @@ import { CardsType } from '../../types/card';
 import { arrayComment } from '../../mocks/comment';
 import Reviews from '../../components/offer/reviews-component';
 import { useParams } from 'react-router-dom';
+import { useState } from 'react';
 import { ratingCard } from '../../const';
 import Header from '../../components/header/header-component';
+import MapComponent from '../../components/map/map-component';
+import ListOffers from '../../components/main-components/list-offers';
 
 type OfferPageProps = {
   rentsCard: CardsType;
@@ -12,11 +15,23 @@ type OfferPageProps = {
 
 function OfferPage({rentsCard} : OfferPageProps): JSX.Element {
   const params = useParams();
+  const isId = 'id' in params;
+
+  const [cardMouseOver, setCardMouseOver] = useState<string | undefined>('');
   const offerId = params.id;
   const offerObj = rentsCard.find((item) => item.id === offerId);
   const favoritesArray = rentsCard.filter((item) => item.isFavorite);
 
   const {images, isPremium, title, rating, bedrooms, maxAdults, type, price, goods, host, description} = offerObj!;
+
+  const handleListItemHover = (listItemCardId: string) => {
+    const currentCard = rentsCard.find((item) => item.id === listItemCardId)?.id;
+    setCardMouseOver(currentCard);
+  };
+
+  const handleListItemOut = () => {
+    setCardMouseOver(undefined);
+  };
 
   return (
     <div className="page">
@@ -114,11 +129,14 @@ function OfferPage({rentsCard} : OfferPageProps): JSX.Element {
 
             </div>
           </div>
-          <section className="offer__map map"></section>
+          <MapComponent rentsCard={rentsCard} selectedCard={cardMouseOver} params={isId}/>
         </section>
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
+            <ListOffers rentsCard={rentsCard} onListItemHover={handleListItemHover}
+              onListItemOut={handleListItemOut} params={isId}
+            />
             <div className="near-places__list places__list">
               <article className="near-places__card place-card">
                 <div className="near-places__image-wrapper place-card__image-wrapper">
