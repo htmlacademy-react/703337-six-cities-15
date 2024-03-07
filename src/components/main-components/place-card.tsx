@@ -26,9 +26,9 @@ function PlaceCard({cardObj, onMouseOver, onMouseOut, params} : PlaceCardProps){
     <article className={cn('place-card', {'near-places__card': params, 'cities__card': !params})}
       data-id={id} onMouseOver={handleListItemHover} onClick={() => navigate(`/offer/${id}`)} onMouseOut={onMouseOut}
     >
-      <div className="place-card__mark">
-        <span>{isPremium ? 'Premium' : ''}</span>
-      </div>
+
+      {isPremium ? <div className="place-card__mark"><span>Premium</span></div> : ''}
+
       <div className="cities__image-wrapper place-card__image-wrapper">
         <Link to={`/offer/${id}`}>
           <img className="place-card__image" src={previewImage} width="260" height="200" alt="Place image" />
