@@ -1,4 +1,5 @@
 import { useRef, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Icon, Marker, layerGroup } from 'leaflet';
 import { URL_MARKER_DEFAULT, URL_MARKER_CURRENT } from '../../const';
 import useMap from './useMap';
@@ -9,7 +10,6 @@ import 'leaflet/dist/leaflet.css';
 type MapProps = {
   rentsCard: CardsType;
   selectedCard: string | undefined;
-  params: boolean;
 };
 
 const defaultCustomIcon = new Icon({
@@ -25,10 +25,11 @@ const currentCustomIcon = new Icon({
 });
 
 function MapComponent(props: MapProps): JSX.Element {
-  const {rentsCard, selectedCard, params} = props;
+  const {rentsCard, selectedCard} = props;
   const city = rentsCard[0].city;
   const mapRef = useRef(null);
   const map = useMap(mapRef, city);
+  const locationAbs = useLocation().pathname === '/';
 
   useEffect(() => {
     if (map) {
@@ -55,7 +56,7 @@ function MapComponent(props: MapProps): JSX.Element {
   }, [map, rentsCard, selectedCard]);
 
   return (
-    <section className={cn('map', {'cities__map': !params, 'offer__map': params})} ref={mapRef}></section>
+    <section className={cn('map', {'cities__map': locationAbs, 'offer__map': !locationAbs})} ref={mapRef}></section>
   );
 }
 

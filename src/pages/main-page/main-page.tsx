@@ -1,6 +1,5 @@
 import { CardsType } from '../../types/card';
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
 import ListOffers from '../../components/main-components/list-offers';
 import MapComponent from '../../components/map/map-component';
 import Header from '../../components/header/header-component';
@@ -12,8 +11,6 @@ type MainPageProps = {
 function MainPage({ rentsCard}: MainPageProps): JSX.Element {
   const favoritesArray = rentsCard.filter((item) => item.isFavorite);
   const [cardMouseOver, setCardMouseOver] = useState<string | undefined>('');
-  const params = useParams();
-  const isId = 'id' in params;
   const handleListItemHover = (listItemCardId: string) => {
     const currentCard = rentsCard.find((item) => item.id === listItemCardId)?.id;
     setCardMouseOver(currentCard);
@@ -32,36 +29,16 @@ function MainPage({ rentsCard}: MainPageProps): JSX.Element {
         <div className="tabs">
           <section className="locations container">
             <ul className="locations__list tabs__list">
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Paris</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Cologne</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Brussels</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item tabs__item--active">
-                  <span>Amsterdam</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Hamburg</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Dusseldorf</span>
-                </a>
-              </li>
+              {['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'].map((item) =>
+                (
+                  <li key={`${item}location`} className="locations__item">
+                    <a className="locations__item-link tabs__item" href="#">
+                      <span>{item}</span>
+                    </a>
+                  </li>
+                )
+              )}
+
             </ul>
           </section>
         </div>
@@ -86,13 +63,13 @@ function MainPage({ rentsCard}: MainPageProps): JSX.Element {
                 </ul>
               </form>
               <ListOffers rentsCard={rentsCard} onListItemHover={handleListItemHover}
-                onListItemOut={handleListItemOut} params={isId}
+                onListItemOut={handleListItemOut}
               />
 
 
             </section>
             <div className="cities__right-section">
-              <MapComponent rentsCard={rentsCard} selectedCard={cardMouseOver} params={isId}/>
+              <MapComponent rentsCard={rentsCard} selectedCard={cardMouseOver} />
             </div>
           </div>
         </div>

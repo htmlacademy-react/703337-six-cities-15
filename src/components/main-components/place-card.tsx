@@ -2,19 +2,19 @@ import { CardType } from '../../types/card';
 import { Link } from 'react-router-dom';
 import { ratingCard } from '../../const';
 import { MouseEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import cn from 'classnames';
 
 type PlaceCardProps = {
   cardObj: CardType;
   onMouseOver: (listItemCardId: string) => void;
   onMouseOut: () => void;
-  params: boolean;
 }
 
-function PlaceCard({cardObj, onMouseOver, onMouseOut, params} : PlaceCardProps){
+function PlaceCard({cardObj, onMouseOver, onMouseOut} : PlaceCardProps){
   const navigate = useNavigate();
   const {id, isPremium, previewImage, price, isFavorite, rating, title, type} = cardObj;
+  const locationAbs = useLocation().pathname === '/';
 
   const handleListItemHover = (evt: MouseEvent<HTMLElement>) => {
     evt.preventDefault();
@@ -23,7 +23,7 @@ function PlaceCard({cardObj, onMouseOver, onMouseOut, params} : PlaceCardProps){
 
   return (
 
-    <article className={cn('place-card', {'near-places__card': params, 'cities__card': !params})}
+    <article className={cn('place-card', {'near-places__card': !locationAbs, 'cities__card': locationAbs})}
       data-id={id} onMouseOver={handleListItemHover} onClick={() => navigate(`/offer/${id}`)} onMouseOut={onMouseOut}
     >
 
@@ -42,7 +42,7 @@ function PlaceCard({cardObj, onMouseOver, onMouseOut, params} : PlaceCardProps){
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
 
-          <button className={isFavorite ? 'place-card__bookmark-button place-card__bookmark-button--active button' : 'place-card__bookmark-button button'} type="button">
+          <button className={cn('place-card__bookmark-button button', {'place-card__bookmark-button--active': isFavorite})} type="button">
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"></use>
             </svg>

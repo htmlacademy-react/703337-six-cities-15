@@ -93,7 +93,7 @@ const arrayOffers : CardsType = [
       longitude: 5.12222,
       zoom: 8
     },
-    isFavorite: false,
+    isFavorite: true,
     isPremium: false,
     rating: 2,
     previewImage: './markup/img/apartment-02.jpg',
