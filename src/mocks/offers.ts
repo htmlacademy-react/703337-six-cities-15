@@ -9,14 +9,14 @@ const arrayOffers : CardsType = [
     city: {
       name: 'Amsterdam',
       location: {
-        latitude: 52.35514938496378,
-        longitude: 4.673877537499948,
+        latitude: 52.3909553943508,
+        longitude: 4.85309666406198,
         zoom: 8
       }
     },
     location: {
-      latitude: 52.35514938496378,
-      longitude: 4.673877537499948,
+      latitude: 52.3909553943508,
+      longitude: 4.85309666406198,
       zoom: 8
     },
     isFavorite: false,
@@ -44,7 +44,7 @@ const arrayOffers : CardsType = [
     type: 'студия',
     price: 1340,
     city: {
-      name: 'Минск',
+      name: 'Amsterdam',
       location: {
         latitude: 52.35514938496378,
         longitude: 4.673877537499948,
@@ -81,19 +81,19 @@ const arrayOffers : CardsType = [
     type: 'комната',
     price: 1540,
     city: {
-      name: 'Минск',
+      name: 'Utreht',
       location: {
-        latitude: 52.35514938496378,
-        longitude: 4.673877537499948,
+        latitude: 52.0908,
+        longitude: 5.12222,
         zoom: 8
       }
     },
     location: {
-      latitude: 52.35514938496378,
-      longitude: 4.673877537499948,
+      latitude: 52.0908,
+      longitude: 5.12222,
       zoom: 8
     },
-    isFavorite: false,
+    isFavorite: true,
     isPremium: false,
     rating: 2,
     previewImage: './markup/img/apartment-02.jpg',
@@ -120,14 +120,14 @@ const arrayOffers : CardsType = [
     city: {
       name: 'Минск',
       location: {
-        latitude: 52.35514938496378,
-        longitude: 4.673877537499948,
+        latitude: 51.92442,
+        longitude: 4.47773,
         zoom: 8
       }
     },
     location: {
-      latitude: 52.35514938496378,
-      longitude: 4.673877537499948,
+      latitude: 51.92442,
+      longitude: 4.47773,
       zoom: 8
     },
     isFavorite: false,

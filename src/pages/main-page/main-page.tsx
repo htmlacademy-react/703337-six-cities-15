@@ -1,6 +1,7 @@
 import { CardsType } from '../../types/card';
+import { useState } from 'react';
 import ListOffers from '../../components/main-components/list-offers';
-
+import MapComponent from '../../components/map/map-component';
 import Header from '../../components/header/header-component';
 
 type MainPageProps = {
@@ -9,6 +10,16 @@ type MainPageProps = {
 
 function MainPage({ rentsCard}: MainPageProps): JSX.Element {
   const favoritesArray = rentsCard.filter((item) => item.isFavorite);
+  const [cardMouseOver, setCardMouseOver] = useState<string | undefined>('');
+  const handleListItemHover = (listItemCardId: string) => {
+    const currentCard = rentsCard.find((item) => item.id === listItemCardId)?.id;
+    setCardMouseOver(currentCard);
+  };
+
+  const handleListItemOut = () => {
+    setCardMouseOver(undefined);
+  };
+
   return (
     <div className="page page--gray page--main">
       <Header isLoggedIn={false} countFavorite={favoritesArray.length}/>
@@ -18,36 +29,16 @@ function MainPage({ rentsCard}: MainPageProps): JSX.Element {
         <div className="tabs">
           <section className="locations container">
             <ul className="locations__list tabs__list">
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Paris</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Cologne</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Brussels</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item tabs__item--active">
-                  <span>Amsterdam</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Hamburg</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Dusseldorf</span>
-                </a>
-              </li>
+              {['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'].map((item) =>
+                (
+                  <li key={`${item}location`} className="locations__item">
+                    <a className="locations__item-link tabs__item" href="#">
+                      <span>{item}</span>
+                    </a>
+                  </li>
+                )
+              )}
+
             </ul>
           </section>
         </div>
@@ -55,7 +46,7 @@ function MainPage({ rentsCard}: MainPageProps): JSX.Element {
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">312 places to stay in Amsterdam</b>
+              <b className="places__found">{rentsCard.length} places to stay in Amsterdam</b>
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by</span>
                 <span className="places__sorting-type" tabIndex={0}>
@@ -71,12 +62,14 @@ function MainPage({ rentsCard}: MainPageProps): JSX.Element {
                   <li className="places__option" tabIndex={0}>Top rated first</li>
                 </ul>
               </form>
-              <ListOffers rentsCard={rentsCard} />
+              <ListOffers rentsCard={rentsCard} onListItemHover={handleListItemHover}
+                onListItemOut={handleListItemOut}
+              />
 
 
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map"></section>
+              <MapComponent rentsCard={rentsCard} selectedCard={cardMouseOver} />
             </div>
           </div>
         </div>
