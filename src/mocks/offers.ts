@@ -7,7 +7,7 @@ const arrayOffers : CardsType = [
     type: 'apartment',
     price: 120,
     city: {
-      name: 'Amsterdam',
+      name: 'Paris',
       location: {
         latitude: 52.3909553943508,
         longitude: 4.85309666406198,
@@ -81,7 +81,7 @@ const arrayOffers : CardsType = [
     type: 'комната',
     price: 1540,
     city: {
-      name: 'Utreht',
+      name: 'Hamburg',
       location: {
         latitude: 52.0908,
         longitude: 5.12222,
@@ -118,7 +118,7 @@ const arrayOffers : CardsType = [
     type: 'комната',
     price: 140,
     city: {
-      name: 'Минск',
+      name: 'Amsterdam',
       location: {
         latitude: 51.92442,
         longitude: 4.47773,
