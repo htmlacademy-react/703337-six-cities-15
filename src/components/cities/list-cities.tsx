@@ -1,20 +1,24 @@
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { changeCity} from '../../store/action';
 import { MouseEvent } from 'react';
+import { cityNameState } from '../../store/selectors';
+//import { CardsType } from '../../types/card';
 import cn from 'classnames';
 
 type CitiesProps = {
   cities: string[];
+
 }
 
 function Cities({cities} : CitiesProps): JSX.Element {
   const dispatch = useAppDispatch();
-  const city = useAppSelector((state) => state.city);
+  const city = useAppSelector(cityNameState);
 
   const handleListItemClick = (evt: MouseEvent<HTMLElement>) => {
     evt.preventDefault();
     const cityName = evt.target as HTMLElement;
     dispatch(changeCity(cityName.innerText));
+
     //console.log(store.getState());
   };
   return (

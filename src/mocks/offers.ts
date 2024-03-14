@@ -5,18 +5,18 @@ const arrayOffers : CardsType = [
     id: '6af6f711-c28d-4121-82cd-e0b462a27f00',
     title: 'Beautiful & luxurious studio at great location',
     type: 'apartment',
-    price: 120,
+    price: 145,
     city: {
       name: 'Paris',
       location: {
-        latitude: 52.3909553943508,
-        longitude: 4.85309666406198,
+        latitude: 52.127,
+        longitude: 4.44641,
         zoom: 8
       }
     },
     location: {
-      latitude: 52.3909553943508,
-      longitude: 4.85309666406198,
+      latitude: 52.127,
+      longitude: 4.44641,
       zoom: 8
     },
     isFavorite: false,
@@ -81,7 +81,7 @@ const arrayOffers : CardsType = [
     type: 'комната',
     price: 1540,
     city: {
-      name: 'Hamburg',
+      name: 'Amsterdam',
       location: {
         latitude: 52.0908,
         longitude: 5.12222,
@@ -148,6 +148,80 @@ const arrayOffers : CardsType = [
       'img/apartment-03.jpg'
     ],
     maxAdults: 3
+  },
+  {
+    id: '6af6f711-c28d-4121-82cd-e0b462a27f04',
+    title: 'Прекрасная комната в общежитии в центре Gaage',
+    type: 'комната',
+    price: 3150,
+    city: {
+      name: 'Paris',
+      location: {
+        latitude: 52.0767,
+        longitude: 4.29861,
+        zoom: 8
+      }
+    },
+    location: {
+      latitude: 52.0767,
+      longitude: 4.29861,
+      zoom: 8
+    },
+    isFavorite: false,
+    isPremium: true,
+    rating: 2,
+    previewImage: 'img/apartment-03.jpg',
+    description: 'Отличная комната.',
+    bedrooms: 0,
+    goods: [
+      'Heating', 'wi-fi'
+    ],
+    host: {
+      name: 'А.Лукашенко',
+      avatarUrl: 'img/avatar-angelina.jpg',
+      isPro: false
+    },
+    images: [
+      'img/apartment-03.jpg'
+    ],
+    maxAdults: 116
+  },
+  {
+    id: '6af6f711-c28d-4121-82cd-e0b462a27f05',
+    title: 'Прекрасная комната в общежитии в центре Leiden',
+    type: 'комната',
+    price: 2150,
+    city: {
+      name: 'Paris',
+      location: {
+        latitude: 52.1583,
+        longitude: 4.49306,
+        zoom: 8
+      }
+    },
+    location: {
+      latitude: 52.1583,
+      longitude: 4.49306,
+      zoom: 8
+    },
+    isFavorite: false,
+    isPremium: true,
+    rating: 1,
+    previewImage: 'img/apartment-03.jpg',
+    description: 'Отличная комната.',
+    bedrooms: 0,
+    goods: [
+      'Heating', 'wi-fi'
+    ],
+    host: {
+      name: 'J.Smith',
+      avatarUrl: 'img/avatar-angelina.jpg',
+      isPro: false
+    },
+    images: [
+      'img/apartment-03.jpg'
+    ],
+    maxAdults: 16
   },
 ];
 
