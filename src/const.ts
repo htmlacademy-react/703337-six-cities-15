@@ -1,3 +1,4 @@
+
 export enum AppRoute {
   Login = '/login',
   Favorites = '/favorites',
@@ -11,6 +12,12 @@ export enum AuthorizationStatus {
   Unknown = 'UNKNOWN',
 }
 
+export enum SortType {
+  Low = 'Price: low to high',
+  High = 'Price: high to low',
+  Rating = 'Top rated first',
+}
+
 export function ratingCard(scale : number) : string{
   return `${scale * 20}%`;
 }
@@ -18,6 +25,8 @@ export function ratingCard(scale : number) : string{
 export const URL_MARKER_DEFAULT =
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/demo/interactive-map/pin.svg';
 
-export const URL_MARKER_CURRENT =
-  'https://assets.htmlacademy.ru/content/intensive/javascript-1/demo/interactive-map/main-pin.svg';
+export const URL_MARKER_CURRENT = 'img/pin-active.svg';
 
+export const CITIES = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];
+
+export const SORT = ['Popular', 'Price: low to high', 'Price: high to low', 'Top rated first'];
