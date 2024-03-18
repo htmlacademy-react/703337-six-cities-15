@@ -12,13 +12,11 @@ import LoginRoute from '../private-route/login-route';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { citiesFill } from '../../store/action';
 import { arrayOffers } from '../../mocks/offers';
-//import { store } from '../../store';
 
 function App(): JSX.Element {
   const dispatch = useAppDispatch();
   dispatch(citiesFill(arrayOffers));
   const offers = useAppSelector((state) => state.offers);
-  //console.log(store.getState());
 
   return (
 

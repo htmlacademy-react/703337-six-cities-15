@@ -2,39 +2,30 @@ import { useState, useEffect } from 'react';
 
 import cn from 'classnames';
 import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
-import { MouseEvent } from 'react';
+//import { MouseEvent } from 'react';
 import { SORT } from '../../const';
-//import { CardsType } from '../../types/card';
-import { cityNameState } from '../../store/selectors';
-import { changeSortType } from '../../store/action';
-//import { store } from '../../store';
-//import { sortByPriceHigh, sortByPriceLow, sortByPriceRate } from '../../util';
-
-// type SortProps = {
-//   rentsCard: CardsType;
-// }
+import { cityNameState, currentSortTypeState } from '../../store/selectors';
+import { changeSortType, sortCurrentOffers } from '../../store/action';
 
 function SortingOptions(): JSX.Element {
   const city = useAppSelector(cityNameState);
   const dispatch = useAppDispatch();
-
+  const sortingType = useAppSelector(currentSortTypeState);
+console.log(sortingType)
   const [optionsOpen, setOptionsOpen] = useState(false);
-  const [sortingType, setSortingType] = useState('Popular');
-  dispatch(changeSortType(sortingType));
 
   useEffect(() => {
-    setSortingType('Popular');
-  }, [city]);
+    dispatch(changeSortType('Popular'));
+  }, [city, dispatch]);
 
-  const handleListClick = () => {
+  const handleListClick = () =>{
     setOptionsOpen(!optionsOpen);
   };
 
-  const handleListItemClick = (evt: MouseEvent<HTMLElement>) => {
-    const sortValue = evt.target as HTMLElement;
-    setSortingType(sortValue.innerText);
+  const handleListItemClick = (item : string) => {
+    dispatch(changeSortType(item));
+    dispatch(sortCurrentOffers());
     setOptionsOpen(false);
-
   };
 
   return (
@@ -48,7 +39,7 @@ function SortingOptions(): JSX.Element {
       </span>
       <ul className={cn('places__options places__options--custom ',{'places__options--opened': optionsOpen})}>
         {SORT.map((item) => (
-          <li onClick={handleListItemClick} key={`${item}Sort`} className={cn('places__option',{'places__option--active': sortingType === item})} tabIndex={0}>{item}</li>
+          <li onClick={()=> handleListItemClick(item)} key={`${item}Sort`} className={cn('places__option',{'places__option--active': sortingType === item})} tabIndex={0}>{item}</li>
         ))}
 
       </ul>

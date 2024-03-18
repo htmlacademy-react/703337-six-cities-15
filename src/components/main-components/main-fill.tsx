@@ -4,9 +4,9 @@ import { CardsType } from '../../types/card';
 import MapComponent from '../map/map-component';
 import { useState } from 'react';
 //import { changeCurrentOffers } from '../../store/action';
-import { cityNameState, currentSortTypeState } from '../../store/selectors';
-import { sortByPriceHigh,sortByPriceLow,sortByPriceRate } from '../../util';
-import { SortType } from '../../const';
+import { cityNameState, currentOffersState } from '../../store/selectors';
+//import { sortByPriceHigh,sortByPriceLow,sortByPriceRate } from '../../util';
+//import { SortType } from '../../const';
 import { useAppSelector } from '../../hooks/hooks';
 
 type MainPageFillProps = {
@@ -16,9 +16,8 @@ type MainPageFillProps = {
 function MainPageFill({cityArray} : MainPageFillProps): JSX.Element {
   const [cardMouseOver, setCardMouseOver] = useState<string | undefined>('');
   const city = useAppSelector(cityNameState);
-  const sortType = useAppSelector(currentSortTypeState);
-
-  const sortArray = [...cityArray];
+  //const sortType = useAppSelector(currentSortTypeState);
+  const sortArray = useAppSelector(currentOffersState);
 
   const handleListItemHover = (listItemCardId: string) => {
     const currentCard = cityArray.find((item) => item.id === listItemCardId)?.id;
@@ -28,22 +27,6 @@ function MainPageFill({cityArray} : MainPageFillProps): JSX.Element {
   const handleListItemOut = () => {
     setCardMouseOver(undefined);
   };
-
-  const sortObj = () => {
-    switch (sortType) {
-      case SortType.Low:
-        sortArray.sort(sortByPriceLow);
-        break;
-      case SortType.High:
-        sortArray.sort(sortByPriceHigh);
-        break;
-      case SortType.Rating:
-        sortArray.sort(sortByPriceRate);
-        break;
-    }
-  };
-
-  sortObj();
 
   return(
     <div className="cities__places-container container">

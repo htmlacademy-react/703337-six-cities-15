@@ -1,4 +1,5 @@
-import { CardType } from './types/card';
+import { CardType, CardsType } from './types/card';
+import { SortType } from './const';
 
 const sortByPriceLow = (a : CardType, b : CardType) => {
   if (a.price > b.price) {
@@ -36,4 +37,20 @@ const sortByPriceRate = (a : CardType, b : CardType) => {
   return 0;
 };
 
-export {sortByPriceHigh, sortByPriceLow, sortByPriceRate};
+const sortObj = (sortType : string, sortArray : CardsType) => {
+  switch (sortType) {
+    case SortType.Low:
+      return sortArray.sort(sortByPriceLow);
+      break;
+    case SortType.High:
+      return sortArray.sort(sortByPriceHigh);
+      break;
+    case SortType.Rating:
+      return sortArray.sort(sortByPriceRate);
+      break;
+    default:
+      return sortArray;
+  }
+};
+
+export {sortByPriceHigh, sortByPriceLow, sortByPriceRate, sortObj};
