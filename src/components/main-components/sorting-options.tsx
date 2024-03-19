@@ -11,7 +11,7 @@ function SortingOptions(): JSX.Element {
   const city = useAppSelector(cityNameState);
   const dispatch = useAppDispatch();
   const sortingType = useAppSelector(currentSortTypeState);
-console.log(sortingType)
+
   const [optionsOpen, setOptionsOpen] = useState(false);
 
   useEffect(() => {

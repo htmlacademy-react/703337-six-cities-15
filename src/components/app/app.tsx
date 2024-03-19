@@ -8,15 +8,20 @@ import FavoritesPage from '../../pages/favorites-page/favorites-page';
 import OfferPage from '../../pages/offer-page/offer-page';
 import PrivateRoute from '../private-route/private-route';
 import ScrollToTop from '../scroll-to-top/scroll-to-top';
+import LoadingScreen from '../../pages/loading-screen/loading-screen';
 import LoginRoute from '../private-route/login-route';
-import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-import { citiesFill } from '../../store/action';
-import { arrayOffers } from '../../mocks/offers';
+import { useAppSelector } from '../../hooks/hooks';
+
 
 function App(): JSX.Element {
-  const dispatch = useAppDispatch();
-  dispatch(citiesFill(arrayOffers));
-  const offers = useAppSelector((state) => state.offers);
+  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
+
+  if (isOffersDataLoading) {
+    return (
+      <LoadingScreen />
+    );
+  }
 
   return (
 
@@ -26,12 +31,12 @@ function App(): JSX.Element {
         <Routes>
           <Route
             path={AppRoute.Root}
-            element={<MainPage rentsCard = {offers} />}
+            element={<MainPage />}
           />
           <Route
             path={AppRoute.Login}
             element={
-              <LoginRoute authorizationStatus={AuthorizationStatus.NoAuth}>
+              <LoginRoute authorizationStatus={authorizationStatus}>
                 <LoginPage />
               </LoginRoute>
             }
@@ -39,14 +44,14 @@ function App(): JSX.Element {
           <Route
             path={AppRoute.Favorites}
             element={
-              <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}>
-                <FavoritesPage rentsCard = {offers}/>
+              <PrivateRoute authorizationStatus={authorizationStatus}>
+                <FavoritesPage />
               </PrivateRoute>
             }
           />
           <Route
             path={AppRoute.Offer}
-            element={<OfferPage rentsCard = {offers}/>}
+            element={<OfferPage />}
           />
           <Route
             path="*"

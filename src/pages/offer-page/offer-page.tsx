@@ -1,5 +1,3 @@
-
-import { CardsType } from '../../types/card';
 import { arrayComment } from '../../mocks/comment';
 import Reviews from '../../components/offer/reviews-component';
 import { useParams } from 'react-router-dom';
@@ -9,23 +7,22 @@ import cn from 'classnames';
 import Header from '../../components/header/header-component';
 import MapComponent from '../../components/map/map-component';
 import ListOffers from '../../components/main-components/list-offers';
+import { currentOffersState } from '../../store/selectors';
+import { useAppSelector } from '../../hooks/hooks';
 
-type OfferPageProps = {
-  rentsCard: CardsType;
-}
-
-function OfferPage({rentsCard} : OfferPageProps): JSX.Element {
+function OfferPage(): JSX.Element {
   const params = useParams();
 
   const [cardMouseOver, setCardMouseOver] = useState<string | undefined>('');
   const offerId = params.id;
-  const offerObj = rentsCard.find((item) => item.id === offerId);
-  const favoritesArray = rentsCard.filter((item) => item.isFavorite);
+  const cities = useAppSelector(currentOffersState);
+  const offerObj = cities.find((item) => item.id === offerId);
+  const favoritesArray = cities.filter((item) => item.isFavorite);
 
   const {images, isPremium, isFavorite, title, rating, bedrooms, maxAdults, type, price, goods, host, description} = offerObj!;
 
   const handleListItemHover = (listItemCardId: string) => {
-    const currentCard = rentsCard.find((item) => item.id === listItemCardId)?.id;
+    const currentCard = cities.find((item) => item.id === listItemCardId)?.id;
     setCardMouseOver(currentCard);
   };
 
@@ -35,7 +32,7 @@ function OfferPage({rentsCard} : OfferPageProps): JSX.Element {
 
   return (
     <div className="page">
-      <Header isLoggedIn={false} countFavorite={favoritesArray.length}/>
+      <Header countFavorite={favoritesArray.length}/>
 
       <main className="page__main page__main--offer">
         <section className="offer">
@@ -128,12 +125,12 @@ function OfferPage({rentsCard} : OfferPageProps): JSX.Element {
 
             </div>
           </div>
-          <MapComponent rentsCard={rentsCard} selectedCard={cardMouseOver} />
+          <MapComponent rentsCard={cities} selectedCard={cardMouseOver} />
         </section>
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
-            <ListOffers rentsCard={rentsCard} onListItemHover={handleListItemHover}
+            <ListOffers rentsCard={cities} onListItemHover={handleListItemHover}
               onListItemOut={handleListItemOut}
             />
 

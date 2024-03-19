@@ -1,13 +1,16 @@
 import { CardsType } from '../../types/card';
 import Header from '../../components/header/header-component';
 import FavoritesList from '../../components/favorites-component/list-favorites-component';
+import { useAppSelector } from '../../hooks/hooks';
+import { offersState } from '../../store/selectors';
 
 type FavoritesPageProps = {
   rentsCard: CardsType;
 }
 
-function FavoritesPage({rentsCard} : FavoritesPageProps): JSX.Element {
-  const favoritesArray = rentsCard.filter((item) => item.isFavorite);
+function FavoritesPage(): JSX.Element {
+  const cities = useAppSelector(offersState);
+  const favoritesArray = cities.filter((item) => item.isFavorite);
   return (
     <div className="page">
       <Header isLoggedIn={false} countFavorite={favoritesArray.length} />

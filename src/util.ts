@@ -38,6 +38,7 @@ const sortByPriceRate = (a : CardType, b : CardType) => {
 };
 
 const sortObj = (sortType : string, sortArray : CardsType) => {
+
   switch (sortType) {
     case SortType.Low:
       return sortArray.sort(sortByPriceLow);
