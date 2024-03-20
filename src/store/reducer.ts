@@ -5,7 +5,7 @@ import { sortObj } from '../util';
 import { createReducer } from '@reduxjs/toolkit';
 import { citiesFill, changeCity, filterOffers,
   sortCurrentOffers, changeSortType, loadOffers, loadFavorites,
-  requireAuthorization, setError, setOffersDataLoadingStatus } from './action';
+  requireAuthorization, setError, setOffersDataLoadingStatus, changeLogin } from './action';
 
 type InitialStoreType = {
   city: string | undefined;
@@ -16,6 +16,7 @@ type InitialStoreType = {
   authorizationStatus: AuthorizationStatus;
   isOffersDataLoading: boolean;
   error: string | null;
+  login: string;
 };
 
 const initialState : InitialStoreType = {
@@ -27,6 +28,7 @@ const initialState : InitialStoreType = {
   authorizationStatus: AuthorizationStatus.Unknown,
   isOffersDataLoading: false,
   error: null,
+  login: '',
 };
 
 type SearchByName = {
@@ -67,6 +69,9 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(setOffersDataLoadingStatus, (state, action) => {
       state.isOffersDataLoading = action.payload;
+    })
+    .addCase(changeLogin, (state, action) => {
+      state.login = action.payload;
     })
     .addCase(setError, (state, action) => {
       state.error = action.payload;

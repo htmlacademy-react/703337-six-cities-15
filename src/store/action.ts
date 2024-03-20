@@ -8,6 +8,7 @@ export const sortCurrentOffers = createAction('sortCurrentOffers');
 export const changeSortType = createAction<string>('changeSortType');
 export const filterOffers = createAction('filterOffers');
 export const loadOffers = createAction<CardsType>('loadOffers');
+export const changeLogin = createAction<string>('changeLogin');
 export const loadFavorites = createAction<CardsType>('loadFavorites');
 export const requireAuthorization = createAction<AuthorizationStatus>('requireAuthorization');
 export const setError = createAction<string | null>('setError');

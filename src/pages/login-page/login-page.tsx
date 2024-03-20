@@ -1,6 +1,6 @@
 import { useRef, FormEvent } from 'react';
 import { Link } from 'react-router-dom';
-import { useAppDispatch } from '../../hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { APIRoute } from '../../const';
 import { useNavigate } from 'react-router-dom';
 import { loginAction } from '../../store/api-actions';
@@ -9,7 +9,7 @@ import Header from '../../components/header/header-component';
 function LoginPage(): JSX.Element {
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
-
+  const ttt = useAppSelector((state)=>state.authorizationStatus)
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -21,21 +21,22 @@ function LoginPage(): JSX.Element {
         password: passwordRef.current.value
       }));
     }
+    console.log (ttt)
   };
+
 
   return (
     <div className="page page--gray page--login">
-      <Header isLoggedIn={false}/>
+      <Header />
 
       <main className="page__main page__main--login">
         <div className="page__login-container container">
           <section className="login">
-            <Link to="/login">
-              <h1 className="login__title">
-                Sign in
-              </h1>
-            </Link>
-            <form className="login__form form" onSubmit={handleSubmit} action="#" method="post">
+            <h1 className="login__title">
+              Sign in
+            </h1>
+
+            <form className="login__form form" onSubmit={handleSubmit} action="/" method="post">
               <div className="login__input-wrapper form__input-wrapper">
                 <label className="visually-hidden">E-mail</label>
                 <input

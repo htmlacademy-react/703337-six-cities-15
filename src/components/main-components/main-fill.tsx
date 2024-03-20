@@ -16,9 +16,9 @@ type MainPageFillProps = {
 function MainPageFill({cityArray} : MainPageFillProps): JSX.Element {
   const [cardMouseOver, setCardMouseOver] = useState<string | undefined>('');
   const city = useAppSelector(cityNameState);
-  //const sortType = useAppSelector(currentSortTypeState);
+  
   const sortArray = useAppSelector(currentOffersState);
-
+  //console.log(sortArray)
   const handleListItemHover = (listItemCardId: string) => {
     const currentCard = cityArray.find((item) => item.id === listItemCardId)?.id;
     setCardMouseOver(currentCard);

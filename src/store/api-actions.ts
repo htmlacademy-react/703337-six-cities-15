@@ -1,6 +1,6 @@
 import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { UseSelector } from 'react-redux/es/hooks/useSelector';
+
 import { AppDispatch, State } from '../types/state';
 import { loadOffers, loadFavorites, setOffersDataLoadingStatus,
   filterOffers, requireAuthorization, setError } from './action';
@@ -36,7 +36,7 @@ export const fetchFavoriteAction = createAsyncThunk<void, undefined, {
   async (_arg, {dispatch, extra: api}) => {
     dispatch(setOffersDataLoadingStatus(true));
     const {data} = await api.get<CardsType>(APIRoute.Favorites);
-    //console.log(data);
+    console.log(data);
     dispatch(setOffersDataLoadingStatus(false));
     dispatch(loadFavorites(data));
   },
@@ -52,9 +52,10 @@ export const checkAuthAction = createAsyncThunk<void, undefined, {
     try {
       await api.get(APIRoute.Login);
       dispatch(requireAuthorization(AuthorizationStatus.Auth));
+      console.log(localStorage.getItem(AUTH_TOKEN_KEY_NAME))
     } catch {
       dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
-
+      console.log(localStorage.getItem(AUTH_TOKEN_KEY_NAME))
     }
   },
 );

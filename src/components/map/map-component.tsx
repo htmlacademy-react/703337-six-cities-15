@@ -26,9 +26,11 @@ const currentCustomIcon = new Icon({
 
 function MapComponent(props: MapProps): JSX.Element {
   const {rentsCard, selectedCard} = props;
+  
   const city = rentsCard[0].city;
   const mapRef = useRef(null);
   const map = useMap(mapRef, city);
+  
   const locationAbs = useLocation().pathname === '/';
 
   useEffect(() => {

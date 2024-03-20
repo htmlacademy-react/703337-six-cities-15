@@ -1,5 +1,8 @@
 import axios, {AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosError} from 'axios';
 import { getToken } from './token';
+import { store } from '../store';
+import { changeLogin, requireAuthorization } from '../store/action';
+import { AuthorizationStatus } from '../const';
 import { StatusCodes } from 'http-status-codes';
 import { processErrorHandle } from './process-error-handle';
 
@@ -28,7 +31,7 @@ export const createAPI = (): AxiosInstance => {
   api.interceptors.request.use(
     (config: AxiosRequestConfig) => {
       const token = getToken();
-
+      console.log(token)
       if (token && config.headers) {
         config.headers['x-token'] = token;
       }
@@ -38,7 +41,12 @@ export const createAPI = (): AxiosInstance => {
   );
 
   api.interceptors.response.use(
-    (response) => response,
+    (response) => {
+      console.log(response)
+      store.dispatch(changeLogin(response.data.email))
+      store.dispatch(requireAuthorization(AuthorizationStatus.Auth));
+      console.log(store.getState().login)
+      return response},
     (error: AxiosError<DetailMessageType>) => {
       if (error.response && shouldDisplayError(error.response)) {
         const detailMessage = (error.response.data);
