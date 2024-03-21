@@ -1,12 +1,10 @@
 import { CardsType, CardType } from '../../types/card';
 import FavoritesLocations from './favorites-location';
+import { useAppSelector } from '../../hooks/hooks';
+import { favoritesState } from '../../store/selectors';
 
-type FavoritesListProps = {
-  rentsCard: CardsType;
-}
-
-function FavoritesList({rentsCard} : FavoritesListProps): JSX.Element {
-  const favoriteArray = rentsCard.filter((item) => item.isFavorite);
+function FavoritesList(): JSX.Element {
+  const favoriteArray = useAppSelector(favoritesState);
   const groupedArrays = favoriteArray.reduce((result: CardsType[], obj : CardType) => {
     const existingArray = result.find((arr : CardsType) => arr[0].city.name === obj.city.name);
 

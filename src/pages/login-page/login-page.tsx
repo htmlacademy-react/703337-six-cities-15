@@ -1,5 +1,4 @@
 import { useRef, FormEvent } from 'react';
-import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { APIRoute } from '../../const';
 import { useNavigate } from 'react-router-dom';
@@ -9,9 +8,9 @@ import Header from '../../components/header/header-component';
 function LoginPage(): JSX.Element {
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
-  const ttt = useAppSelector((state)=>state.authorizationStatus)
+  const ttt = useAppSelector((state)=>state.authorizationStatus);
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
@@ -21,7 +20,7 @@ function LoginPage(): JSX.Element {
         password: passwordRef.current.value
       }));
     }
-    console.log (ttt)
+    console.log (ttt);
   };
 
 

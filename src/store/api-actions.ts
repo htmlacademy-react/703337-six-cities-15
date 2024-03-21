@@ -10,7 +10,8 @@ import { AuthData} from '../types/auth-data';
 import { UserData } from '../types/user-data';
 import { store } from '.';
 import { CardsType } from '../types/card';
-import { useAppSelector } from '../hooks/hooks';
+
+const AUTH_TOKEN_KEY_NAME = 'six-cities-token';
 
 export const fetchOfferAction = createAsyncThunk<void, undefined, {
   dispatch: AppDispatch;
@@ -52,10 +53,10 @@ export const checkAuthAction = createAsyncThunk<void, undefined, {
     try {
       await api.get(APIRoute.Login);
       dispatch(requireAuthorization(AuthorizationStatus.Auth));
-      console.log(localStorage.getItem(AUTH_TOKEN_KEY_NAME))
+      console.log(localStorage.getItem(AUTH_TOKEN_KEY_NAME));
     } catch {
       dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
-      console.log(localStorage.getItem(AUTH_TOKEN_KEY_NAME))
+      console.log(localStorage.getItem(AUTH_TOKEN_KEY_NAME));
     }
   },
 );
@@ -68,7 +69,7 @@ export const loginAction = createAsyncThunk<void, AuthData, {
   'user/login',
   async ({login: email, password}, {dispatch, extra: api}) => {
     const {data: {token}} = await api.post<UserData>(APIRoute.Login, {email, password});
-    console.log(data);
+    console.log(token);
     saveToken(token);
     dispatch(requireAuthorization(AuthorizationStatus.Auth));
   },

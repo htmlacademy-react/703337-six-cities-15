@@ -1,25 +1,28 @@
 import { CardsType } from '../../types/card';
 import Header from '../../components/header/header-component';
+import { favoritesState } from '../../store/selectors';
 import FavoritesList from '../../components/favorites-component/list-favorites-component';
 import { useAppSelector } from '../../hooks/hooks';
 import { offersState } from '../../store/selectors';
-
-type FavoritesPageProps = {
-  rentsCard: CardsType;
-}
+import FavoritesPageEmpty from './favorites-empty-page';
 
 function FavoritesPage(): JSX.Element {
   const cities = useAppSelector(offersState);
-  const favoritesArray = cities.filter((item) => item.isFavorite);
+  const favoritesArray = useAppSelector(favoritesState);
+  if(favoritesArray.length === 0) {
+    return (
+      <FavoritesPageEmpty />
+    );
+  }
   return (
     <div className="page">
-      <Header isLoggedIn={false} countFavorite={favoritesArray.length} />
+      <Header countFavorite={favoritesArray.length} />
 
       <main className="page__main page__main--favorites">
         <div className="page__favorites-container container">
           <section className="favorites">
             <h1 className="favorites__title">Saved listing</h1>
-            <FavoritesList rentsCard={rentsCard}/>
+            <FavoritesList rentsCard={favoritesArray}/>
 
           </section>
         </div>
