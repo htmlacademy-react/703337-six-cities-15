@@ -14,9 +14,11 @@ function useMap(mapRef: MutableRefObject<HTMLElement | null>,
   city: MapCityProps): Map | null {
   const [map, setMap] = useState<Map | null>(null);
   const isRenderedRef = useRef(false);
-
+console.log(city.name)
+console.log(isRenderedRef);
   useEffect(() => {
-    if (mapRef.current !== null && !isRenderedRef.current) {
+    if (mapRef.current !== null && !isRenderedRef.current) {//
+      console.log(isRenderedRef);
       const instance = new Map(mapRef.current, {
         center: {
           lat: city.location.latitude,

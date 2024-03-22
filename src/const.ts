@@ -33,9 +33,10 @@ export const SORT = ['Popular', 'Price: low to high', 'Price: high to low', 'Top
 
 export enum APIRoute {
   Offers = '/offers',
+  Offer = '/offers/{offerId}',
   Login = '/login',
   Favorites = '/favorite',
-  Comments = '/comments/{offerId}',
+  Comments = '/comments',
   Logout = '/logout',
 }
 

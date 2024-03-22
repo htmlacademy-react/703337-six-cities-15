@@ -18,9 +18,9 @@ function MainPageFill({cityArray} : MainPageFillProps): JSX.Element {
   const city = useAppSelector(cityNameState);
   
   const sortArray = useAppSelector(currentOffersState);
-  //console.log(sortArray)
+
   const handleListItemHover = (listItemCardId: string) => {
-    const currentCard = cityArray.find((item) => item.id === listItemCardId)?.id;
+    const currentCard = sortArray.find((item) => item.id === listItemCardId)?.id;
     setCardMouseOver(currentCard);
   };
 
@@ -32,16 +32,16 @@ function MainPageFill({cityArray} : MainPageFillProps): JSX.Element {
     <div className="cities__places-container container">
       <section className="cities__places places">
         <h2 className="visually-hidden">Places</h2>
-        <b className="places__found">{cityArray.length} places to stay in {city}</b>
+        <b className="places__found">{sortArray.length} places to stay in {city}</b>
         <SortingOptions />
         <ListOffers rentsCard={sortArray} onListItemHover={handleListItemHover}
           onListItemOut={handleListItemOut}
         />
 
-
+      {console.log(sortArray)}
       </section>
       <div className="cities__right-section">
-        <MapComponent rentsCard={cityArray} selectedCard={cardMouseOver} />
+        <MapComponent rentsCard={sortArray} selectedCard={cardMouseOver} />
       </div>
     </div>
   );

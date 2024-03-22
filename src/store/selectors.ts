@@ -5,3 +5,4 @@ export const offersState = (state : State) => state.offers;
 export const currentOffersState = (state : State) => state.currentOffers;
 export const currentSortTypeState = (state : State) => state.sortType;
 export const favoritesState = (state : State) => state.favorites;
+export const authorizationStatusState = (state : State) => state.authorizationStatus;

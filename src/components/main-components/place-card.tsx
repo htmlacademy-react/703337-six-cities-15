@@ -1,9 +1,12 @@
 import { CardType } from '../../types/card';
+import { getUpperCaseFirstLetter } from '../../util';
 import { Link } from 'react-router-dom';
 import { ratingCard } from '../../const';
 import { MouseEvent } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import cn from 'classnames';
+import { store } from '../../store';
+import { fetchOfferAction } from '../../store/api-actions';
 
 type PlaceCardProps = {
   cardObj: CardType;
@@ -21,10 +24,14 @@ function PlaceCard({cardObj, onMouseOver, onMouseOut} : PlaceCardProps){
     onMouseOver(id);
   };
 
+  const handleListItemClick = () => {
+    store.dispatch(fetchOfferAction(id));
+  };
+
   return (
 
     <article className={cn('place-card', {'near-places__card': !locationAbs, 'cities__card': locationAbs})}
-      data-id={id} onMouseOver={handleListItemHover} onClick={() => navigate(`/offer/${id}`)} onMouseOut={onMouseOut}
+      data-id={id} onMouseOver={handleListItemHover} onClick={() => {navigate(`/offer/${id}`), handleListItemClick()}} onMouseOut={onMouseOut}
     >
 
       {isPremium ? <div className="place-card__mark"><span>Premium</span></div> : ''}
@@ -60,7 +67,7 @@ function PlaceCard({cardObj, onMouseOver, onMouseOut} : PlaceCardProps){
         <h2 className="place-card__name">
           <Link to={`/offer/${id}`}>{title}</Link>
         </h2>
-        <p className="place-card__type">{type}</p>
+        <p className="place-card__type">{getUpperCaseFirstLetter(type)}</p>
       </div>
 
     </article>

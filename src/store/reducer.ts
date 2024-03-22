@@ -1,11 +1,11 @@
-import { CardsType } from '../types/card';
+import { CardsType, CardType, OfferType } from '../types/card';
 import { CITIES, AuthorizationStatus } from '../const';
 //import { arrayOffers } from '../mocks/offers';
 import { sortObj } from '../util';
 import { createReducer } from '@reduxjs/toolkit';
 import { citiesFill, changeCity, filterOffers,
   sortCurrentOffers, changeSortType, loadOffers, loadFavorites,
-  requireAuthorization, setError, setOffersDataLoadingStatus, changeLogin } from './action';
+  requireAuthorization, setError, setOffersDataLoadingStatus, changeLogin, loadOffer, changeStatusFavorite } from './action';
 
 type InitialStoreType = {
   city: string | undefined;
@@ -17,6 +17,7 @@ type InitialStoreType = {
   isOffersDataLoading: boolean;
   error: string | null;
   login: string;
+  offer: OfferType | null;
 };
 
 const initialState : InitialStoreType = {
@@ -29,6 +30,7 @@ const initialState : InitialStoreType = {
   isOffersDataLoading: false,
   error: null,
   login: '',
+  offer: null,
 };
 
 type SearchByName = {
@@ -60,6 +62,12 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(loadOffers, (state, action) => {
       state.offers = action.payload;
+    })
+    .addCase(loadOffer, (state, action) => {
+      state.offer = action.payload;
+    })
+    .addCase(changeStatusFavorite, (state, action) => {
+      state.offer!.currentOffer = action.payload;
     })
     .addCase(loadFavorites, (state, action) => {
       state.favorites = action.payload;

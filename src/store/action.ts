@@ -1,5 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
-import { CardsType } from '../types/card';
+import { CardsType, CardType, OfferType } from '../types/card';
 import { AuthorizationStatus } from '../const';
 
 export const citiesFill = createAction<CardsType>('fillCities');
@@ -8,6 +8,8 @@ export const sortCurrentOffers = createAction('sortCurrentOffers');
 export const changeSortType = createAction<string>('changeSortType');
 export const filterOffers = createAction('filterOffers');
 export const loadOffers = createAction<CardsType>('loadOffers');
+export const loadOffer = createAction<OfferType>('loadOffer');
+export const changeStatusFavorite = createAction<CardType>('changeStatusFavorite');
 export const changeLogin = createAction<string>('changeLogin');
 export const loadFavorites = createAction<CardsType>('loadFavorites');
 export const requireAuthorization = createAction<AuthorizationStatus>('requireAuthorization');

@@ -1,4 +1,4 @@
-import axios, {AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosError} from 'axios';
+import axios, {AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosError, InternalAxiosRequestConfig} from 'axios';
 import { getToken } from './token';
 import { store } from '../store';
 import { changeLogin, requireAuthorization } from '../store/action';
@@ -29,7 +29,7 @@ export const createAPI = (): AxiosInstance => {
   });
 
   api.interceptors.request.use(
-    (config: AxiosRequestConfig) => {
+    (config: InternalAxiosRequestConfig) => {
       const token = getToken();
       //console.log(token)
       if (token && config.headers) {
@@ -43,8 +43,7 @@ export const createAPI = (): AxiosInstance => {
   api.interceptors.response.use(
     (response) => {
       console.log(response);
-      store.dispatch(changeLogin(response.data.email));
-      store.dispatch(requireAuthorization(AuthorizationStatus.Auth));
+      //store.dispatch(changeLogin(response.data.emai));
       console.log(store.getState().login);
       return response},
     (error: AxiosError<DetailMessageType>) => {

@@ -28,6 +28,7 @@ function MapComponent(props: MapProps): JSX.Element {
   const {rentsCard, selectedCard} = props;
   
   const city = rentsCard[0].city;
+  console.log(city)
   const mapRef = useRef(null);
   const map = useMap(mapRef, city);
   

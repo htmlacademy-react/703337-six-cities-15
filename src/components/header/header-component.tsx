@@ -4,14 +4,10 @@ import { AuthorizationStatus } from '../../const';
 import NavComponent from './nav-component';
 import { useAppSelector } from '../../hooks/hooks';
 
-type HeaderProps = {
-  countFavorite?: number;
-}
-
-const getClassForNavLink = ({isActive} : IsActiveType) : string =>
+const getClassForNavLink = ({isActive} ) : string =>
   isActive ? 'visually-hidden' : '';
 
-function Header({ countFavorite} : HeaderProps): JSX.Element {
+function Header(): JSX.Element {
   const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
   if (authorizationStatus === AuthorizationStatus.NoAuth || authorizationStatus === AuthorizationStatus.Unknown) {
     return (
@@ -42,7 +38,7 @@ function Header({ countFavorite} : HeaderProps): JSX.Element {
       <div className="container">
         <div className="header__wrapper">
           <Logo />
-          <NavComponent countFavorite={countFavorite}/>
+          <NavComponent />
         </div>
       </div>
     </header>

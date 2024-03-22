@@ -1,12 +1,11 @@
 import { Link } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
 import { logoutAction } from '../../store/api-actions';
+import { favoritesState } from '../../store/selectors';
 
-type NavProps = {
-  countFavorite: number | undefined;
-}
-function NavComponent({countFavorite} : NavProps): JSX.Element {
+function NavComponent(): JSX.Element {
   const loginState = useAppSelector((state) => state.login);
+  const favoritesArray = useAppSelector(favoritesState);
   const dispatch = useAppDispatch();
 
   const handleClickSignOut = () => {
@@ -21,7 +20,7 @@ function NavComponent({countFavorite} : NavProps): JSX.Element {
             <div className="header__avatar-wrapper user__avatar-wrapper">
             </div>
             <span className="header__user-name user__name">{loginState}</span>
-            <span className="header__favorite-count">{countFavorite}
+            <span className="header__favorite-count">{favoritesArray.length}
             </span>
           </Link>
         </li>

@@ -6,9 +6,9 @@ import ErrorMessage from './components/error-message/error-message';
 import SuccsesMessage from './components/succses-mesage/succses-message';
 import { store } from './store';
 
-import { fetchOfferAction, fetchFavoriteAction, checkAuthAction } from './store/api-actions';
+import { fetchOffersAction, fetchFavoriteAction, checkAuthAction } from './store/api-actions';
 
-store.dispatch(fetchOfferAction());
+store.dispatch(fetchOffersAction());
 store.dispatch(fetchFavoriteAction());
 async function ttt (){
   await store.dispatch(checkAuthAction());

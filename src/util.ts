@@ -54,4 +54,7 @@ const sortObj = (sortType : string, sortArray : CardsType) => {
   }
 };
 
-export {sortByPriceHigh, sortByPriceLow, sortByPriceRate, sortObj};
+const getUpperCaseFirstLetter = (str : string) => [...str].map((char, index) =>
+  index === 0 ? char.toUpperCase() : char).join('');
+
+export {sortByPriceHigh, sortByPriceLow, sortByPriceRate, sortObj, getUpperCaseFirstLetter};

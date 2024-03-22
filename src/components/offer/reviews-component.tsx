@@ -1,12 +1,16 @@
 import CommentForm from '../comments/comment-form';
 import { CommentsType } from '../../types/card';
 import { ratingCard } from '../../const';
+import { useAppSelector } from '../../hooks/hooks';
+import { authorizationStatusState } from '../../store/selectors';
+import { AuthorizationStatus } from '../../const';
 
 type ReviewsProps = {
   commentList: CommentsType;
 }
 
 function Reviews({commentList} : ReviewsProps): JSX.Element {
+  const authorizationStatus = useAppSelector(authorizationStatusState);
   const list = commentList.map((item) =>{
     const {id, date, user, comment, rating} = item;
     return (
@@ -41,7 +45,7 @@ function Reviews({commentList} : ReviewsProps): JSX.Element {
       <ul className="reviews__list">
         {list}
       </ul>
-      <CommentForm />
+      {authorizationStatus === AuthorizationStatus.Auth ? <CommentForm /> : ''}
 
     </section>
   );

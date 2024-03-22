@@ -1,25 +1,33 @@
-import { arrayComment } from '../../mocks/comment';
+import { getUpperCaseFirstLetter } from '../../util';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { AuthorizationStatus } from '../../const';
 import Reviews from '../../components/offer/reviews-component';
 import { useParams } from 'react-router-dom';
-import { useState } from 'react';
 import { ratingCard } from '../../const';
 import cn from 'classnames';
 import Header from '../../components/header/header-component';
 import MapComponent from '../../components/map/map-component';
 import ListOffers from '../../components/main-components/list-offers';
-import { currentOffersState } from '../../store/selectors';
-import { useAppSelector } from '../../hooks/hooks';
+import { currentOffersState, authorizationStatusState } from '../../store/selectors';
+import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
+import { statusFavoriteOfferAction } from '../../store/api-actions';
 
 function OfferPage(): JSX.Element {
-  const params = useParams();
-
+  //const params = useParams();
+  //const offerId = params.id;
+  const dispatch = useAppDispatch();
   const [cardMouseOver, setCardMouseOver] = useState<string | undefined>('');
-  const offerId = params.id;
-  const cities = useAppSelector(currentOffersState);
-  const offerObj = cities.find((item) => item.id === offerId);
-  const favoritesArray = cities.filter((item) => item.isFavorite);
+  const [favoriteStatus, setFavoriteStatus] = useState<boolean>(false);  
+  const navigate = useNavigate();
+  const isAuthorization = useAppSelector(authorizationStatusState) === AuthorizationStatus.Auth;
 
-  const {images, isPremium, isFavorite, title, rating, bedrooms, maxAdults, type, price, goods, host, description} = offerObj!;
+  const cities = useAppSelector(currentOffersState);
+  const offerObj = useAppSelector((state) => state.offer);
+
+  const {currentOffer, nearby, comments} = offerObj;
+
+  const {id, images, isPremium, isFavorite, title, rating, bedrooms, maxAdults, type, price, goods, host, description} = currentOffer!;
 
   const handleListItemHover = (listItemCardId: string) => {
     const currentCard = cities.find((item) => item.id === listItemCardId)?.id;
@@ -30,9 +38,21 @@ function OfferPage(): JSX.Element {
     setCardMouseOver(undefined);
   };
 
+  const handleFavoriteClick = () => {
+    if(!isAuthorization){
+      navigate('/login');
+    } else{
+      setFavoriteStatus((prevStatus) => !prevStatus);
+      dispatch(statusFavoriteOfferAction({
+        id: id,
+        favoriteStatus: favoriteStatus ? 1 : 0,
+      }));
+    }
+  };
+
   return (
     <div className="page">
-      <Header countFavorite={favoritesArray.length}/>
+      <Header countFavorite={cities.length}/>
 
       <main className="page__main page__main--offer">
         <section className="offer">
@@ -56,7 +76,9 @@ function OfferPage(): JSX.Element {
                 <h1 className="offer__name">
                   {title}
                 </h1>
-                <button className={cn('offer__bookmark-button button', {'offer__bookmark-button--active': isFavorite})} type="button">
+                <button className={cn('offer__bookmark-button button', {'offer__bookmark-button--active': isFavorite})} type="button"
+                  onClick={handleFavoriteClick}
+                >
                   <svg className="offer__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>
                   </svg>
@@ -68,17 +90,17 @@ function OfferPage(): JSX.Element {
                   <span style={{width: ratingCard(rating)}}></span>
                   <span className="visually-hidden">Rating</span>
                 </div>
-                <span className="offer__rating-value rating__value">4.8</span>
+                <span className="offer__rating-value rating__value">{rating}</span>
               </div>
               <ul className="offer__features">
                 <li className="offer__feature offer__feature--entire">
-                  {type}
+                  {getUpperCaseFirstLetter(type)}
                 </li>
                 <li className="offer__feature offer__feature--bedrooms">
-                  {bedrooms}
+                  {bedrooms} {bedrooms > 1 ? 'Bedrooms' : 'Bedroom'}
                 </li>
                 <li className="offer__feature offer__feature--adults">
-                  {maxAdults}
+                Max {maxAdults} {maxAdults > 1 ? 'adults' : 'adult'}
                 </li>
               </ul>
               <div className="offer__price">
@@ -121,16 +143,16 @@ function OfferPage(): JSX.Element {
                   </p>
                 </div>
               </div>
-              <Reviews commentList={arrayComment} />
+              <Reviews commentList={comments} />
 
             </div>
           </div>
-          <MapComponent rentsCard={cities} selectedCard={cardMouseOver} />
+          <MapComponent rentsCard={nearby} selectedCard={cardMouseOver} />
         </section>
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
-            <ListOffers rentsCard={cities} onListItemHover={handleListItemHover}
+            <ListOffers rentsCard={nearby} onListItemHover={handleListItemHover}
               onListItemOut={handleListItemOut}
             />
 
