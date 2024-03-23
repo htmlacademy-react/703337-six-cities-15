@@ -1,10 +1,15 @@
 import Logo from '../logo/logo';
-import { Link, NavLink } from 'react-router-dom';
+import { NavLink} from 'react-router-dom';
 import { AuthorizationStatus } from '../../const';
 import NavComponent from './nav-component';
 import { useAppSelector } from '../../hooks/hooks';
 
-const getClassForNavLink = ({isActive} ) : string =>
+type NavLinkPropsCust = {
+  isActive: boolean;
+  isPending: boolean;
+}
+
+const getClassForNavLink = ({isActive} : NavLinkPropsCust) : string =>
   isActive ? 'visually-hidden' : '';
 
 function Header(): JSX.Element {

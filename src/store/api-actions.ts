@@ -45,12 +45,13 @@ export const fetchOfferAction = createAsyncThunk<void, string, {
     const nearbyOffer = (await api.get<CardsType>(`${APIRoute.Offers}/${idOffer}/nearby`)).data;
     const commentsOffer = (await api.get<CommentsType>(`${APIRoute.Comments}/${idOffer}`)).data;
     dispatch(setOffersDataLoadingStatus(false));
-    console.log(nearbyOffer);
-    console.log(commentsOffer);
+
     offer.currentOffer = data;
     offer.nearby = nearbyOffer;
     offer.comments = commentsOffer;
     dispatch(loadOffer(offer));
+    
+    alert('QQQQQ!!!!!')
   },
 );
 
@@ -63,7 +64,7 @@ export const statusFavoriteOfferAction = createAsyncThunk<void, FavoriteStatusDa
   async ({id, favoriteStatus}, {dispatch, extra: api}) => {
     const {data} = await api.post<CardType>(`${APIRoute.Favorites}/${id}/${favoriteStatus}`, {id, favoriteStatus});
     console.log(data);
-    //const {data} = await api.post<UserData>(APIRoute.Login, {email, password});
+
     dispatch(changeStatusFavorite(data));
   },
 );
@@ -77,7 +78,7 @@ export const fetchFavoriteAction = createAsyncThunk<void, undefined, {
   async (_arg, {dispatch, extra: api}) => {
     dispatch(setOffersDataLoadingStatus(true));
     const {data} = await api.get<CardsType>(APIRoute.Favorites);
-    console.log(data);
+    //console.log(data);
     dispatch(setOffersDataLoadingStatus(false));
     dispatch(loadFavorites(data));
   },
@@ -91,12 +92,12 @@ export const checkAuthAction = createAsyncThunk<void, undefined, {
   'user/checkAuth',
   async (_arg, {dispatch, extra: api}) => {
     try {
-      await api.get(APIRoute.Login);
+      const {data} = await api.get<UserData>(APIRoute.Login);
       dispatch(requireAuthorization(AuthorizationStatus.Auth));
-      console.log(localStorage.getItem(AUTH_TOKEN_KEY_NAME));
+      dispatch(changeLogin(data.email));
     } catch {
       dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
-      console.log(localStorage.getItem(AUTH_TOKEN_KEY_NAME));
+
     }
   },
 );
@@ -108,7 +109,7 @@ export const loginAction = createAsyncThunk<void, AuthData, {
 }>(
   'user/login',
   async ({login: email, password}, {dispatch, extra: api}) => {
-    const {data, data: {token}} = await api.post<UserData>(APIRoute.Login, {email, password});    
+    const {data, data: {token}} = await api.post<UserData>(APIRoute.Login, {email, password});
     dispatch(changeLogin(data.email));
     console.log(token);
     console.log(data);

@@ -1,4 +1,4 @@
-import { CardsType, CardType, OfferType } from '../types/card';
+import { CardsType, OfferType } from '../types/card';
 import { CITIES, AuthorizationStatus } from '../const';
 //import { arrayOffers } from '../mocks/offers';
 import { sortObj } from '../util';

@@ -19,7 +19,7 @@ function MainPage(): JSX.Element {
         <Cities cities={CITIES} />
 
         <div className="cities">
-          {cityArray.length ? <MainPageFill cityArray={cityArray}/> : <MainPageEmpty />}
+          {cityArray.length ? <MainPageFill /> : <MainPageEmpty />}
         </div>
       </main>
     </div>

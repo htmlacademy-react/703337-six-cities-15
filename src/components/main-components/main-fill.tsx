@@ -13,10 +13,10 @@ type MainPageFillProps = {
   cityArray: CardsType;
 }
 
-function MainPageFill({cityArray} : MainPageFillProps): JSX.Element {
+function MainPageFill(): JSX.Element {
   const [cardMouseOver, setCardMouseOver] = useState<string | undefined>('');
   const city = useAppSelector(cityNameState);
-  
+
   const sortArray = useAppSelector(currentOffersState);
 
   const handleListItemHover = (listItemCardId: string) => {
@@ -38,7 +38,7 @@ function MainPageFill({cityArray} : MainPageFillProps): JSX.Element {
           onListItemOut={handleListItemOut}
         />
 
-      {console.log(sortArray)}
+
       </section>
       <div className="cities__right-section">
         <MapComponent rentsCard={sortArray} selectedCard={cardMouseOver} />

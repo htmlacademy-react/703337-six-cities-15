@@ -6,12 +6,12 @@ import { authorizationStatusState } from '../../store/selectors';
 import { AuthorizationStatus } from '../../const';
 
 type ReviewsProps = {
-  commentList: CommentsType;
+  commentList: CommentsType | undefined;
 }
 
 function Reviews({commentList} : ReviewsProps): JSX.Element {
   const authorizationStatus = useAppSelector(authorizationStatusState);
-  const list = commentList.map((item) =>{
+  const list = commentList?.map((item) =>{
     const {id, date, user, comment, rating} = item;
     return (
       <li key={`${id}-reviews`} className="reviews__item">
@@ -41,7 +41,7 @@ function Reviews({commentList} : ReviewsProps): JSX.Element {
 
   return(
     <section className="offer__reviews reviews">
-      <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{commentList.length}</span></h2>
+      <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{commentList?.length}</span></h2>
       <ul className="reviews__list">
         {list}
       </ul>

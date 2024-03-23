@@ -1,36 +1,42 @@
 import { getUpperCaseFirstLetter } from '../../util';
-import { useNavigate } from 'react-router-dom';
+import { CardType, CardsType, CommentsType } from '../../types/card';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useState } from 'react';
 import { AuthorizationStatus } from '../../const';
 import Reviews from '../../components/offer/reviews-component';
-import { useParams } from 'react-router-dom';
 import { ratingCard } from '../../const';
 import cn from 'classnames';
 import Header from '../../components/header/header-component';
 import MapComponent from '../../components/map/map-component';
 import ListOffers from '../../components/main-components/list-offers';
-import { currentOffersState, authorizationStatusState } from '../../store/selectors';
+import { authorizationStatusState } from '../../store/selectors';
 import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
 import { statusFavoriteOfferAction } from '../../store/api-actions';
+import { store } from '../../store';
+import { fetchOfferAction } from '../../store/api-actions';
+
 
 function OfferPage(): JSX.Element {
-  //const params = useParams();
-  //const offerId = params.id;
+  const param = useParams().id as string;
+  
+
   const dispatch = useAppDispatch();
+  dispatch(fetchOfferAction(param));
   const [cardMouseOver, setCardMouseOver] = useState<string | undefined>('');
-  const [favoriteStatus, setFavoriteStatus] = useState<boolean>(false);  
+  const [favoriteStatus, setFavoriteStatus] = useState<boolean>(false);
   const navigate = useNavigate();
   const isAuthorization = useAppSelector(authorizationStatusState) === AuthorizationStatus.Auth;
 
-  const cities = useAppSelector(currentOffersState);
   const offerObj = useAppSelector((state) => state.offer);
-
-  const {currentOffer, nearby, comments} = offerObj;
+  console.log(offerObj)
+  const currentOffer : CardType | null | undefined = offerObj?.currentOffer;
+  const nearbyOffers : CardsType | undefined = offerObj?.nearby;
+  const comments : CommentsType | undefined = offerObj?.comments;
 
   const {id, images, isPremium, isFavorite, title, rating, bedrooms, maxAdults, type, price, goods, host, description} = currentOffer!;
 
   const handleListItemHover = (listItemCardId: string) => {
-    const currentCard = cities.find((item) => item.id === listItemCardId)?.id;
+    const currentCard = nearbyOffers?.find((item) => item?.id === listItemCardId)?.id;
     setCardMouseOver(currentCard);
   };
 
@@ -52,7 +58,7 @@ function OfferPage(): JSX.Element {
 
   return (
     <div className="page">
-      <Header countFavorite={cities.length}/>
+      <Header />
 
       <main className="page__main page__main--offer">
         <section className="offer">
@@ -147,12 +153,12 @@ function OfferPage(): JSX.Element {
 
             </div>
           </div>
-          <MapComponent rentsCard={nearby} selectedCard={cardMouseOver} />
+          <MapComponent rentsCard={nearbyOffers} selectedCard={cardMouseOver} />
         </section>
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
-            <ListOffers rentsCard={nearby} onListItemHover={handleListItemHover}
+            <ListOffers rentsCard={nearbyOffers} onListItemHover={handleListItemHover}
               onListItemOut={handleListItemOut}
             />
 

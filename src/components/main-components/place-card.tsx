@@ -31,7 +31,10 @@ function PlaceCard({cardObj, onMouseOver, onMouseOut} : PlaceCardProps){
   return (
 
     <article className={cn('place-card', {'near-places__card': !locationAbs, 'cities__card': locationAbs})}
-      data-id={id} onMouseOver={handleListItemHover} onClick={() => {navigate(`/offer/${id}`), handleListItemClick()}} onMouseOut={onMouseOut}
+      data-id={id} onMouseOver={handleListItemHover} onClick={() => {
+        navigate(`/offer/${id}`);
+        //handleListItemClick();
+      }} onMouseOut={onMouseOut}
     >
 
       {isPremium ? <div className="place-card__mark"><span>Premium</span></div> : ''}

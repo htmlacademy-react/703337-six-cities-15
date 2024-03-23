@@ -1,7 +1,5 @@
 import { useRef, FormEvent } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-import { APIRoute } from '../../const';
-import { useNavigate } from 'react-router-dom';
 import { loginAction } from '../../store/api-actions';
 import Header from '../../components/header/header-component';
 

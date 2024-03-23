@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 import cn from 'classnames';
 
 type ListOffersProps = {
-  rentsCard: CardsType;
+  rentsCard: CardsType | undefined;
   onListItemHover: (listItemCardId: string) => void;
   onListItemOut: () => void;
 }
@@ -14,8 +14,8 @@ function ListOffers({ rentsCard, onListItemHover, onListItemOut}: ListOffersProp
 
   return (
     <div className={cn('places__list', {'cities__places-list tabs__content': location, 'near-places__list': !location})}>
-      {rentsCard.map((item) => (
-        <PlaceCard key={item.id} cardObj={item} onMouseOver={onListItemHover}
+      {rentsCard?.map((item) => (
+        <PlaceCard key={item?.id} cardObj={item} onMouseOver={onListItemHover}
           onMouseOut={onListItemOut}
         />))}
     </div>

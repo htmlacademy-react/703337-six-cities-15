@@ -12,8 +12,8 @@ store.dispatch(fetchOffersAction());
 store.dispatch(fetchFavoriteAction());
 async function ttt (){
   await store.dispatch(checkAuthAction());
-  console.log(store.getState().authorizationStatus);
-  console.log(store.getState().error);
+  // console.log(store.getState().authorizationStatus);
+  // console.log(store.getState().error);
 
 }
 ttt();
