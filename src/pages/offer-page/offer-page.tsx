@@ -1,31 +1,52 @@
+import { getUpperCaseFirstLetter } from '../../util';
+import { CardType, CardsType, CommentsType } from '../../types/card';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useState, useEffect} from 'react';
 
-import { CardsType } from '../../types/card';
-import { arrayComment } from '../../mocks/comment';
+import { fetchOfferAction } from '../../store/api-actions';
+
+import LoadingScreen from '../loading-screen/loading-screen';
+import { AuthorizationStatus } from '../../const';
 import Reviews from '../../components/offer/reviews-component';
-import { useParams } from 'react-router-dom';
-import { useState } from 'react';
 import { ratingCard } from '../../const';
 import cn from 'classnames';
 import Header from '../../components/header/header-component';
 import MapComponent from '../../components/map/map-component';
 import ListOffers from '../../components/main-components/list-offers';
+import { authorizationStatusState, favoritesState } from '../../store/selectors';
+import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
+import { statusFavoriteOfferAction } from '../../store/api-actions';
 
-type OfferPageProps = {
-  rentsCard: CardsType;
-}
+function OfferPage(): JSX.Element {
+  const param = useParams().id as string;
+  const favoritesArray = useAppSelector(favoritesState);
+  const initialCount = favoritesArray.length;
 
-function OfferPage({rentsCard} : OfferPageProps): JSX.Element {
-  const params = useParams();
-
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const isAuthorization = useAppSelector(authorizationStatusState) === AuthorizationStatus.Auth;
+  const offerObj = useAppSelector((state) => state.offer);
+  //const [favoriteStatus, setFavoriteStatus] = useState<boolean>(false);
   const [cardMouseOver, setCardMouseOver] = useState<string | undefined>('');
-  const offerId = params.id;
-  const offerObj = rentsCard.find((item) => item.id === offerId);
-  const favoritesArray = rentsCard.filter((item) => item.isFavorite);
+  const [currentFavorites, setCurrentFavorites] = useState(initialCount);
 
-  const {images, isPremium, isFavorite, title, rating, bedrooms, maxAdults, type, price, goods, host, description} = offerObj!;
+  useEffect(() => {
+    dispatch(fetchOfferAction(param));
+  }, [dispatch, param]);
+
+
+  if(offerObj === null){
+    return (<div style={{textAlign: 'center'}}>{<LoadingScreen />}<p>Загружаем предложение</p></div>);
+  }
+
+  const currentOffer : CardType | null | undefined = offerObj?.currentOffer;
+  const nearbyOffers : CardsType | undefined = offerObj?.nearby;
+  const comments : CommentsType | undefined = offerObj?.comments;
+  console.log(comments);
+  const {id, images, isPremium, isFavorite, title, rating, bedrooms, maxAdults, type, price, goods, host, description} = currentOffer!;
 
   const handleListItemHover = (listItemCardId: string) => {
-    const currentCard = rentsCard.find((item) => item.id === listItemCardId)?.id;
+    const currentCard = nearbyOffers?.find((item) => item?.id === listItemCardId)?.id;
     setCardMouseOver(currentCard);
   };
 
@@ -33,9 +54,21 @@ function OfferPage({rentsCard} : OfferPageProps): JSX.Element {
     setCardMouseOver(undefined);
   };
 
+  const handleFavoriteClick = () => {
+    if(!isAuthorization){
+      navigate('/login');
+    } else{
+      dispatch(statusFavoriteOfferAction({
+        id: id,
+        favoriteStatus: isFavorite ? 0 : 1,
+      }));
+      setCurrentFavorites(isFavorite ? currentFavorites - 1 : currentFavorites + 1);
+    }
+  };
+
   return (
     <div className="page">
-      <Header isLoggedIn={false} countFavorite={favoritesArray.length}/>
+      <Header favorites={currentFavorites} />
 
       <main className="page__main page__main--offer">
         <section className="offer">
@@ -59,7 +92,9 @@ function OfferPage({rentsCard} : OfferPageProps): JSX.Element {
                 <h1 className="offer__name">
                   {title}
                 </h1>
-                <button className={cn('offer__bookmark-button button', {'offer__bookmark-button--active': isFavorite})} type="button">
+                <button className={cn('offer__bookmark-button button', {'offer__bookmark-button--active': isFavorite})} type="button"
+                  onClick={handleFavoriteClick}
+                >
                   <svg className="offer__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>
                   </svg>
@@ -71,17 +106,17 @@ function OfferPage({rentsCard} : OfferPageProps): JSX.Element {
                   <span style={{width: ratingCard(rating)}}></span>
                   <span className="visually-hidden">Rating</span>
                 </div>
-                <span className="offer__rating-value rating__value">4.8</span>
+                <span className="offer__rating-value rating__value">{rating}</span>
               </div>
               <ul className="offer__features">
                 <li className="offer__feature offer__feature--entire">
-                  {type}
+                  {getUpperCaseFirstLetter(type)}
                 </li>
                 <li className="offer__feature offer__feature--bedrooms">
-                  {bedrooms}
+                  {bedrooms} {bedrooms > 1 ? 'Bedrooms' : 'Bedroom'}
                 </li>
                 <li className="offer__feature offer__feature--adults">
-                  {maxAdults}
+                Max {maxAdults} {maxAdults > 1 ? 'adults' : 'adult'}
                 </li>
               </ul>
               <div className="offer__price">
@@ -124,16 +159,16 @@ function OfferPage({rentsCard} : OfferPageProps): JSX.Element {
                   </p>
                 </div>
               </div>
-              <Reviews commentList={arrayComment} />
+              <Reviews commentList={comments} />
 
             </div>
           </div>
-          <MapComponent rentsCard={rentsCard} selectedCard={cardMouseOver} />
+          <MapComponent rentsCard={nearbyOffers} selectedCard={cardMouseOver} />
         </section>
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
-            <ListOffers rentsCard={rentsCard} onListItemHover={handleListItemHover}
+            <ListOffers rentsCard={nearbyOffers} onListItemHover={handleListItemHover}
               onListItemOut={handleListItemOut}
             />
 

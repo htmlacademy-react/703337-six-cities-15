@@ -2,13 +2,7 @@ import { useState, FormEvent, ChangeEvent } from 'react';
 
 function CommentForm(): JSX.Element {
   const[formData, setFormData] = useState({review: '', checked: ''});
-  // const initialRating = {
-  //   5: false,
-  //   4: false,
-  //   3: false,
-  //   2: false,
-  //   1: false,
-  // };
+
   const [checkedRating, setCheckedRating] = useState('');
 
   const handleFieldChange = ({target}: ChangeEvent<HTMLTextAreaElement>) => {
@@ -41,7 +35,7 @@ function CommentForm(): JSX.Element {
         {[5, 4, 3, 2, 1].map((item) =>
           (
             <>
-              <input key={`${item}-rating`} checked={`${item}` === checkedRating} onChange={handleChangeRating} className="form__rating-input visually-hidden" name="rating" value={item} id={`${item}-stars`} type="radio" />
+              <input key={`${item}star-rating`} checked={`${item}` === checkedRating} onChange={handleChangeRating} className="form__rating-input visually-hidden" name="rating" value={item} id={`${item}-stars`} type="radio" />
               <label htmlFor={`${item}-stars`} className="reviews__rating-label form__rating-label" title="perfect">
 
                 <svg className="form__star-image" width="37" height="33">

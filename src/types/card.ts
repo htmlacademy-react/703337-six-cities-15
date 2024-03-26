@@ -44,5 +44,11 @@ comment: string;
 rating: number;
 }
 
+export type OfferType = {
+currentOffer: CardType | null;
+nearby: CardsType;
+comments: CommentsType;
+}
+
 export type CardsType = CardType[] ;
 export type CommentsType = CommentType[];

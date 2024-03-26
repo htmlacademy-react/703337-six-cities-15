@@ -1,6 +1,6 @@
 import {Route, BrowserRouter, Routes} from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
-import { AppRoute, AuthorizationStatus } from '../../const';
+import { AppRoute } from '../../const';
 import MainPage from '../../pages/main-page/main-page';
 import NotFoundPage from '../../pages/not-found-page/not-found-page';
 import LoginPage from '../../pages/login-page/login-page';
@@ -8,15 +8,27 @@ import FavoritesPage from '../../pages/favorites-page/favorites-page';
 import OfferPage from '../../pages/offer-page/offer-page';
 import PrivateRoute from '../private-route/private-route';
 import ScrollToTop from '../scroll-to-top/scroll-to-top';
+import LoadingScreen from '../../pages/loading-screen/loading-screen';
 import LoginRoute from '../private-route/login-route';
-import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-import { citiesFill } from '../../store/action';
-import { arrayOffers } from '../../mocks/offers';
+import { useAppSelector } from '../../hooks/hooks';
+import ErrorLoad from '../error-message/error-load';
+import { AuthorizationStatus } from '../../const';
+
 
 function App(): JSX.Element {
-  const dispatch = useAppDispatch();
-  dispatch(citiesFill(arrayOffers));
-  const offers = useAppSelector((state) => state.offers);
+  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
+  const isFetchError = useAppSelector((state) => state.isFetchError);
+
+  if (authorizationStatus === AuthorizationStatus.Unknown || isOffersDataLoading) {
+    return (
+      <LoadingScreen />
+    );
+  }
+
+  if(isFetchError){
+    return <div><ErrorLoad />Это App</div>;
+  }
 
   return (
 
@@ -26,12 +38,12 @@ function App(): JSX.Element {
         <Routes>
           <Route
             path={AppRoute.Root}
-            element={<MainPage rentsCard = {offers} />}
+            element={<MainPage />}
           />
           <Route
             path={AppRoute.Login}
             element={
-              <LoginRoute authorizationStatus={AuthorizationStatus.NoAuth}>
+              <LoginRoute authorizationStatus={authorizationStatus}>
                 <LoginPage />
               </LoginRoute>
             }
@@ -39,19 +51,20 @@ function App(): JSX.Element {
           <Route
             path={AppRoute.Favorites}
             element={
-              <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}>
-                <FavoritesPage rentsCard = {offers}/>
+              <PrivateRoute authorizationStatus={authorizationStatus}>
+                <FavoritesPage />
               </PrivateRoute>
             }
           />
           <Route
             path={AppRoute.Offer}
-            element={<OfferPage rentsCard = {offers}/>}
+            element={<OfferPage />}
           />
           <Route
             path="*"
             element={<NotFoundPage />}
           />
+
         </Routes>
       </BrowserRouter>
     </HelmetProvider>
