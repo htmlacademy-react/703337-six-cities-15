@@ -1,19 +1,35 @@
 import Logo from '../logo/logo';
+import { useEffect } from 'react';
 import { NavLink} from 'react-router-dom';
 import { AuthorizationStatus } from '../../const';
 import NavComponent from './nav-component';
-import { useAppSelector } from '../../hooks/hooks';
+import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
+import { favoritesState, authorizationStatusState } from '../../store/selectors';
+import { fetchFavoriteAction } from '../../store/api-actions';
 
 type NavLinkPropsCust = {
   isActive: boolean;
   isPending: boolean;
 }
 
+type HeaderComponentProps = {
+  favorites?: number;
+}
+
 const getClassForNavLink = ({isActive} : NavLinkPropsCust) : string =>
   isActive ? 'visually-hidden' : '';
 
-function Header(): JSX.Element {
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+function Header({favorites} : HeaderComponentProps): JSX.Element {
+  const authorizationStatus = useAppSelector(authorizationStatusState);
+  const favoritesArray = useAppSelector(favoritesState);
+  const dispatch = useAppDispatch();
+
+  // useEffect(() => {
+  //   if(authorizationStatus === AuthorizationStatus.Auth){
+  //     dispatch(fetchFavoriteAction());
+  //   }
+  // }, [authorizationStatus]);
+
   if (authorizationStatus === AuthorizationStatus.NoAuth || authorizationStatus === AuthorizationStatus.Unknown) {
     return (
       <header className="header">
@@ -43,11 +59,11 @@ function Header(): JSX.Element {
       <div className="container">
         <div className="header__wrapper">
           <Logo />
-          <NavComponent />
+          <NavComponent favoritesCount={favorites}/>
         </div>
       </div>
     </header>
   );
 }
-
+//
 export default Header;

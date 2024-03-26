@@ -11,16 +11,23 @@ import ScrollToTop from '../scroll-to-top/scroll-to-top';
 import LoadingScreen from '../../pages/loading-screen/loading-screen';
 import LoginRoute from '../private-route/login-route';
 import { useAppSelector } from '../../hooks/hooks';
+import ErrorLoad from '../error-message/error-load';
+import { AuthorizationStatus } from '../../const';
 
 
 function App(): JSX.Element {
   const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
   const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
+  const isFetchError = useAppSelector((state) => state.isFetchError);
 
-  if (isOffersDataLoading) {
+  if (authorizationStatus === AuthorizationStatus.Unknown || isOffersDataLoading) {
     return (
       <LoadingScreen />
     );
+  }
+
+  if(isFetchError){
+    return <div><ErrorLoad />Это App</div>;
   }
 
   return (
@@ -57,6 +64,7 @@ function App(): JSX.Element {
             path="*"
             element={<NotFoundPage />}
           />
+
         </Routes>
       </BrowserRouter>
     </HelmetProvider>

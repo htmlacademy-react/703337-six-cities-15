@@ -1,4 +1,8 @@
 import { useRef, FormEvent } from 'react';
+import { useEffect } from 'react';
+import { AuthorizationStatus } from '../../const';
+import { fetchFavoriteAction } from '../../store/api-actions';
+import { authorizationStatusState } from '../../store/selectors';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { loginAction } from '../../store/api-actions';
 import Header from '../../components/header/header-component';
@@ -6,9 +10,8 @@ import Header from '../../components/header/header-component';
 function LoginPage(): JSX.Element {
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
-  const ttt = useAppSelector((state)=>state.authorizationStatus);
+  const authStatus = useAppSelector(authorizationStatusState);
   const dispatch = useAppDispatch();
-  //const navigate = useNavigate();
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
@@ -18,9 +21,13 @@ function LoginPage(): JSX.Element {
         password: passwordRef.current.value
       }));
     }
-    console.log (ttt);
   };
 
+  // useEffect(() => {
+    
+  //     dispatch(fetchFavoriteAction());
+    
+  // }, [authStatus]);
 
   return (
     <div className="page page--gray page--login">

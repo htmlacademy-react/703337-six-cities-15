@@ -1,9 +1,5 @@
 import axios, {AxiosInstance, AxiosResponse, AxiosError, InternalAxiosRequestConfig} from 'axios';
 import { getToken } from './token';
-import { UserData } from '../types/user-data';
-import { store } from '../store';
-import { useAppDispatch } from '../hooks/hooks';
-import { changeLogin } from '../store/action';
 import { StatusCodes } from 'http-status-codes';
 import { processErrorHandle } from './process-error-handle';
 
@@ -47,6 +43,7 @@ export const createAPI = (): AxiosInstance => {
       if (error.response && shouldDisplayError(error.response)) {
         const detailMessage = (error.response.data);
         processErrorHandle(detailMessage.message);
+
       }
 
       throw error;

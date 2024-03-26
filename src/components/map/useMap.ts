@@ -41,6 +41,10 @@ function useMap(mapRef: MutableRefObject<HTMLElement | null>,
     }
   }, [mapRef, city]);
 
+  useEffect(() => {
+    map?.setView([city?.location.latitude, city?.location.longitude], city?.location.zoom);
+  }, [map, city]);
+
   return map;
 }
 

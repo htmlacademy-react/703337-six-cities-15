@@ -8,7 +8,7 @@ import cn from 'classnames';
 import 'leaflet/dist/leaflet.css';
 
 type MapProps = {
-  rentsCard: CardsType | undefined;
+  rentsCard: CardsType;
   selectedCard: string | undefined;
 };
 
@@ -27,7 +27,7 @@ const currentCustomIcon = new Icon({
 function MapComponent(props: MapProps): JSX.Element {
   const {rentsCard, selectedCard} = props;
 
-  const city = rentsCard ? rentsCard[0]?.city : null;
+  const city = rentsCard[0].city;
 
   const mapRef = useRef(null);
   const map = useMap(mapRef, city);

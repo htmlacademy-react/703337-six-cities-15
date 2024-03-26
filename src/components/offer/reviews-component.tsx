@@ -6,7 +6,7 @@ import { authorizationStatusState } from '../../store/selectors';
 import { AuthorizationStatus } from '../../const';
 
 type ReviewsProps = {
-  commentList: CommentsType | undefined;
+  commentList: CommentsType;
 }
 
 function Reviews({commentList} : ReviewsProps): JSX.Element {

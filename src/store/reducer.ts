@@ -5,7 +5,7 @@ import { sortObj } from '../util';
 import { createReducer } from '@reduxjs/toolkit';
 import { citiesFill, changeCity, filterOffers,
   sortCurrentOffers, changeSortType, loadOffers, loadFavorites,
-  requireAuthorization, setError, setOffersDataLoadingStatus, changeLogin, loadOffer, changeStatusFavorite } from './action';
+  requireAuthorization, setError, setOffersDataLoadingStatus, changeLogin, loadOffer, changeStatusFavorite, setFetchError, addComment } from './action';
 
 type InitialStoreType = {
   city: string | undefined;
@@ -18,6 +18,7 @@ type InitialStoreType = {
   error: string | null;
   login: string;
   offer: OfferType | null;
+  isFetchError: boolean;
 };
 
 const initialState : InitialStoreType = {
@@ -31,6 +32,7 @@ const initialState : InitialStoreType = {
   error: null,
   login: '',
   offer: null,
+  isFetchError: false,
 };
 
 type SearchByName = {
@@ -69,6 +71,9 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(changeStatusFavorite, (state, action) => {
       state.offer!.currentOffer = action.payload;
     })
+    .addCase(addComment, (state, action) => {
+      state.offer!.comments = [...state.offer!.comments, action.payload];
+    })
     .addCase(loadFavorites, (state, action) => {
       state.favorites = action.payload;
     })
@@ -83,6 +88,9 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(setError, (state, action) => {
       state.error = action.payload;
+    })
+    .addCase(setFetchError, (state, action) => {
+      state.isFetchError = action.payload;
     });
 });
 

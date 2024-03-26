@@ -1,7 +1,11 @@
 import { getUpperCaseFirstLetter } from '../../util';
 import { CardType, CardsType, CommentsType } from '../../types/card';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect} from 'react';
+
+import { fetchOfferAction } from '../../store/api-actions';
+
+import LoadingScreen from '../loading-screen/loading-screen';
 import { AuthorizationStatus } from '../../const';
 import Reviews from '../../components/offer/reviews-component';
 import { ratingCard } from '../../const';
@@ -9,30 +13,36 @@ import cn from 'classnames';
 import Header from '../../components/header/header-component';
 import MapComponent from '../../components/map/map-component';
 import ListOffers from '../../components/main-components/list-offers';
-import { authorizationStatusState } from '../../store/selectors';
+import { authorizationStatusState, favoritesState } from '../../store/selectors';
 import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
 import { statusFavoriteOfferAction } from '../../store/api-actions';
-import { store } from '../../store';
-import { fetchOfferAction } from '../../store/api-actions';
-
 
 function OfferPage(): JSX.Element {
   const param = useParams().id as string;
-  
+  const favoritesArray = useAppSelector(favoritesState);
+  const initialCount = favoritesArray.length;
 
   const dispatch = useAppDispatch();
-  dispatch(fetchOfferAction(param));
-  const [cardMouseOver, setCardMouseOver] = useState<string | undefined>('');
-  const [favoriteStatus, setFavoriteStatus] = useState<boolean>(false);
   const navigate = useNavigate();
   const isAuthorization = useAppSelector(authorizationStatusState) === AuthorizationStatus.Auth;
-
   const offerObj = useAppSelector((state) => state.offer);
-  console.log(offerObj)
+  //const [favoriteStatus, setFavoriteStatus] = useState<boolean>(false);
+  const [cardMouseOver, setCardMouseOver] = useState<string | undefined>('');
+  const [currentFavorites, setCurrentFavorites] = useState(initialCount);
+
+  useEffect(() => {
+    dispatch(fetchOfferAction(param));
+  }, [dispatch, param]);
+
+
+  if(offerObj === null){
+    return (<div style={{textAlign: 'center'}}>{<LoadingScreen />}<p>Загружаем предложение</p></div>);
+  }
+
   const currentOffer : CardType | null | undefined = offerObj?.currentOffer;
   const nearbyOffers : CardsType | undefined = offerObj?.nearby;
   const comments : CommentsType | undefined = offerObj?.comments;
-
+  console.log(comments);
   const {id, images, isPremium, isFavorite, title, rating, bedrooms, maxAdults, type, price, goods, host, description} = currentOffer!;
 
   const handleListItemHover = (listItemCardId: string) => {
@@ -48,17 +58,17 @@ function OfferPage(): JSX.Element {
     if(!isAuthorization){
       navigate('/login');
     } else{
-      setFavoriteStatus((prevStatus) => !prevStatus);
       dispatch(statusFavoriteOfferAction({
         id: id,
-        favoriteStatus: favoriteStatus ? 1 : 0,
+        favoriteStatus: isFavorite ? 0 : 1,
       }));
+      setCurrentFavorites(isFavorite ? currentFavorites - 1 : currentFavorites + 1);
     }
   };
 
   return (
     <div className="page">
-      <Header />
+      <Header favorites={currentFavorites} />
 
       <main className="page__main page__main--offer">
         <section className="offer">

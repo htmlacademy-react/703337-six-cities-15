@@ -3,11 +3,11 @@ import Header from '../../components/header/header-component';
 import { favoritesState } from '../../store/selectors';
 import FavoritesList from '../../components/favorites-component/list-favorites-component';
 import { useAppSelector } from '../../hooks/hooks';
-import { offersState } from '../../store/selectors';
+
 import FavoritesPageEmpty from './favorites-empty-page';
 
 function FavoritesPage(): JSX.Element {
-  const cities = useAppSelector(offersState);
+
   const favoritesArray = useAppSelector(favoritesState);
   if(favoritesArray.length === 0) {
     return (
@@ -16,13 +16,13 @@ function FavoritesPage(): JSX.Element {
   }
   return (
     <div className="page">
-      <Header countFavorite={favoritesArray.length} />
+      <Header favorites={favoritesArray.length} />
 
       <main className="page__main page__main--favorites">
         <div className="page__favorites-container container">
           <section className="favorites">
             <h1 className="favorites__title">Saved listing</h1>
-            <FavoritesList rentsCard={favoritesArray}/>
+            <FavoritesList />
 
           </section>
         </div>

@@ -1,11 +1,20 @@
 import { Link } from 'react-router-dom';
+import { AuthorizationStatus } from '../../const';
+import { useEffect } from 'react';
 import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
-import { logoutAction } from '../../store/api-actions';
-import { favoritesState } from '../../store/selectors';
+import { logoutAction} from '../../store/api-actions';
+import { favoritesState, authorizationStatusState } from '../../store/selectors';
+import { fetchFavoriteAction } from '../../store/api-actions';
 
-function NavComponent(): JSX.Element {
+type NavComponentProps = {
+  favoritesCount?: number;
+}
+
+function NavComponent({favoritesCount} : NavComponentProps): JSX.Element {
   const loginState = useAppSelector((state) => state.login);
-  const favoritesArray = useAppSelector(favoritesState);
+  const favorites = useAppSelector(favoritesState);
+  
+  const authorizationStatus = useAppSelector(authorizationStatusState);
   const dispatch = useAppDispatch();
 
   const handleClickSignOut = () => {
@@ -20,7 +29,7 @@ function NavComponent(): JSX.Element {
             <div className="header__avatar-wrapper user__avatar-wrapper">
             </div>
             <span className="header__user-name user__name">{loginState}</span>
-            <span className="header__favorite-count">{favoritesArray.length}
+            <span className="header__favorite-count">{favoritesCount ? favoritesCount : favorites.length }
             </span>
           </Link>
         </li>
