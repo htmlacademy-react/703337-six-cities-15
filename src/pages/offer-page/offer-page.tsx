@@ -21,12 +21,10 @@ function OfferPage(): JSX.Element {
   const param = useParams().id as string;
   const favoritesArray = useAppSelector(favoritesState);
   const initialCount = favoritesArray.length;
-  
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const isAuthorization = useAppSelector(authorizationStatusState) === AuthorizationStatus.Auth;
   const offerObj = useAppSelector((state) => state.offer);
-  
   const [cardMouseOver, setCardMouseOver] = useState<string | undefined>('');
   const [currentFavorites, setCurrentFavorites] = useState(initialCount);
 
