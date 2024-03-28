@@ -1,6 +1,6 @@
 import ListOffers from './list-offers';
 import SortingOptions from './sorting-options';
-import { CardsType } from '../../types/card';
+import { CardsType } from '../../types/types';
 import MapComponent from '../map/map-component';
 import { useState } from 'react';
 //import { changeCurrentOffers } from '../../store/action';

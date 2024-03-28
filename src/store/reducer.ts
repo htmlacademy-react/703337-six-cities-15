@@ -1,11 +1,12 @@
-import { CardsType, OfferType } from '../types/card';
+import { CardsType, OfferType } from '../types/types';
 import { CITIES, AuthorizationStatus } from '../const';
 //import { arrayOffers } from '../mocks/offers';
 import { sortObj } from '../util';
 import { createReducer } from '@reduxjs/toolkit';
 import { citiesFill, changeCity, filterOffers,
   sortCurrentOffers, changeSortType, loadOffers, loadFavorites,
-  requireAuthorization, setError, setOffersDataLoadingStatus, changeLogin, loadOffer, changeStatusFavorite, setFetchError, addComment } from './action';
+  requireAuthorization, setError, setOffersDataLoadingStatus, changeLogin, loadOffer, changeStatusFavorite, setFetchError, addComment,
+  setValidateFormError } from './action';
 
 type InitialStoreType = {
   city: string | undefined;
@@ -19,6 +20,7 @@ type InitialStoreType = {
   login: string;
   offer: OfferType | null;
   isFetchError: boolean;
+  isValidateForm: boolean;
 };
 
 const initialState : InitialStoreType = {
@@ -33,6 +35,7 @@ const initialState : InitialStoreType = {
   login: '',
   offer: null,
   isFetchError: false,
+  isValidateForm: false,
 };
 
 type SearchByName = {
@@ -91,6 +94,9 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(setFetchError, (state, action) => {
       state.isFetchError = action.payload;
+    })
+    .addCase(setValidateFormError, (state, action) => {
+      state.isValidateForm = action.payload;
     });
 });
 

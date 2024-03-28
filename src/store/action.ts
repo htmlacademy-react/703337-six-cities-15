@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
-import { CardsType, CardType, OfferType } from '../types/card';
-import { CommentType } from '../types/card';
+import { CardsType, CardType, OfferType } from '../types/types';
+import { CommentType } from '../types/types';
 import { AuthorizationStatus } from '../const';
 
 export const citiesFill = createAction<CardsType>('fillCities');
@@ -17,5 +17,5 @@ export const loadFavorites = createAction<CardsType>('loadFavorites');
 export const requireAuthorization = createAction<AuthorizationStatus>('requireAuthorization');
 export const setError = createAction<string | null>('setError');
 export const setFetchError = createAction<boolean>('setFetchError');
-
+export const setValidateFormError = createAction<boolean>('setValidateFormError');
 export const setOffersDataLoadingStatus = createAction<boolean>('data/setOffersDataLoadingStatus');

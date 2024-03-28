@@ -1,4 +1,4 @@
-import { CardType } from '../../types/card';
+import { CardType } from '../../types/types';
 import { ratingCard } from '../../const';
 import cn from 'classnames';
 

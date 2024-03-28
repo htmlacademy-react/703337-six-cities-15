@@ -1,18 +1,26 @@
 import CommentForm from '../comments/comment-form';
-import { CommentsType } from '../../types/card';
+import { CommentsType } from '../../types/types';
 import { ratingCard } from '../../const';
 import { useAppSelector } from '../../hooks/hooks';
 import { authorizationStatusState } from '../../store/selectors';
 import { AuthorizationStatus } from '../../const';
+import { sortComment } from '../../util';
 
 type ReviewsProps = {
   commentList: CommentsType;
 }
 
 function Reviews({commentList} : ReviewsProps): JSX.Element {
+  const options = {
+    year: 'numeric',
+    month: 'long',
+  } as const;
+
   const authorizationStatus = useAppSelector(authorizationStatusState);
-  const list = commentList?.map((item) =>{
-    const {id, date, user, comment, rating} = item;
+  const list = [...commentList].sort(sortComment).slice(0, 10).map((item) =>{
+    const {id, user, date, comment, rating} = item;
+    const dateConfig = new Date(date).toLocaleString('en-US', options);
+
     return (
       <li key={`${id}-reviews`} className="reviews__item">
         <div className="reviews__user user">
@@ -33,7 +41,7 @@ function Reviews({commentList} : ReviewsProps): JSX.Element {
           <p className="reviews__text">
             {comment}
           </p>
-          <time className="reviews__time" dateTime="2019-04-24">{date}</time>
+          <time className="reviews__time" dateTime={date}>{dateConfig}</time>
         </div>
       </li>
     );

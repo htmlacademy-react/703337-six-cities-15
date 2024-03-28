@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { Icon, Marker, layerGroup } from 'leaflet';
 import { URL_MARKER_DEFAULT, URL_MARKER_CURRENT } from '../../const';
 import useMap from './useMap';
-import { CardsType } from '../../types/card';
+import { CardsType } from '../../types/types';
 import cn from 'classnames';
 import 'leaflet/dist/leaflet.css';
 

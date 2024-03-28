@@ -1,4 +1,4 @@
-import { CardsType, CardType } from '../../types/card';
+import { CardsType, CardType } from '../../types/types';
 import FavoritesLocations from './favorites-location';
 import { useAppSelector } from '../../hooks/hooks';
 import { favoritesState } from '../../store/selectors';

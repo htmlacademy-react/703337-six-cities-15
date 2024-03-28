@@ -1,4 +1,4 @@
-import { CardsType } from '../../types/card';
+import { CardsType } from '../../types/types';
 import FavoritesCard from './favorite-card';
 
 type FavoritesLocationsProps = {

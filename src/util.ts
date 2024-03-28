@@ -1,4 +1,4 @@
-import { CardType, CardsType } from './types/card';
+import { CardType, CardsType, CommentType } from './types/types';
 import { SortType } from './const';
 
 const sortByPriceLow = (a : CardType, b : CardType) => {
@@ -54,7 +54,25 @@ const sortObj = (sortType : string, sortArray : CardsType) => {
   }
 };
 
+const sortComment = (a: CommentType, b : CommentType) => {
+  const bDate = new Date(b.date);
+  const aDate = new Date(a.date);
+
+  if(new Date(b.date) > new Date(a.date)){
+    return 1;
+  }
+
+  if (new Date(b.date) < new Date(a.date)) {
+    return -1;
+  }
+
+  return 0;
+};
+
+const maxLengthComment = (comment : string) => comment.length < 100;
+const minLengthComment = (comment : string) => comment.length > 50;
+
 const getUpperCaseFirstLetter = (str : string) => [...str].map((char, index) =>
   index === 0 ? char.toUpperCase() : char).join('');
 
-export {sortByPriceHigh, sortByPriceLow, sortByPriceRate, sortObj, getUpperCaseFirstLetter};
+export {sortByPriceHigh, sortByPriceLow, sortByPriceRate, sortObj, getUpperCaseFirstLetter, sortComment, maxLengthComment, minLengthComment};

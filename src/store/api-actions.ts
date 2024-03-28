@@ -2,7 +2,7 @@ import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AppDispatch, State } from '../types/state';
 import { loadOffers, loadFavorites, setOffersDataLoadingStatus,
-  filterOffers, requireAuthorization, setError, changeLogin, loadOffer, changeStatusFavorite, setFetchError } from './action';
+  filterOffers, requireAuthorization, setError, changeLogin, loadOffer, changeStatusFavorite, setFetchError, addComment } from './action';
 import { saveToken, dropToken } from '../services/token';
 import { AuthorizationStatus,APIRoute, TIMEOUT_SHOW_ERROR } from '../const';
 import { AuthData} from '../types/auth-data';
@@ -10,7 +10,17 @@ import { UserData } from '../types/user-data';
 import { NewCommentData } from '../types/new-comment-data';
 import { FavoriteStatusData } from '../types/favorite-status-data';
 import { store } from '.';
-import { CardsType, CardType, CommentsType, OfferType } from '../types/card';
+import { CardsType, CardType, CommentsType, CommentType, OfferType } from '../types/types';
+
+export const clearErrorAction = createAsyncThunk(
+  'clearError',
+  () => {
+    setTimeout(
+      () => store.dispatch(setError(null)),
+      TIMEOUT_SHOW_ERROR,
+    );
+  },
+);
 
 export const fetchOffersAction = createAsyncThunk<void, undefined, {
   dispatch: AppDispatch;
@@ -60,30 +70,27 @@ export const statusFavoriteOfferAction = createAsyncThunk<void, FavoriteStatusDa
   state: State;
   extra: AxiosInstance;
 }>(
-  'user/login',
+  'user/Favorite',
   async ({id, favoriteStatus}, {dispatch, extra: api}) => {
     try{
       const {data} = await api.post<CardType>(`${APIRoute.Favorites}/${id}/${favoriteStatus}`, {id, favoriteStatus});
       dispatch(changeStatusFavorite(data));
     } catch(err){
-      console.log(err);
+      dispatch(setError('Не удалось добавить в избранное!'));
+      dispatch(clearErrorAction());
     }
   },
 );
 
-export const sendCommentAction = createAsyncThunk<void, NewCommentData, {
+export const fetchCommentAction = createAsyncThunk<void, NewCommentData, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
-  'user/login',
+  'user/Comment',
   async ({id, comment, rating}, {dispatch, extra: api}) => {
-    try{
-      const {data} = await api.post<CardType>(`${APIRoute.Comments}/${id}`, {comment, rating});
-      dispatch(changeStatusFavorite(data));
-    } catch(err){
-      console.log(err);
-    }
+    const {data} = await api.post<CommentType>(`${APIRoute.Comments}/${id}`, {comment, rating});
+    dispatch(addComment(data));
   },
 );
 
@@ -97,11 +104,12 @@ export const fetchFavoriteAction = createAsyncThunk<void, undefined, {
     try{
       dispatch(setOffersDataLoadingStatus(true));
       const {data} = await api.get<CardsType>(APIRoute.Favorites);
-      console.log(data);
+
       dispatch(setOffersDataLoadingStatus(false));
       dispatch(loadFavorites(data));
     } catch(err){
-      console.log(err);
+      dispatch(setError('Ошибка загрузки Favorites!'));
+      dispatch(clearErrorAction());
 
     }
   },
@@ -152,16 +160,6 @@ export const logoutAction = createAsyncThunk<void, undefined, {
     await api.delete(APIRoute.Logout);
     dropToken();
     dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
-  },
-);
-
-export const clearErrorAction = createAsyncThunk(
-  'clearError',
-  () => {
-    setTimeout(
-      () => store.dispatch(setError(null)),
-      TIMEOUT_SHOW_ERROR,
-    );
   },
 );
 

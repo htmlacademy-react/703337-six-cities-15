@@ -1,4 +1,4 @@
-import { CardType } from '../../types/card';
+import { CardType } from '../../types/types';
 import { getUpperCaseFirstLetter } from '../../util';
 import { Link } from 'react-router-dom';
 import { ratingCard } from '../../const';

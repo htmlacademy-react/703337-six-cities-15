@@ -1,5 +1,5 @@
 import PlaceCard from './place-card';
-import { CardsType } from '../../types/card';
+import { CardsType } from '../../types/types';
 import { useLocation } from 'react-router-dom';
 import cn from 'classnames';
 

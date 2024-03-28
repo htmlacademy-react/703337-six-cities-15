@@ -1,4 +1,4 @@
-import { CardsType } from '../types/card';
+import { CardsType } from '../types/types';
 
 const arrayOffers : CardsType = [
   {
