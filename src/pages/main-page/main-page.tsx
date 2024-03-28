@@ -1,9 +1,6 @@
 import MainPageFill from '../../components/main-components/main-fill';
-import { fetchFavoriteAction } from '../../store/api-actions';
-
 import MainPageEmpty from '../../components/main-components/main-empty';
 import Header from '../../components/header/header-component';
-import { AuthorizationStatus } from '../../const';
 import Cities from '../../components/cities/list-cities';
 import { currentOffersState } from '../../store/selectors';
 import { CITIES } from '../../const';

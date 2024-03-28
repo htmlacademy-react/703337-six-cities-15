@@ -1,4 +1,3 @@
-import { CardsType } from '../../types/types';
 import Header from '../../components/header/header-component';
 import { favoritesState } from '../../store/selectors';
 import FavoritesList from '../../components/favorites-component/list-favorites-component';

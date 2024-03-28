@@ -1,10 +1,7 @@
 import { Link } from 'react-router-dom';
-import { AuthorizationStatus } from '../../const';
-import { useEffect } from 'react';
 import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
 import { logoutAction} from '../../store/api-actions';
-import { favoritesState, authorizationStatusState } from '../../store/selectors';
-import { fetchFavoriteAction } from '../../store/api-actions';
+import { favoritesState } from '../../store/selectors';
 
 type NavComponentProps = {
   favoritesCount?: number;
@@ -13,8 +10,6 @@ type NavComponentProps = {
 function NavComponent({favoritesCount} : NavComponentProps): JSX.Element {
   const loginState = useAppSelector((state) => state.login);
   const favorites = useAppSelector(favoritesState);
-  
-  const authorizationStatus = useAppSelector(authorizationStatusState);
   const dispatch = useAppDispatch();
 
   const handleClickSignOut = () => {

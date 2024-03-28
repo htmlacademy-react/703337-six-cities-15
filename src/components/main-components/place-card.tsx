@@ -6,7 +6,7 @@ import { MouseEvent } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import cn from 'classnames';
 import { store } from '../../store';
-import { fetchOfferAction, fetchFavoriteAction } from '../../store/api-actions';
+import { fetchOfferAction } from '../../store/api-actions';
 
 type PlaceCardProps = {
   cardObj: CardType;
@@ -26,7 +26,6 @@ function PlaceCard({cardObj, onMouseOver, onMouseOut} : PlaceCardProps){
 
   const handleListItemClick = () => {
     store.dispatch(fetchOfferAction(id));
-    //store.dispatch(fetchFavoriteAction());
   };
 
   return (

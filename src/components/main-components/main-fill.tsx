@@ -1,17 +1,9 @@
 import ListOffers from './list-offers';
 import SortingOptions from './sorting-options';
-import { CardsType } from '../../types/types';
 import MapComponent from '../map/map-component';
 import { useState } from 'react';
-//import { changeCurrentOffers } from '../../store/action';
 import { cityNameState, currentOffersState } from '../../store/selectors';
-//import { sortByPriceHigh,sortByPriceLow,sortByPriceRate } from '../../util';
-//import { SortType } from '../../const';
 import { useAppSelector } from '../../hooks/hooks';
-
-type MainPageFillProps = {
-  cityArray: CardsType;
-}
 
 function MainPageFill(): JSX.Element {
   const [cardMouseOver, setCardMouseOver] = useState<string | undefined>('');

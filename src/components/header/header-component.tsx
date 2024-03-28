@@ -1,11 +1,9 @@
 import Logo from '../logo/logo';
-import { useEffect } from 'react';
 import { NavLink} from 'react-router-dom';
 import { AuthorizationStatus } from '../../const';
 import NavComponent from './nav-component';
-import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
-import { favoritesState, authorizationStatusState } from '../../store/selectors';
-import { fetchFavoriteAction } from '../../store/api-actions';
+import { useAppSelector } from '../../hooks/hooks';
+import { authorizationStatusState } from '../../store/selectors';
 
 type NavLinkPropsCust = {
   isActive: boolean;
@@ -21,15 +19,6 @@ const getClassForNavLink = ({isActive} : NavLinkPropsCust) : string =>
 
 function Header({favorites} : HeaderComponentProps): JSX.Element {
   const authorizationStatus = useAppSelector(authorizationStatusState);
-  const favoritesArray = useAppSelector(favoritesState);
-  const dispatch = useAppDispatch();
-
-  // useEffect(() => {
-  //   if(authorizationStatus === AuthorizationStatus.Auth){
-  //     dispatch(fetchFavoriteAction());
-  //   }
-  // }, [authorizationStatus]);
-
   if (authorizationStatus === AuthorizationStatus.NoAuth || authorizationStatus === AuthorizationStatus.Unknown) {
     return (
       <header className="header">

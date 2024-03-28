@@ -55,9 +55,6 @@ const sortObj = (sortType : string, sortArray : CardsType) => {
 };
 
 const sortComment = (a: CommentType, b : CommentType) => {
-  const bDate = new Date(b.date);
-  const aDate = new Date(a.date);
-
   if(new Date(b.date) > new Date(a.date)){
     return 1;
   }
