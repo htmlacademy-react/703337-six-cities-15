@@ -1,5 +1,4 @@
 import { useState, FormEvent, ChangeEvent } from 'react';
-import { PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { maxLengthComment, minLengthComment } from '../../util';
 import { useParams } from 'react-router-dom';
 import { useAppDispatch } from '../../hooks/hooks';
@@ -7,8 +6,6 @@ import { setError } from '../../store/action';
 import { clearErrorAction } from '../../store/api-actions';
 import { fetchCommentAction } from '../../store/api-actions';
 import { DEFAULT_MAX_LENGTH } from '../../const';
-
-export type AsyncThunk = ReturnType<typeof createAsyncThunk>;
 
 function CommentForm(): JSX.Element {
   const[formData, setFormData] = useState({comment: '', rating: 0});
@@ -47,19 +44,13 @@ function CommentForm(): JSX.Element {
     try{
       setDisabled(true);
       const responce = await dispatch(fetchCommentAction({id: param, comment: formData.comment, rating: formData.rating}));
-
-      console.log(responce.error);
-      if(responce.type === 'user/Comment/rejected') {throw new Error()}
-      //alert('жду после await')
+      if(responce.type === 'user/Comment/rejected') {
+        throw new Error();
+      }
       setFormData({...formData, comment: '', rating: 0});
-      //alert('tnd')
-
     } catch(err){
-      
-      await dispatch(setError('Отзыв не отправлен! Проверьте правильность заполнения.'));
-      console.log(err)
+      dispatch(setError('Отзыв не отправлен! Проверьте правильность заполнения.'));
     } finally{
-      //alert('finally')
       setDisabled(false);
       dispatch(clearErrorAction());
     }

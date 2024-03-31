@@ -99,14 +99,8 @@ export const fetchCommentAction = createAsyncThunk<void, NewCommentData, {
 }>(
   'user/Comment',
   async ({id, comment, rating}, {dispatch, extra: api}) => {
-    try {
-      const {data} = await api.post<CommentType>(`${APIRoute.Comments}/${id}`, {comment, rating});
-      dispatch(addComment(data));
-    } catch(err){
-      console.log(err);
-      
-      throw err;
-    }
+    const {data} = await api.post<CommentType>(`${APIRoute.Comments}/${id}`, {comment, rating});
+    dispatch(addComment(data));
   },
 );
 
