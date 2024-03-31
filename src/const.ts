@@ -30,6 +30,8 @@ export const URL_MARKER_CURRENT = 'img/pin-active.svg';
 export const CITIES = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];
 
 export const SORT = ['Popular', 'Price: low to high', 'Price: high to low', 'Top rated first'];
+export const DEFAULT_MAX_LENGTH = 100;
+export const DEFAULT_MIN_LENGTH = 50;
 
 export enum APIRoute {
   Offers = '/offers',

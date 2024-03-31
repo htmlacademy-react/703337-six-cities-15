@@ -1,5 +1,5 @@
 import { CardType, CardsType, CommentType } from './types/types';
-import { SortType } from './const';
+import { SortType, DEFAULT_MAX_LENGTH, DEFAULT_MIN_LENGTH } from './const';
 
 const sortByPriceLow = (a : CardType, b : CardType) => {
   if (a.price > b.price) {
@@ -66,8 +66,8 @@ const sortComment = (a: CommentType, b : CommentType) => {
   return 0;
 };
 
-const maxLengthComment = (comment : string) => comment.length < 100;
-const minLengthComment = (comment : string) => comment.length > 50;
+const maxLengthComment = (comment : string) => comment.length < DEFAULT_MAX_LENGTH;
+const minLengthComment = (comment : string) => comment.length > DEFAULT_MIN_LENGTH;
 
 const getUpperCaseFirstLetter = (str : string) => [...str].map((char, index) =>
   index === 0 ? char.toUpperCase() : char).join('');

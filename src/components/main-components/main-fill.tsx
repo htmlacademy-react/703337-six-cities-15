@@ -6,14 +6,14 @@ import { cityNameState, currentOffersState } from '../../store/selectors';
 import { useAppSelector } from '../../hooks/hooks';
 
 function MainPageFill(): JSX.Element {
+  console.info('<MainFill />: Render');
   const [cardMouseOver, setCardMouseOver] = useState<string | undefined>('');
   const city = useAppSelector(cityNameState);
 
   const sortArray = useAppSelector(currentOffersState);
 
   const handleListItemHover = (listItemCardId: string) => {
-    const currentCard = sortArray.find((item) => item.id === listItemCardId)?.id;
-    setCardMouseOver(currentCard);
+    setCardMouseOver(listItemCardId);
   };
 
   const handleListItemOut = () => {

@@ -2,7 +2,7 @@ import { CardType } from '../../types/types';
 import { getUpperCaseFirstLetter } from '../../util';
 import { Link } from 'react-router-dom';
 import { ratingCard } from '../../const';
-import { MouseEvent } from 'react';
+import { MouseEvent, memo } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import cn from 'classnames';
 import { store } from '../../store';
@@ -14,7 +14,8 @@ type PlaceCardProps = {
   onMouseOut: () => void;
 }
 
-function PlaceCard({cardObj, onMouseOver, onMouseOut} : PlaceCardProps){
+function PlaceCard ({cardObj, onMouseOver, onMouseOut} : PlaceCardProps){
+  console.info('<PlaceCard />: Render');
   const navigate = useNavigate();
   const {id, isPremium, previewImage, price, isFavorite, rating, title, type} = cardObj;
   const locationAbs = useLocation().pathname === '/';
@@ -24,17 +25,11 @@ function PlaceCard({cardObj, onMouseOver, onMouseOut} : PlaceCardProps){
     onMouseOver(id);
   };
 
-  const handleListItemClick = () => {
-    store.dispatch(fetchOfferAction(id));
-  };
-
   return (
 
     <article className={cn('place-card', {'near-places__card': !locationAbs, 'cities__card': locationAbs})}
       data-id={id} onMouseOver={handleListItemHover} onClick={() => {
-        handleListItemClick();
         navigate(`/offer/${id}`);
-
       }} onMouseOut={onMouseOut}
     >
 
@@ -78,4 +73,5 @@ function PlaceCard({cardObj, onMouseOver, onMouseOut} : PlaceCardProps){
   );
 }
 
-export default PlaceCard;
+export const PlaceCardMemo = memo(PlaceCard, (prevProps, nextProps) => prevProps.cardObj === nextProps.cardObj);
+

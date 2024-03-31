@@ -18,13 +18,14 @@ import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
 import { statusFavoriteOfferAction } from '../../store/api-actions';
 
 function OfferPage(): JSX.Element {
+  console.info('<OfferPage />: Render');
   const param = useParams().id as string;
   const favoritesArray = useAppSelector(favoritesState);
   const initialCount = favoritesArray.length;
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const isAuthorization = useAppSelector(authorizationStatusState) === AuthorizationStatus.Auth;
-  const offerObj = useAppSelector((state) => state.offer);
+  const offer = useAppSelector((state) => state.offer);
   const [cardMouseOver, setCardMouseOver] = useState<string | undefined>('');
   const [currentFavorites, setCurrentFavorites] = useState(initialCount);
 
@@ -33,13 +34,13 @@ function OfferPage(): JSX.Element {
   }, [dispatch, param]);
 
 
-  if(offerObj === null){
+  if(offer === null){
     return (<div style={{textAlign: 'center'}}>{<LoadingScreen />}<p>Загружаем предложение</p></div>);
   }
 
-  const currentOffer : CardType | null | undefined = offerObj?.currentOffer;
-  const nearbyOffers : CardsType | undefined = offerObj?.nearby;
-  const comments : CommentsType | undefined = offerObj?.comments;
+  const currentOffer : CardType | null | undefined = offer?.currentOffer;
+  const nearbyOffers : CardsType | undefined = offer?.nearby;
+  const comments : CommentsType | undefined = offer?.comments;
 
   const {id, images, isPremium, isFavorite, title, rating, bedrooms, maxAdults, type, price, goods, host, description} = currentOffer!;
 

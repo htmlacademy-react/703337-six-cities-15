@@ -2,7 +2,7 @@ import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AppDispatch, State } from '../types/state';
 import { loadOffers, loadFavorites, setOffersDataLoadingStatus,
-  filterOffers, requireAuthorization, setError, changeLogin, loadOffer, changeStatusFavorite, setFetchError, addComment } from './action';
+  filterOffers, requireAuthorization, setError, changeLogin, loadOffer, changeStatusFavorite, setFetchError, addComment, setAuthorization } from './action';
 import { saveToken, dropToken } from '../services/token';
 import { AuthorizationStatus,APIRoute, TIMEOUT_SHOW_ERROR } from '../const';
 import { AuthData} from '../types/auth-data';
@@ -17,6 +17,16 @@ export const clearErrorAction = createAsyncThunk(
   () => {
     setTimeout(
       () => store.dispatch(setError(null)),
+      TIMEOUT_SHOW_ERROR,
+    );
+  },
+);
+
+export const clearIsAuthorization = createAsyncThunk(
+  'clearIsAuthorization',
+  () => {
+    setTimeout(
+      () => store.dispatch(setAuthorization(false)),
       TIMEOUT_SHOW_ERROR,
     );
   },
@@ -89,8 +99,14 @@ export const fetchCommentAction = createAsyncThunk<void, NewCommentData, {
 }>(
   'user/Comment',
   async ({id, comment, rating}, {dispatch, extra: api}) => {
-    const {data} = await api.post<CommentType>(`${APIRoute.Comments}/${id}`, {comment, rating});
-    dispatch(addComment(data));
+    try {
+      const {data} = await api.post<CommentType>(`${APIRoute.Comments}/${id}`, {comment, rating});
+      dispatch(addComment(data));
+    } catch(err){
+      console.log(err);
+      
+      throw err;
+    }
   },
 );
 
@@ -124,7 +140,8 @@ export const checkAuthAction = createAsyncThunk<void, undefined, {
   async (_arg, {dispatch, extra: api}) => {
     try {
       const {data} = await api.get<UserData>(APIRoute.Login);
-
+      dispatch(setAuthorization(true));
+      dispatch(clearIsAuthorization());
       dispatch(requireAuthorization(AuthorizationStatus.Auth));
       dispatch(changeLogin(data.email));
       dispatch(fetchFavoriteAction());
@@ -146,6 +163,7 @@ export const loginAction = createAsyncThunk<void, AuthData, {
     dispatch(changeLogin(data.email));
     saveToken(token);
     dispatch(requireAuthorization(AuthorizationStatus.Auth));
+    dispatch(setAuthorization(true));
     dispatch(fetchFavoriteAction());
   },
 );
@@ -172,3 +190,5 @@ export const clearErrorLoadAction = createAsyncThunk(
     );
   },
 );
+
+

@@ -1,4 +1,5 @@
 import MainPageFill from '../../components/main-components/main-fill';
+
 import MainPageEmpty from '../../components/main-components/main-empty';
 import Header from '../../components/header/header-component';
 import Cities from '../../components/cities/list-cities';
@@ -8,6 +9,7 @@ import { useAppSelector } from '../../hooks/hooks';
 import cn from 'classnames';
 
 function MainPage(): JSX.Element {
+  console.info('<MainPage />: Render');
   const cityArray = useAppSelector(currentOffersState);
 
   return (

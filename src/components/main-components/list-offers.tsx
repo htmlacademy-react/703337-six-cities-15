@@ -1,4 +1,4 @@
-import PlaceCard from './place-card';
+import { PlaceCardMemo } from './place-card';
 import { CardsType } from '../../types/types';
 import { useLocation } from 'react-router-dom';
 import cn from 'classnames';
@@ -15,7 +15,7 @@ function ListOffers({ rentsCard, onListItemHover, onListItemOut}: ListOffersProp
   return (
     <div className={cn('places__list', {'cities__places-list tabs__content': location, 'near-places__list': !location})}>
       {rentsCard?.map((item) => (
-        <PlaceCard key={item?.id} cardObj={item} onMouseOver={onListItemHover}
+        <PlaceCardMemo key={item?.id} cardObj={item} onMouseOver={onListItemHover}
           onMouseOut={onListItemOut}
         />))}
     </div>

@@ -1,12 +1,13 @@
 import { CardsType, OfferType } from '../types/types';
 import { CITIES, AuthorizationStatus } from '../const';
-//import { arrayOffers } from '../mocks/offers';
+
 import { sortObj } from '../util';
 import { createReducer } from '@reduxjs/toolkit';
 import { citiesFill, changeCity, filterOffers,
   sortCurrentOffers, changeSortType, loadOffers, loadFavorites,
   requireAuthorization, setError, setOffersDataLoadingStatus, changeLogin, loadOffer, changeStatusFavorite, setFetchError, addComment,
-  setValidateFormError } from './action';
+  setValidateFormError,
+  setAuthorization} from './action';
 
 type InitialStoreType = {
   city: string | undefined;
@@ -16,6 +17,7 @@ type InitialStoreType = {
   sortType: string;
   authorizationStatus: AuthorizationStatus;
   isOffersDataLoading: boolean;
+  isAuthorization: boolean;
   error: string | null;
   login: string;
   offer: OfferType | null;
@@ -31,6 +33,7 @@ const initialState : InitialStoreType = {
   sortType: '',
   authorizationStatus: AuthorizationStatus.Unknown,
   isOffersDataLoading: false,
+  isAuthorization: false,
   error: null,
   login: '',
   offer: null,
@@ -91,6 +94,9 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(setError, (state, action) => {
       state.error = action.payload;
+    })
+    .addCase(setAuthorization, (state, action) => {
+      state.isAuthorization = action.payload;
     })
     .addCase(setFetchError, (state, action) => {
       state.isFetchError = action.payload;

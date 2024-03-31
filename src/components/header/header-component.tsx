@@ -18,6 +18,7 @@ const getClassForNavLink = ({isActive} : NavLinkPropsCust) : string =>
   isActive ? 'visually-hidden' : '';
 
 function Header({favorites} : HeaderComponentProps): JSX.Element {
+  console.info('<Header />: Render');
   const authorizationStatus = useAppSelector(authorizationStatusState);
   if (authorizationStatus === AuthorizationStatus.NoAuth || authorizationStatus === AuthorizationStatus.Unknown) {
     return (

@@ -16,6 +16,7 @@ export const changeLogin = createAction<string>('changeLogin');
 export const loadFavorites = createAction<CardsType>('loadFavorites');
 export const requireAuthorization = createAction<AuthorizationStatus>('requireAuthorization');
 export const setError = createAction<string | null>('setError');
+export const setAuthorization = createAction<boolean>('setAuthorization');
 export const setFetchError = createAction<boolean>('setFetchError');
 export const setValidateFormError = createAction<boolean>('setValidateFormError');
 export const setOffersDataLoadingStatus = createAction<boolean>('data/setOffersDataLoadingStatus');

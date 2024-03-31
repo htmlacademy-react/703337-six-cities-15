@@ -11,7 +11,7 @@ function NavComponent({favoritesCount} : NavComponentProps): JSX.Element {
   const loginState = useAppSelector((state) => state.login);
   const favorites = useAppSelector(favoritesState);
   const dispatch = useAppDispatch();
-
+  console.info('<Nav />: Render');
   const handleClickSignOut = () => {
     dispatch(logoutAction());
   };

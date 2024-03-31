@@ -16,6 +16,7 @@ import { AuthorizationStatus } from '../../const';
 
 
 function App(): JSX.Element {
+  console.info('<App />: Render');
   const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
   const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
   const isFetchError = useAppSelector((state) => state.isFetchError);
