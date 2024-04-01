@@ -1,27 +1,35 @@
-import Header from '../../components/header/header-component';
+import { HeaderMemo } from '../../components/header/header-component';
 import { favoritesState } from '../../store/selectors';
 import FavoritesList from '../../components/favorites-component/list-favorites-component';
 import { useAppSelector } from '../../hooks/hooks';
-
 import FavoritesPageEmpty from './favorites-empty-page';
+import { useState } from 'react';
 
 function FavoritesPage(): JSX.Element {
-
   const favoritesArray = useAppSelector(favoritesState);
+  const initialCount = favoritesArray.length;
+
+  const [currentFavorites, setCurrentFavorites] = useState(initialCount);
+
+  const handleFavoriteClick = (isfavorite : boolean) => {
+    setCurrentFavorites(isfavorite ? currentFavorites - 1 : currentFavorites + 1);
+  };
+
   if(favoritesArray.length === 0) {
     return (
       <FavoritesPageEmpty />
     );
   }
+
   return (
     <div className="page">
-      <Header favorites={favoritesArray.length} />
+      <HeaderMemo favorites={initialCount} />
 
       <main className="page__main page__main--favorites">
         <div className="page__favorites-container container">
           <section className="favorites">
             <h1 className="favorites__title">Saved listing</h1>
-            <FavoritesList />
+            <FavoritesList onFavoriteClick={handleFavoriteClick}/>
 
           </section>
         </div>

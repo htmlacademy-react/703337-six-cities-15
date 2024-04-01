@@ -4,7 +4,6 @@ import { ratingCard } from '../../const';
 import { useAppSelector } from '../../hooks/hooks';
 import { authorizationStatusState, commentsSortState } from '../../store/selectors';
 import { AuthorizationStatus } from '../../const';
-import { sortComment } from '../../util';
 
 type ReviewsProps = {
   commentList: CommentsType;
@@ -15,7 +14,6 @@ function Reviews({commentList} : ReviewsProps): JSX.Element {
     year: 'numeric',
     month: 'long',
   } as const;
-//[...commentList].sort(sortComment).slice(0, 10)
   const authorizationStatus = useAppSelector(authorizationStatusState);
   const list = useAppSelector(commentsSortState).map((item) =>{
     const {id, user, date, comment, rating} = item;

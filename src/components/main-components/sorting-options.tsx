@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
-
 import cn from 'classnames';
 import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
-//import { MouseEvent } from 'react';
+
 import { SORT } from '../../const';
 import { cityNameState, currentSortTypeState } from '../../store/selectors';
 import { changeSortType, sortCurrentOffers } from '../../store/action';

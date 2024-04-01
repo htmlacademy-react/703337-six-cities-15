@@ -1,4 +1,5 @@
 import Logo from '../logo/logo';
+import { memo } from 'react';
 import { NavLink} from 'react-router-dom';
 import { AuthorizationStatus } from '../../const';
 import NavComponent from './nav-component';
@@ -56,4 +57,4 @@ function Header({favorites} : HeaderComponentProps): JSX.Element {
   );
 }
 //
-export default Header;
+export const HeaderMemo = memo(Header, (prevProps, nextProps) => prevProps === nextProps);

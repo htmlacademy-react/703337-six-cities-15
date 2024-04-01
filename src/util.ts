@@ -66,10 +66,16 @@ const sortComment = (a: CommentType, b : CommentType) => {
   return 0;
 };
 
+const removeFavorite = (arr : CardsType, id : string) => {
+  const favorite = [...arr].filter((item) => item.id !== id);
+  return favorite;
+};
+
 const maxLengthComment = (comment : string) => comment.length < DEFAULT_MAX_LENGTH;
 const minLengthComment = (comment : string) => comment.length > DEFAULT_MIN_LENGTH;
 
 const getUpperCaseFirstLetter = (str : string) => [...str].map((char, index) =>
   index === 0 ? char.toUpperCase() : char).join('');
 
-export {sortByPriceHigh, sortByPriceLow, sortByPriceRate, sortObj, getUpperCaseFirstLetter, sortComment, maxLengthComment, minLengthComment};
+export {sortByPriceHigh, sortByPriceLow, sortByPriceRate, sortObj, getUpperCaseFirstLetter, sortComment,
+  maxLengthComment, minLengthComment, removeFavorite};

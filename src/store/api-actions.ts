@@ -2,7 +2,8 @@ import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AppDispatch, State } from '../types/state';
 import { loadOffers, loadFavorites, setOffersDataLoadingStatus,
-  filterOffers, requireAuthorization, setError, changeLogin, loadOffer, changeStatusFavorite, setFetchError, addComment, setAuthorization } from './action';
+  filterOffers, requireAuthorization, setError, changeLogin, loadOffer, changeStatusFavorite, setFetchError, addComment, setAuthorization,
+  addStatusFavorites, removeStatusFavorites} from './action';
 import { saveToken, dropToken } from '../services/token';
 import { AuthorizationStatus,APIRoute, TIMEOUT_SHOW_ERROR } from '../const';
 import { AuthData} from '../types/auth-data';
@@ -32,18 +33,20 @@ export const clearIsAuthorization = createAsyncThunk(
   },
 );
 
-export const fetchOffersAction = createAsyncThunk<void, undefined, {
+export const fetchOffersAction = createAsyncThunk<CardsType, undefined, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
   'data/fetchOffers',
-  async (_arg, {dispatch, extra: api}) => {
-    dispatch(setOffersDataLoadingStatus(true));
+  async (_arg, {extra: api}) => {
+    //dispatch(setOffersDataLoadingStatus(true));
     const {data} = await api.get<CardsType>(APIRoute.Offers);
-    dispatch(setOffersDataLoadingStatus(false));
-    dispatch(loadOffers(data));
-    dispatch(filterOffers());
+console.log(data)
+    // dispatch(setOffersDataLoadingStatus(false));
+    // dispatch(loadOffers(data));
+    // dispatch(filterOffers());
+    return data;
   },
 );
 
@@ -86,7 +89,43 @@ export const statusFavoriteOfferAction = createAsyncThunk<void, FavoriteStatusDa
       const {data} = await api.post<CardType>(`${APIRoute.Favorites}/${id}/${favoriteStatus}`, {id, favoriteStatus});
       dispatch(changeStatusFavorite(data));
     } catch(err){
+
       dispatch(setError('Не удалось добавить в избранное!'));
+      dispatch(clearErrorAction());
+    }
+  },
+);
+
+export const statusFavoritesAction = createAsyncThunk<void, FavoriteStatusData, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'user/Favorites',
+  async ({id, favoriteStatus}, {dispatch, extra: api}) => {
+    try{
+      const {data} = await api.post<CardType>(`${APIRoute.Favorites}/${id}/${favoriteStatus}`, {id, favoriteStatus});
+      dispatch(addStatusFavorites(data));
+    } catch(err){
+      console.log(err);
+      dispatch(setError('Не удалось добавить в избранное!'));
+      dispatch(clearErrorAction());
+    }
+  },
+);
+
+export const statusNotFavoritesAction = createAsyncThunk<void, FavoriteStatusData, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'user/Favorites',
+  async ({id, favoriteStatus}, {dispatch, extra: api}) => {
+    try{
+      const {data} = await api.post<CardType>(`${APIRoute.Favorites}/${id}/${favoriteStatus}`, {id, favoriteStatus});
+      dispatch(removeStatusFavorites(data.id));
+    } catch(err){
+      dispatch(setError('Не удалось убрать из избранного!'));
       dispatch(clearErrorAction());
     }
   },

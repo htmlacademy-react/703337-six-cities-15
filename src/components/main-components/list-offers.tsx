@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 import cn from 'classnames';
 
 type ListOffersProps = {
-  rentsCard?: CardsType;
+  rentsCard?: CardsType | null;
   onListItemHover: (listItemCardId: string) => void;
   onListItemOut: () => void;
 }

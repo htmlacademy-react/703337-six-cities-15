@@ -1,13 +1,13 @@
 import { CardsType, OfferType } from '../types/types';
 import { CITIES, AuthorizationStatus } from '../const';
 
-import { sortObj } from '../util';
+import { sortObj, removeFavorite } from '../util';
 import { createReducer } from '@reduxjs/toolkit';
-import { citiesFill, changeCity, filterOffers,
+import { changeCity, filterOffers,
   sortCurrentOffers, changeSortType, loadOffers, loadFavorites,
   requireAuthorization, setError, setOffersDataLoadingStatus, changeLogin, loadOffer, changeStatusFavorite, setFetchError, addComment,
   setValidateFormError,
-  setAuthorization} from './action';
+  setAuthorization, addStatusFavorites, removeStatusFavorites} from './action';
 
 type InitialStoreType = {
   city: string | undefined;
@@ -46,14 +46,9 @@ type SearchByName = {
   type: string;
 };
 
-type LoadedCities = {
-  payload: CardsType;
-  type: string;
-};
-
 const reducer = createReducer(initialState, (builder) => {
   builder
-    .addCase(changeCity, (state, action : SearchByName) => {
+    .addCase(changeCity, (state, action) => {
       state.city = action.payload;
     })
     .addCase(filterOffers, (state) => {
@@ -62,11 +57,8 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(sortCurrentOffers, (state) => {
       state.currentOffers = sortObj(state.sortType, state.currentOffers) ;
     })
-    .addCase(changeSortType, (state, action : SearchByName) => {
+    .addCase(changeSortType, (state, action) => {
       state.sortType = action.payload;
-    })
-    .addCase(citiesFill, (state, action : LoadedCities) => {
-      state.offers = action.payload;
     })
     .addCase(loadOffers, (state, action) => {
       state.offers = action.payload;
@@ -76,6 +68,12 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(changeStatusFavorite, (state, action) => {
       state.offer!.currentOffer = action.payload;
+    })
+    .addCase(addStatusFavorites, (state, action) => {
+      state.favorites = [...state.favorites, action.payload];
+    })
+    .addCase(removeStatusFavorites, (state, action) => {
+      state.favorites = removeFavorite([...state.favorites], action.payload);
     })
     .addCase(addComment, (state, action) => {
       state.offer!.comments = [...state.offer!.comments, action.payload];

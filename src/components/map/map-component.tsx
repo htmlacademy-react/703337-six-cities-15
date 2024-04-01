@@ -3,13 +3,14 @@ import { useLocation } from 'react-router-dom';
 import { Icon, Marker, layerGroup } from 'leaflet';
 import { URL_MARKER_DEFAULT, URL_MARKER_CURRENT } from '../../const';
 import useMap from './useMap';
-import { CardsType } from '../../types/types';
+import { CardType } from '../../types/types';
 import cn from 'classnames';
 import 'leaflet/dist/leaflet.css';
 
 type MapProps = {
-  rentsCard: CardsType;
-  selectedCard: string | undefined;
+  rentsCard?: (CardType | null)[] | undefined;
+  selectedCard?: string | undefined;
+  currentCard?: string;
 };
 
 const defaultCustomIcon = new Icon({
@@ -25,9 +26,8 @@ const currentCustomIcon = new Icon({
 });
 
 function MapComponent(props: MapProps): JSX.Element {
-  const {rentsCard, selectedCard} = props;
-
-  const city = rentsCard[0].city;
+  const {rentsCard, selectedCard, currentCard} = props;
+  const city = rentsCard![0]!.city;
 
   const mapRef = useRef(null);
   const map = useMap(mapRef, city);
@@ -39,13 +39,18 @@ function MapComponent(props: MapProps): JSX.Element {
       const markerLayer = layerGroup().addTo(map);
       rentsCard?.forEach((point) => {
         const marker = new Marker({
-          lat: point.location.latitude,
-          lng: point.location.longitude
+          lat: point!.location.latitude,
+          lng: point!.location.longitude
         });
 
         marker
           .setIcon(
-            selectedCard !== undefined && point.id === selectedCard
+            selectedCard !== undefined && point!.id === selectedCard
+              ? currentCustomIcon
+              : defaultCustomIcon
+          )
+          .setIcon(
+            currentCard !== undefined && point!.id === currentCard
               ? currentCustomIcon
               : defaultCustomIcon
           )
@@ -56,7 +61,7 @@ function MapComponent(props: MapProps): JSX.Element {
         map.removeLayer(markerLayer);
       };
     }
-  }, [map, rentsCard, selectedCard]);
+  }, [map, rentsCard, selectedCard, currentCard]);
 
   return (
     <section className={cn('map', {'cities__map': locationAbs, 'offer__map': !locationAbs})} ref={mapRef}></section>

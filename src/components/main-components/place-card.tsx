@@ -5,8 +5,6 @@ import { ratingCard } from '../../const';
 import { MouseEvent, memo } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import cn from 'classnames';
-import { store } from '../../store';
-import { fetchOfferAction } from '../../store/api-actions';
 
 type PlaceCardProps = {
   cardObj: CardType;

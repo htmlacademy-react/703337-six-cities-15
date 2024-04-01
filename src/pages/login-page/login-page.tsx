@@ -2,6 +2,7 @@ import { useRef, FormEvent } from 'react';
 import { useAppDispatch } from '../../hooks/hooks';
 import { loginAction } from '../../store/api-actions';
 import Header from '../../components/header/header-component';
+import { HeaderMemo } from '../../components/header/header-component';
 
 function LoginPage(): JSX.Element {
   const loginRef = useRef<HTMLInputElement | null>(null);
@@ -20,7 +21,7 @@ function LoginPage(): JSX.Element {
 
   return (
     <div className="page page--gray page--login">
-      <Header />
+      <HeaderMemo />
 
       <main className="page__main page__main--login">
         <div className="page__login-container container">

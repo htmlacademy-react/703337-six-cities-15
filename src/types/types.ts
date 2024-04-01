@@ -46,7 +46,7 @@ rating: number;
 
 export type OfferType = {
 currentOffer: CardType | null;
-nearby: CardsType;
+nearby: CardsType | null;
 comments: CommentsType;
 }
 

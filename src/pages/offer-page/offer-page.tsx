@@ -2,7 +2,8 @@ import { getUpperCaseFirstLetter } from '../../util';
 import { CardType, CardsType, CommentsType } from '../../types/types';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useState, useEffect} from 'react';
-
+//import Header from '../../components/header/header-component';
+import { HeaderMemo } from '../../components/header/header-component';
 import { fetchOfferAction } from '../../store/api-actions';
 
 import LoadingScreen from '../loading-screen/loading-screen';
@@ -10,23 +11,24 @@ import { AuthorizationStatus } from '../../const';
 import Reviews from '../../components/offer/reviews-component';
 import { ratingCard } from '../../const';
 import cn from 'classnames';
-import Header from '../../components/header/header-component';
+
 import MapComponent from '../../components/map/map-component';
 import ListOffers from '../../components/main-components/list-offers';
-import { authorizationStatusState, favoritesState } from '../../store/selectors';
+import { authorizationStatusState, favoritesState, offerState } from '../../store/selectors';
 import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
 import { statusFavoriteOfferAction } from '../../store/api-actions';
 
 function OfferPage(): JSX.Element {
   console.info('<OfferPage />: Render');
   const param = useParams().id as string;
-  const favoritesArray = useAppSelector(favoritesState);
-  const initialCount = favoritesArray.length;
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const favoritesArray = useAppSelector(favoritesState);
+  const initialCount = favoritesArray.length;
+
   const isAuthorization = useAppSelector(authorizationStatusState) === AuthorizationStatus.Auth;
-  const offer = useAppSelector((state) => state.offer);
-  const [cardMouseOver, setCardMouseOver] = useState<string | undefined>('');
+  const offer = useAppSelector(offerState);
+
   const [currentFavorites, setCurrentFavorites] = useState(initialCount);
 
   useEffect(() => {
@@ -38,20 +40,15 @@ function OfferPage(): JSX.Element {
     return (<div style={{textAlign: 'center'}}>{<LoadingScreen />}<p>Загружаем предложение</p></div>);
   }
 
-  const currentOffer : CardType | null | undefined = offer?.currentOffer;
-  const nearbyOffers : CardsType | undefined = offer?.nearby;
+  const currentOffer : CardType | null = offer?.currentOffer;
+  const nearbyOffers : CardsType | null = offer?.nearby;
   const comments : CommentsType | undefined = offer?.comments;
-
+  const nearOffersForMap = [...nearbyOffers as [], currentOffer];
   const {id, images, isPremium, isFavorite, title, rating, bedrooms, maxAdults, type, price, goods, host, description} = currentOffer!;
 
-  const handleListItemHover = (listItemCardId: string) => {
-    const currentCard = nearbyOffers?.find((item) => item?.id === listItemCardId)?.id;
-    setCardMouseOver(currentCard);
-  };
+  const handleListItemHover = () => null;
 
-  const handleListItemOut = () => {
-    setCardMouseOver(undefined);
-  };
+  const handleListItemOut = () => null;
 
   const handleFavoriteClick = () => {
     if(!isAuthorization){
@@ -67,7 +64,7 @@ function OfferPage(): JSX.Element {
 
   return (
     <div className="page">
-      <Header favorites={currentFavorites} />
+      <HeaderMemo favorites={currentFavorites} />
 
       <main className="page__main page__main--offer">
         <section className="offer">
@@ -89,7 +86,9 @@ function OfferPage(): JSX.Element {
 
               <div className="offer__name-wrapper">
                 <h1 className="offer__name">
+
                   {title}
+
                 </h1>
                 <button className={cn('offer__bookmark-button button', {'offer__bookmark-button--active': isFavorite})} type="button"
                   onClick={handleFavoriteClick}
@@ -153,16 +152,14 @@ function OfferPage(): JSX.Element {
                   <p className="offer__text">
                     {description}
                   </p>
-                  <p className="offer__text">
-                    An independent House, strategically located between Rembrand Square and National Opera, but where the bustle of the city comes to rest in this alley flowery and colorful.
-                  </p>
+
                 </div>
               </div>
               <Reviews commentList={comments} />
 
             </div>
           </div>
-          <MapComponent rentsCard={nearbyOffers} selectedCard={cardMouseOver} />
+          <MapComponent rentsCard={nearOffersForMap} currentCard={currentOffer?.id} />
         </section>
         <div className="container">
           <section className="near-places places">
