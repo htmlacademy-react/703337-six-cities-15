@@ -11,30 +11,28 @@ import { AuthorizationStatus } from '../../const';
 import Reviews from '../../components/offer/reviews-component';
 import { ratingCard } from '../../const';
 import cn from 'classnames';
-
+import { store } from '../../store';
 import MapComponent from '../../components/map/map-component';
 import ListOffers from '../../components/main-components/list-offers';
-import { authorizationStatusState, favoritesState, offerState } from '../../store/selectors';
+import { getFavoritesState, getOfferState } from '../../store/offers-data/offers-data.selectors';
+import { getAuthorizationStatus } from '../../store/user-process/user-process.selectors';
 import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
 import { statusFavoriteOfferAction } from '../../store/api-actions';
 
 function OfferPage(): JSX.Element {
   console.info('<OfferPage />: Render');
   const param = useParams().id as string;
+  const favoritesArray = useAppSelector(getFavoritesState);
+  const initialCount = favoritesArray.length;
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const favoritesArray = useAppSelector(favoritesState);
-  const initialCount = favoritesArray.length;
-
-  const isAuthorization = useAppSelector(authorizationStatusState) === AuthorizationStatus.Auth;
-  const offer = useAppSelector(offerState);
-
+  const isAuthorization = useAppSelector(getAuthorizationStatus) === AuthorizationStatus.Auth;
+  const offer = useAppSelector(getOfferState);
   const [currentFavorites, setCurrentFavorites] = useState(initialCount);
 
   useEffect(() => {
-    dispatch(fetchOfferAction(param));
-  }, [dispatch, param]);
-
+    store.dispatch(fetchOfferAction(param));
+  }, []);
 
   if(offer === null){
     return (<div style={{textAlign: 'center'}}>{<LoadingScreen />}<p>Загружаем предложение</p></div>);
@@ -159,7 +157,7 @@ function OfferPage(): JSX.Element {
 
             </div>
           </div>
-          <MapComponent rentsCard={nearOffersForMap} currentCard={currentOffer?.id} />
+          <MapComponent rentsCard={nearOffersForMap} selectedCard={currentOffer?.id} />
         </section>
         <div className="container">
           <section className="near-places places">

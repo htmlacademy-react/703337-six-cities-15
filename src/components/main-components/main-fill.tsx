@@ -2,15 +2,16 @@ import ListOffers from './list-offers';
 import SortingOptions from './sorting-options';
 import MapComponent from '../map/map-component';
 import { useState } from 'react';
-import { cityNameState, currentOffersState } from '../../store/selectors';
+//import { cityNameState, currentOffersState } from '../../store/selectors';
+import { getCurrentOffersState, getCityNameState } from '../../store/offers-data/offers-data.selectors';
 import { useAppSelector } from '../../hooks/hooks';
 
 function MainPageFill(): JSX.Element {
   console.info('<MainFill />: Render');
   const [cardMouseOver, setCardMouseOver] = useState<string | undefined>('');
-  const city = useAppSelector(cityNameState);
 
-  const sortArray = useAppSelector(currentOffersState);
+  const city = useAppSelector(getCityNameState);
+  const sortArray = useAppSelector(getCurrentOffersState);
 
   const handleListItemHover = (listItemCardId: string) => {
     setCardMouseOver(listItemCardId);

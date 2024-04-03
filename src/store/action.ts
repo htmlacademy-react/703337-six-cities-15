@@ -22,3 +22,6 @@ export const setAuthorization = createAction<boolean>('setAuthorization');
 export const setFetchError = createAction<boolean>('setFetchError');
 export const setValidateFormError = createAction<boolean>('setValidateFormError');
 export const setOffersDataLoadingStatus = createAction<boolean>('data/setOffersDataLoadingStatus');
+
+export const fetchOffersAction = createAction<Promise<CardsType>>('fetchOffersAction');
+

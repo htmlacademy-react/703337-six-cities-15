@@ -1,7 +1,7 @@
 import { CardsType, CardType } from '../../types/types';
 import FavoritesLocations from './favorites-location';
 import { useAppSelector } from '../../hooks/hooks';
-import { favoritesState } from '../../store/selectors';
+import { getFavoritesState } from '../../store/offers-data/offers-data.selectors';
 
 type FavoritesListProps = {
   onFavoriteClick: (isfavorite: boolean) => void;
@@ -9,7 +9,7 @@ type FavoritesListProps = {
 }
 
 function FavoritesList({onFavoriteClick} : FavoritesListProps): JSX.Element {
-  const favoriteArray = useAppSelector(favoritesState);
+  const favoriteArray = useAppSelector(getFavoritesState);
 
   const groupedArrays = favoriteArray.reduce((result: CardsType[], obj : CardType) => {
     const existingArray = result.find((arr : CardsType) => arr[0].city.name === obj.city.name);

@@ -1,11 +1,12 @@
 import { store } from '../store';
 import { AuthorizationStatus } from '../const';
 import { CardsType, OfferType } from './types';
+import { UserData } from './user-data';
 
 export type UserProcess = {
     authorizationStatus: AuthorizationStatus;
     isAuthorization: boolean;
-    login: string;
+    login: null | UserData;
   };
 
 export type OffersData = {
@@ -18,9 +19,7 @@ export type OffersData = {
   error: string | null;
 };
 
-export type SelectionProcess = {
-  
-  
+export type OffersProcess = {
   sortType: string;
   error: string | null;
 };

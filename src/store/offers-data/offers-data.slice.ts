@@ -2,6 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 import { NameSpace, CITIES } from '../../const';
 import { fetchOffersAction, fetchOfferAction, fetchFavoriteAction } from '../api-actions';
 import { OffersData } from '../../types/state';
+import { sortObj } from '../../util';
+import { changeSortType } from '../offers-process/offers-process.slice';
 
 type SearchByName = {
   payload: string;
@@ -36,18 +38,25 @@ export const offersData = createSlice({
       })
       .addCase(fetchOffersAction.fulfilled, (state, action) => {
         state.offers = action.payload;
-        offersData.caseReducers.filterOffers();
+        //offersData.caseReducers.filterOffers(state);
+        state.currentOffers = state.offers.filter((item) => item.city.name === state.city);
+
         state.isOffersDataLoading = false;
       })
-      .addCase(fetchOffersAction.rejected, (state) => {
+      .addCase(fetchOffersAction.rejected, (state, action) => {
+        console.log(action.payload);
         state.isOffersDataLoading = false;
         state.error = 'error';
+      })
+      .addCase(changeSortType, (state, action) => {
+        state.currentOffers = sortObj(action.payload, state.currentOffers);
       })
       .addCase(fetchOfferAction.pending, (state) => {
         state.isOffersDataLoading = true;
       })
       .addCase(fetchOfferAction.fulfilled, (state, action) => {
-        state.offers = action.payload;
+        console.log(action.payload)
+        state.offer = action.payload;
         state.isOffersDataLoading = false;
       })
       .addCase(fetchFavoriteAction.fulfilled, (state, action) => {
@@ -56,4 +65,6 @@ export const offersData = createSlice({
       });
   }
 });
+const {filterOffers, changeCity} = offersData.actions;
+export {filterOffers, changeCity};
 

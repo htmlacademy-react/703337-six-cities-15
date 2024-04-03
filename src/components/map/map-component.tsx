@@ -49,11 +49,11 @@ function MapComponent(props: MapProps): JSX.Element {
               ? currentCustomIcon
               : defaultCustomIcon
           )
-          .setIcon(
-            currentCard !== undefined && point!.id === currentCard
-              ? currentCustomIcon
-              : defaultCustomIcon
-          )
+          // .setIcon(
+          //   currentCard !== undefined && point!.id === currentCard
+          //     ? currentCustomIcon
+          //     : defaultCustomIcon
+          // )
           .addTo(markerLayer);
       });
 

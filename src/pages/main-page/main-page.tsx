@@ -5,14 +5,14 @@ import Header from '../../components/header/header-component';
 import { HeaderMemo } from '../../components/header/header-component';
 import Cities from '../../components/cities/list-cities';
 //import { currentOffersState } from '../../store/selectors';
-import { currentOffersState } from '../../store/offers-data/offers-data.selectors';
+import { getCurrentOffersState } from '../../store/offers-data/offers-data.selectors';
 import { CITIES } from '../../const';
 import { useAppSelector } from '../../hooks/hooks';
 import cn from 'classnames';
 
 function MainPage(): JSX.Element {
   console.info('<MainPage />: Render');
-  const cityArray = useAppSelector(currentOffersState);
+  const cityArray = useAppSelector(getCurrentOffersState);
 
   return (
     <div className="page page--gray page--main">

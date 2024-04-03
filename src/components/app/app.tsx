@@ -13,14 +13,15 @@ import LoginRoute from '../private-route/login-route';
 import { useAppSelector } from '../../hooks/hooks';
 import ErrorLoad from '../error-message/error-load';
 import { AuthorizationStatus } from '../../const';
-
+import { getOffersDataLoadingState } from '../../store/offers-data/offers-data.selectors';
+import { getAuthorizationStatus } from '../../store/user-process/user-process.selectors';
 
 function App(): JSX.Element {
   console.info('<App />: Render');
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
-  const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const isOffersDataLoading = useAppSelector(getOffersDataLoadingState);
   const isFetchError = useAppSelector((state) => state.isFetchError);
-
+//console.log(isOffersDataLoading)
   if (authorizationStatus === AuthorizationStatus.Unknown || isOffersDataLoading) {
     return (
       <LoadingScreen />

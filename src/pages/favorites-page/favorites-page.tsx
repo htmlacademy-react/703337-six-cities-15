@@ -1,12 +1,13 @@
 import { HeaderMemo } from '../../components/header/header-component';
-import { favoritesState } from '../../store/selectors';
+//import { favoritesState } from '../../store/selectors';
+import { getFavoritesState } from '../../store/offers-data/offers-data.selectors';
 import FavoritesList from '../../components/favorites-component/list-favorites-component';
 import { useAppSelector } from '../../hooks/hooks';
 import FavoritesPageEmpty from './favorites-empty-page';
 import { useState } from 'react';
 
 function FavoritesPage(): JSX.Element {
-  const favoritesArray = useAppSelector(favoritesState);
+  const favoritesArray = useAppSelector(getFavoritesState);
   const initialCount = favoritesArray.length;
 
   const [currentFavorites, setCurrentFavorites] = useState(initialCount);

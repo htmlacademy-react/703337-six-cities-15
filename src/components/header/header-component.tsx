@@ -4,7 +4,7 @@ import { NavLink} from 'react-router-dom';
 import { AuthorizationStatus } from '../../const';
 import NavComponent from './nav-component';
 import { useAppSelector } from '../../hooks/hooks';
-import { authorizationStatusState } from '../../store/selectors';
+import { getAuthorizationStatus } from '../../store/user-process/user-process.selectors';
 
 type NavLinkPropsCust = {
   isActive: boolean;
@@ -20,7 +20,7 @@ const getClassForNavLink = ({isActive} : NavLinkPropsCust) : string =>
 
 function Header({favorites} : HeaderComponentProps): JSX.Element {
   console.info('<Header />: Render');
-  const authorizationStatus = useAppSelector(authorizationStatusState);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
   if (authorizationStatus === AuthorizationStatus.NoAuth || authorizationStatus === AuthorizationStatus.Unknown) {
     return (
       <header className="header">

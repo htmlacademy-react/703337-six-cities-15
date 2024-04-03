@@ -1,6 +1,7 @@
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-import { changeCity, filterOffers} from '../../store/action';
-import { cityNameState } from '../../store/selectors';
+//import { changeCity, filterOffers} from '../../store/action';
+import { filterOffers, changeCity } from '../../store/offers-data/offers-data.slice';
+import { getCityNameState } from '../../store/offers-data/offers-data.selectors';
 import cn from 'classnames';
 
 type CitiesProps = {
@@ -10,7 +11,7 @@ type CitiesProps = {
 
 function Cities({cities} : CitiesProps): JSX.Element {
   const dispatch = useAppDispatch();
-  const city = useAppSelector(cityNameState);
+  const city = useAppSelector(getCityNameState);
 
   const handleListItemClick = (item : string) => {
     dispatch(changeCity(item));

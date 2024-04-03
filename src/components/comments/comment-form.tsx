@@ -3,7 +3,7 @@ import { maxLengthComment, minLengthComment } from '../../util';
 import { useParams } from 'react-router-dom';
 import { useAppDispatch } from '../../hooks/hooks';
 import { setError } from '../../store/action';
-import { clearErrorAction } from '../../store/api-actions';
+//import { clearErrorAction } from '../../store/api-actions';
 import { fetchCommentAction } from '../../store/api-actions';
 import { DEFAULT_MAX_LENGTH } from '../../const';
 
@@ -29,7 +29,7 @@ function CommentForm(): JSX.Element {
     if(isDisabledButton()){
       dispatch(setError('Текст отзыва должен содержать от 50 до 300 символов. Для выбора рейтинга пользователь отмечает соответствующее количество звёзд.'));
     } else{
-      dispatch(clearErrorAction());
+      dispatch(setError(null));
     }
 
   };
