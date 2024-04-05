@@ -40,7 +40,6 @@ function OfferPage(): JSX.Element {
     return <div><ErrorLoad /></div>;
   }
 
-  
   if(offer === null){
     return (<div style={{textAlign: 'center'}}>{<LoadingScreen />}<p>Загружаем предложение</p></div>);
   }
@@ -50,10 +49,6 @@ function OfferPage(): JSX.Element {
   const comments : CommentsType | undefined = offer?.comments;
   const nearOffersForMap = [...nearbyOffers as [], currentOffer];
   const {id, images, isPremium, isFavorite, title, rating, bedrooms, maxAdults, type, price, goods, host, description} = currentOffer!;
-
-  const handleListItemHover = () => null;
-
-  const handleListItemOut = () => null;
 
   const handleFavoriteClick = async() => {
     if(!isAuthorization){
@@ -98,7 +93,10 @@ function OfferPage(): JSX.Element {
 
                 </h1>
                 <button className={cn('offer__bookmark-button button', {'offer__bookmark-button--active': isFavorite})} type="button"
-                  onClick={handleFavoriteClick}
+                  onClick={(evt) => {
+                    evt.preventDefault();
+                    handleFavoriteClick();
+                  }}
                 >
                   <svg className="offer__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>
@@ -171,9 +169,7 @@ function OfferPage(): JSX.Element {
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
-            <ListOffers rentsCard={nearbyOffers} onListItemHover={handleListItemHover}
-              onListItemOut={handleListItemOut}
-            />
+            <ListOffers rentsCard={nearbyOffers} />
 
           </section>
         </div>

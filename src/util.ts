@@ -76,7 +76,8 @@ const addCard = (arr : CardsType, id : string, card : CardType) => {
   const favorite = [...arr];
   if(index >= 0){
     favorite.splice(index, 1, card);
-  } else{favorite.push(card);
+  } else{
+    favorite.push(card);
   }
   return favorite;
 };

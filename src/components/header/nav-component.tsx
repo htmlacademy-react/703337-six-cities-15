@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
 import { logoutAction} from '../../store/api-actions';
 import { getFavoritesState } from '../../store/offers-data/offers-data.selectors';

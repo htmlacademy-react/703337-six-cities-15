@@ -2,7 +2,6 @@ import { CardType } from '../../types/types';
 import { ratingCard } from '../../const';
 import cn from 'classnames';
 import { Link } from 'react-router-dom';
-import { MouseEvent } from 'react';
 import { statusFavoritesActionMainPage } from '../../store/api-actions';
 import { useAppDispatch } from '../../hooks/hooks';
 
@@ -13,15 +12,13 @@ type FavoriteCardProps = {
 
 const FAVORITE = 1;
 const UNFAVORITE = 0;
-//evt: MouseEvent<HTMLElement>
+
 function FavoritesCard({cardObj, onFavoriteClick} : FavoriteCardProps): JSX.Element {
   const dispatch = useAppDispatch();
   const {id, isPremium, isFavorite, previewImage, price, rating, title, type} = cardObj;
 
   const handleListItemClick = async() => {
-    //evt.preventDefault();
     let responceCard = null;
-
     const responce = await dispatch(statusFavoritesActionMainPage({
       id: id,
       favoriteStatus: isFavorite ? UNFAVORITE : FAVORITE,
@@ -48,7 +45,9 @@ function FavoritesCard({cardObj, onFavoriteClick} : FavoriteCardProps): JSX.Elem
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
           <button className={cn('place-card__bookmark-button button', {'place-card__bookmark-button--active': isFavorite})} type="button"
-            onClick={handleListItemClick}
+            onClick={()=>{
+              handleListItemClick();
+            }}
           >
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"></use>

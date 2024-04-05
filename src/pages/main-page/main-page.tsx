@@ -1,29 +1,20 @@
 import MainPageFill from '../../components/main-components/main-fill';
 import MainPageEmpty from '../../components/main-components/main-empty';
 import Header from '../../components/header/header-component';
-import { HeaderMemo } from '../../components/header/header-component';
 import Cities from '../../components/cities/list-cities';
 import { useState } from 'react';
-import { statusFavoritesActionMainPage } from '../../store/api-actions';
-import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
-import { AuthorizationStatus } from '../../const';
-import { useNavigate } from 'react-router-dom';
+import { useAppSelector } from '../../hooks/hooks';
 import { getCurrentOffersState, getFavoritesState } from '../../store/offers-data/offers-data.selectors';
-import { getAuthorizationStatus } from '../../store/user-process/user-process.selectors';
 import { CITIES } from '../../const';
-
 import cn from 'classnames';
 
 function MainPage(): JSX.Element {
   console.info('<MainPage />: Render');
-  const navigate = useNavigate();
-  const dispatch = useAppDispatch();
-  const isAuthorization = useAppSelector(getAuthorizationStatus) === AuthorizationStatus.Auth;
+
   const cityArray = useAppSelector(getCurrentOffersState);
   const favoritesArray = useAppSelector(getFavoritesState);
 
   const initialCount = favoritesArray.length;
-  //console.log(initialCount)
 
   const [currentFavorites, setCurrentFavorites] = useState(initialCount);
 

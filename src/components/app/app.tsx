@@ -8,29 +8,25 @@ import FavoritesPage from '../../pages/favorites-page/favorites-page';
 import OfferPage from '../../pages/offer-page/offer-page';
 import PrivateRoute from '../private-route/private-route';
 import ScrollToTop from '../scroll-to-top/scroll-to-top';
-import LoadingScreen from '../../pages/loading-screen/loading-screen';
+//import LoadingScreen from '../../pages/loading-screen/loading-screen';
 import LoginRoute from '../private-route/login-route';
 import { useAppSelector } from '../../hooks/hooks';
-import ErrorLoad from '../error-message/error-load';
+
 import browserHistory from '../../browser-history';
 import HistoryRouter from '../history-route/history-route';
-
-import { getOffersDataLoadingState, getIsFetchError } from '../../store/offers-data/offers-data.selectors';
 import { getAuthorizationStatus } from '../../store/user-process/user-process.selectors';
 
 function App(): JSX.Element {
   console.info('<App />: Render');
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
-  const isOffersDataLoading = useAppSelector(getOffersDataLoadingState);
-  const isFetchError = useAppSelector(getIsFetchError);
+  // const isOffersDataLoading = useAppSelector(getOffersDataLoadingState);
+  // const isFetchError = useAppSelector(getIsFetchError);
 
   // if (isOffersDataLoading) {
   //   return (
   //     <LoadingScreen />
   //   );
   // }
-
-  
 
   return (
 

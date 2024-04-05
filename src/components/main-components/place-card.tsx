@@ -7,16 +7,14 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import cn from 'classnames';
 import { AuthorizationStatus } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-import { useState } from 'react';
 import { statusFavoritesActionMainPage } from '../../store/api-actions';
 import { getAuthorizationStatus } from '../../store/user-process/user-process.selectors';
-import { getFavoritesState } from '../../store/offers-data/offers-data.selectors';
 
 type PlaceCardProps = {
   cardObj: CardType;
-  onMouseOver: (listItemCardId: string) => void;
-  onMouseOut: () => void;
-  onFavoriteClick: (isFavorite : boolean) => void;
+  onMouseOver?: (listItemCardId: string) => void;
+  onMouseOut?: () => void;
+  onFavoriteClick?: (isFavorite : boolean) => void;
 }
 
 function PlaceCard ({cardObj, onMouseOver, onMouseOut, onFavoriteClick} : PlaceCardProps){
@@ -24,15 +22,13 @@ function PlaceCard ({cardObj, onMouseOver, onMouseOut, onFavoriteClick} : PlaceC
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const isAuthorization = useAppSelector(getAuthorizationStatus) === AuthorizationStatus.Auth;
-  const favoritesArray = useAppSelector(getFavoritesState);
-  const initialCount = favoritesArray.length;
 
   const {id, isPremium, previewImage, price, isFavorite, rating, title, type} = cardObj;
   const locationAbs = useLocation().pathname === '/';
 
   const handleListItemHover = (evt: MouseEvent<HTMLElement>) => {
     evt.preventDefault();
-    onMouseOver(id);
+    onMouseOver!(id);
   };
 
   const handleFavoriteClick = async(evt: MouseEvent<HTMLElement>) => {
@@ -46,8 +42,7 @@ function PlaceCard ({cardObj, onMouseOver, onMouseOut, onFavoriteClick} : PlaceC
         favoriteStatus: isFavorite ? 0 : 1,
       }));
       responceCard = responce.payload as CardType;
-console.log(responceCard.isFavorite)
-      onFavoriteClick(responceCard.isFavorite);
+      onFavoriteClick!(responceCard.isFavorite);
     }
   };
 
@@ -73,7 +68,9 @@ console.log(responceCard.isFavorite)
           </div>
 
           <button className={cn('place-card__bookmark-button button', {'place-card__bookmark-button--active': isFavorite})} type="button"
-            onClick={handleFavoriteClick}
+            onClick={(evt) => {
+              handleFavoriteClick(evt);
+            }}
           >
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"></use>

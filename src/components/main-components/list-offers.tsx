@@ -5,9 +5,9 @@ import cn from 'classnames';
 
 type ListOffersProps = {
   rentsCard?: CardsType | null;
-  onListItemHover: (listItemCardId: string) => void;
-  onListItemOut: () => void;
-  onFavoriteClick: (isFavorite : boolean) => void;
+  onListItemHover?: (listItemCardId: string) => void;
+  onListItemOut?: () => void;
+  onFavoriteClick?: (isFavorite : boolean) => void;
 }
 
 function ListOffers({ rentsCard, onListItemHover, onListItemOut, onFavoriteClick}: ListOffersProps): JSX.Element {

@@ -6,7 +6,7 @@ import { getCurrentOffersState, getCityNameState } from '../../store/offers-data
 import { useAppSelector } from '../../hooks/hooks';
 
 type MainPgeFillProps = {
-  onFavoriteClick: (isFavorite : boolean) => void;
+  onFavoriteClick?: (isFavorite : boolean) => void;
 
 }
 
