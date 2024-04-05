@@ -19,7 +19,7 @@ export enum SortType {
 }
 
 export function ratingCard(scale : number) : string{
-  return `${scale * 20}%`;
+  return `${Math.round(scale) * 20}%`;
 }
 
 export const URL_MARKER_DEFAULT =
@@ -30,3 +30,22 @@ export const URL_MARKER_CURRENT = 'img/pin-active.svg';
 export const CITIES = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];
 
 export const SORT = ['Popular', 'Price: low to high', 'Price: high to low', 'Top rated first'];
+export const DEFAULT_MAX_LENGTH = 100;
+export const DEFAULT_MIN_LENGTH = 50;
+
+export enum APIRoute {
+  Offers = '/offers',
+  Offer = '/offers/{offerId}',
+  Login = '/login',
+  Favorites = '/favorite',
+  Comments = '/comments',
+  Logout = '/logout',
+}
+
+export const TIMEOUT_SHOW_ERROR = 2000;
+
+export enum NameSpace {
+  Data = 'DATA',
+  User = 'USER',
+  Offers = 'OFFERS',
+}

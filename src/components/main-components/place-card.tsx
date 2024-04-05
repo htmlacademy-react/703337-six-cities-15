@@ -1,30 +1,55 @@
-import { CardType } from '../../types/card';
+import { CardType } from '../../types/types';
+import { getUpperCaseFirstLetter } from '../../util';
 import { Link } from 'react-router-dom';
 import { ratingCard } from '../../const';
-import { MouseEvent } from 'react';
+import { MouseEvent, memo } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import cn from 'classnames';
+import { AuthorizationStatus } from '../../const';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import { statusFavoritesActionMainPage } from '../../store/api-actions';
+import { getAuthorizationStatus } from '../../store/user-process/user-process.selectors';
 
 type PlaceCardProps = {
   cardObj: CardType;
-  onMouseOver: (listItemCardId: string) => void;
-  onMouseOut: () => void;
+  onMouseOver?: (listItemCardId: string) => void;
+  onMouseOut?: () => void;
+  onFavoriteClick?: (isFavorite : boolean) => void;
 }
 
-function PlaceCard({cardObj, onMouseOver, onMouseOut} : PlaceCardProps){
+function PlaceCard ({cardObj, onMouseOver, onMouseOut, onFavoriteClick} : PlaceCardProps){
+  console.info('<PlaceCard />: Render');
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const isAuthorization = useAppSelector(getAuthorizationStatus) === AuthorizationStatus.Auth;
+
   const {id, isPremium, previewImage, price, isFavorite, rating, title, type} = cardObj;
   const locationAbs = useLocation().pathname === '/';
 
   const handleListItemHover = (evt: MouseEvent<HTMLElement>) => {
     evt.preventDefault();
-    onMouseOver(id);
+    onMouseOver!(id);
+  };
+
+  const handleFavoriteClick = async(evt: MouseEvent<HTMLElement>) => {
+    evt.preventDefault();
+    if(!isAuthorization){
+      navigate('/login');
+    } else{
+      let responceCard = null;
+      const responce = await dispatch(statusFavoritesActionMainPage({
+        id: id,
+        favoriteStatus: isFavorite ? 0 : 1,
+      }));
+      responceCard = responce.payload as CardType;
+      onFavoriteClick!(responceCard.isFavorite);
+    }
   };
 
   return (
 
     <article className={cn('place-card', {'near-places__card': !locationAbs, 'cities__card': locationAbs})}
-      data-id={id} onMouseOver={handleListItemHover} onClick={() => navigate(`/offer/${id}`)} onMouseOut={onMouseOut}
+      data-id={id} onMouseOver={handleListItemHover} onMouseOut={onMouseOut}
     >
 
       {isPremium ? <div className="place-card__mark"><span>Premium</span></div> : ''}
@@ -42,7 +67,11 @@ function PlaceCard({cardObj, onMouseOver, onMouseOut} : PlaceCardProps){
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
 
-          <button className={cn('place-card__bookmark-button button', {'place-card__bookmark-button--active': isFavorite})} type="button">
+          <button className={cn('place-card__bookmark-button button', {'place-card__bookmark-button--active': isFavorite})} type="button"
+            onClick={(evt) => {
+              handleFavoriteClick(evt);
+            }}
+          >
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"></use>
             </svg>
@@ -60,11 +89,12 @@ function PlaceCard({cardObj, onMouseOver, onMouseOut} : PlaceCardProps){
         <h2 className="place-card__name">
           <Link to={`/offer/${id}`}>{title}</Link>
         </h2>
-        <p className="place-card__type">{type}</p>
+        <p className="place-card__type">{getUpperCaseFirstLetter(type)}</p>
       </div>
 
     </article>
   );
 }
 
-export default PlaceCard;
+export const PlaceCardMemo = memo(PlaceCard, (prevProps, nextProps) => prevProps.cardObj === nextProps.cardObj);
+

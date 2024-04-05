@@ -1,10 +1,11 @@
-import { CardsType } from '../../types/card';
+import { CardsType } from '../../types/types';
 import FavoritesCard from './favorite-card';
 
 type FavoritesLocationsProps = {
+  onFavoriteClick: (isfavorite: boolean) => void;
   rentsLocation: CardsType;
 }
-function FavoritesLocations({rentsLocation} : FavoritesLocationsProps): JSX.Element {
+function FavoritesLocations({rentsLocation, onFavoriteClick} : FavoritesLocationsProps): JSX.Element {
 
   return(
     <li className="favorites__locations-items">
@@ -16,7 +17,7 @@ function FavoritesLocations({rentsLocation} : FavoritesLocationsProps): JSX.Elem
         </div>
       </div>
       <div className="favorites__places">
-        {rentsLocation.map((item) => (<FavoritesCard key={item.id} cardObj={item}/>))}
+        {rentsLocation.map((item) => (<FavoritesCard key={item.id} cardObj={item} onFavoriteClick={onFavoriteClick}/>))}
       </div>
     </li>);
 }

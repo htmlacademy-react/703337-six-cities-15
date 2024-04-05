@@ -1,17 +1,16 @@
 import { useState, useEffect } from 'react';
-
 import cn from 'classnames';
 import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
-//import { MouseEvent } from 'react';
+import { changeSortType } from '../../store/offers-process/offers-process.slice';
 import { SORT } from '../../const';
-import { cityNameState, currentSortTypeState } from '../../store/selectors';
-import { changeSortType, sortCurrentOffers } from '../../store/action';
+import { getCityNameState } from '../../store/offers-data/offers-data.selectors';
+import { getCurrentSortTypeState } from '../../store/offers-process/offers-process.selectors';
 
 function SortingOptions(): JSX.Element {
-  const city = useAppSelector(cityNameState);
+  const city = useAppSelector(getCityNameState);
   const dispatch = useAppDispatch();
-  const sortingType = useAppSelector(currentSortTypeState);
-console.log(sortingType)
+  const sortingType = useAppSelector(getCurrentSortTypeState);
+
   const [optionsOpen, setOptionsOpen] = useState(false);
 
   useEffect(() => {
@@ -24,7 +23,7 @@ console.log(sortingType)
 
   const handleListItemClick = (item : string) => {
     dispatch(changeSortType(item));
-    dispatch(sortCurrentOffers());
+    //dispatch(sortCurrentOffers());
     setOptionsOpen(false);
   };
 

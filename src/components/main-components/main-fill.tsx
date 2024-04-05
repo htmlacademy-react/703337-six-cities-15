@@ -1,27 +1,24 @@
 import ListOffers from './list-offers';
 import SortingOptions from './sorting-options';
-import { CardsType } from '../../types/card';
 import MapComponent from '../map/map-component';
 import { useState } from 'react';
-//import { changeCurrentOffers } from '../../store/action';
-import { cityNameState, currentOffersState } from '../../store/selectors';
-//import { sortByPriceHigh,sortByPriceLow,sortByPriceRate } from '../../util';
-//import { SortType } from '../../const';
+import { getCurrentOffersState, getCityNameState } from '../../store/offers-data/offers-data.selectors';
 import { useAppSelector } from '../../hooks/hooks';
 
-type MainPageFillProps = {
-  cityArray: CardsType;
+type MainPgeFillProps = {
+  onFavoriteClick?: (isFavorite : boolean) => void;
+
 }
 
-function MainPageFill({cityArray} : MainPageFillProps): JSX.Element {
+function MainPageFill({onFavoriteClick} : MainPgeFillProps): JSX.Element {
+  console.info('<MainFill />: Render');
   const [cardMouseOver, setCardMouseOver] = useState<string | undefined>('');
-  const city = useAppSelector(cityNameState);
-  //const sortType = useAppSelector(currentSortTypeState);
-  const sortArray = useAppSelector(currentOffersState);
+
+  const city = useAppSelector(getCityNameState);
+  const sortArray = useAppSelector(getCurrentOffersState);
 
   const handleListItemHover = (listItemCardId: string) => {
-    const currentCard = cityArray.find((item) => item.id === listItemCardId)?.id;
-    setCardMouseOver(currentCard);
+    setCardMouseOver(listItemCardId);
   };
 
   const handleListItemOut = () => {
@@ -32,16 +29,16 @@ function MainPageFill({cityArray} : MainPageFillProps): JSX.Element {
     <div className="cities__places-container container">
       <section className="cities__places places">
         <h2 className="visually-hidden">Places</h2>
-        <b className="places__found">{cityArray.length} places to stay in {city}</b>
+        <b className="places__found">{sortArray.length} places to stay in {city}</b>
         <SortingOptions />
         <ListOffers rentsCard={sortArray} onListItemHover={handleListItemHover}
-          onListItemOut={handleListItemOut}
+          onListItemOut={handleListItemOut} onFavoriteClick={onFavoriteClick}
         />
 
 
       </section>
       <div className="cities__right-section">
-        <MapComponent rentsCard={cityArray} selectedCard={cardMouseOver} />
+        <MapComponent rentsCard={sortArray} selectedCard={cardMouseOver} />
       </div>
     </div>
   );

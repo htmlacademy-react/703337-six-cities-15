@@ -1,22 +1,38 @@
-import { CardsType } from '../../types/card';
-import Header from '../../components/header/header-component';
+import { HeaderMemo } from '../../components/header/header-component';
+
+import { getFavoritesState } from '../../store/offers-data/offers-data.selectors';
 import FavoritesList from '../../components/favorites-component/list-favorites-component';
+import { useAppSelector } from '../../hooks/hooks';
+import { getAuthorizationStatus } from '../../store/user-process/user-process.selectors';
+import { AuthorizationStatus } from '../../const';
+import FavoritesPageEmpty from './favorites-empty-page';
+import { useState } from 'react';
 
-type FavoritesPageProps = {
-  rentsCard: CardsType;
-}
+function FavoritesPage(): JSX.Element {
+  const favoritesArray = useAppSelector(getFavoritesState);
+  const initialCount = favoritesArray.length;
+  const isAuthorization = useAppSelector(getAuthorizationStatus) === AuthorizationStatus.Auth;
+  const [currentFavorites, setCurrentFavorites] = useState(initialCount);
 
-function FavoritesPage({rentsCard} : FavoritesPageProps): JSX.Element {
-  const favoritesArray = rentsCard.filter((item) => item.isFavorite);
+  const handleFavoriteClick = (isfavorite : boolean) => {
+    setCurrentFavorites(isfavorite ? currentFavorites + 0 : currentFavorites - 1);
+  };
+
+  if(favoritesArray.length === 0) {
+    return (
+      <FavoritesPageEmpty />
+    );
+  }
+
   return (
     <div className="page">
-      <Header isLoggedIn={false} countFavorite={favoritesArray.length} />
+      <HeaderMemo favorites={initialCount} />
 
       <main className="page__main page__main--favorites">
         <div className="page__favorites-container container">
           <section className="favorites">
             <h1 className="favorites__title">Saved listing</h1>
-            <FavoritesList rentsCard={rentsCard}/>
+            <FavoritesList onFavoriteClick={handleFavoriteClick}/>
 
           </section>
         </div>

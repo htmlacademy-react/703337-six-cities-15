@@ -1,5 +1,5 @@
-import { CardType, CardsType } from './types/card';
-import { SortType } from './const';
+import { CardType, CardsType, CommentType } from './types/types';
+import { SortType, DEFAULT_MAX_LENGTH, DEFAULT_MIN_LENGTH } from './const';
 
 const sortByPriceLow = (a : CardType, b : CardType) => {
   if (a.price > b.price) {
@@ -38,6 +38,7 @@ const sortByPriceRate = (a : CardType, b : CardType) => {
 };
 
 const sortObj = (sortType : string, sortArray : CardsType) => {
+
   switch (sortType) {
     case SortType.Low:
       return sortArray.sort(sortByPriceLow);
@@ -53,4 +54,39 @@ const sortObj = (sortType : string, sortArray : CardsType) => {
   }
 };
 
-export {sortByPriceHigh, sortByPriceLow, sortByPriceRate, sortObj};
+const sortComment = (a: CommentType, b : CommentType) => {
+  if(new Date(b.date) > new Date(a.date)){
+    return 1;
+  }
+
+  if (new Date(b.date) < new Date(a.date)) {
+    return -1;
+  }
+
+  return 0;
+};
+
+const removeCard = (arr : CardsType, id : string) => {
+  const favorite = [...arr].filter((item) => item.id !== id);
+  return favorite;
+};
+
+const addCard = (arr : CardsType, id : string, card : CardType) => {
+  const index = arr.findIndex((element) => element.id === id);
+  const favorite = [...arr];
+  if(index >= 0){
+    favorite.splice(index, 1, card);
+  } else{
+    favorite.push(card);
+  }
+  return favorite;
+};
+
+const maxLengthComment = (comment : string) => comment.length < DEFAULT_MAX_LENGTH;
+const minLengthComment = (comment : string) => comment.length > DEFAULT_MIN_LENGTH;
+
+const getUpperCaseFirstLetter = (str : string) => [...str].map((char, index) =>
+  index === 0 ? char.toUpperCase() : char).join('');
+
+export {sortByPriceHigh, sortByPriceLow, sortByPriceRate, sortObj, getUpperCaseFirstLetter, sortComment,
+  maxLengthComment, minLengthComment, removeCard, addCard};

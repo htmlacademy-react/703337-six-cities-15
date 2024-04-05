@@ -1,47 +1,78 @@
+import { getUpperCaseFirstLetter } from '../../util';
+import { CardType, CardsType, CommentsType } from '../../types/types';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useState, useEffect} from 'react';
+//import Header from '../../components/header/header-component';
+import { HeaderMemo } from '../../components/header/header-component';
+import { fetchOfferAction } from '../../store/api-actions';
 
-import { CardsType } from '../../types/card';
-import { arrayComment } from '../../mocks/comment';
+import LoadingScreen from '../loading-screen/loading-screen';
+import { AuthorizationStatus } from '../../const';
 import Reviews from '../../components/offer/reviews-component';
-import { useParams } from 'react-router-dom';
-import { useState } from 'react';
 import { ratingCard } from '../../const';
+import ErrorLoad from '../../components/error-message/error-load';
 import cn from 'classnames';
-import Header from '../../components/header/header-component';
+import { store } from '../../store';
 import MapComponent from '../../components/map/map-component';
 import ListOffers from '../../components/main-components/list-offers';
+import { getFavoritesState, getOfferState, getIsFetchError } from '../../store/offers-data/offers-data.selectors';
+import { getAuthorizationStatus } from '../../store/user-process/user-process.selectors';
+import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
+import { statusFavoriteOfferAction } from '../../store/api-actions';
 
-type OfferPageProps = {
-  rentsCard: CardsType;
-}
+function OfferPage(): JSX.Element {
+  console.info('<OfferPage />: Render');
+  const param = useParams().id as string;
+  const favoritesArray = useAppSelector(getFavoritesState);
+  const initialCount = favoritesArray.length;
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const isFetchError = useAppSelector(getIsFetchError);
+  const isAuthorization = useAppSelector(getAuthorizationStatus) === AuthorizationStatus.Auth;
+  const offer = useAppSelector(getOfferState);
+  const [currentFavorites, setCurrentFavorites] = useState(initialCount);
 
-function OfferPage({rentsCard} : OfferPageProps): JSX.Element {
-  const params = useParams();
+  useEffect(() => {
+    store.dispatch(fetchOfferAction(param));
+  }, [param]);
 
-  const [cardMouseOver, setCardMouseOver] = useState<string | undefined>('');
-  const offerId = params.id;
-  const offerObj = rentsCard.find((item) => item.id === offerId);
-  const favoritesArray = rentsCard.filter((item) => item.isFavorite);
+  if(isFetchError){
+    return <div><ErrorLoad /></div>;
+  }
 
-  const {images, isPremium, isFavorite, title, rating, bedrooms, maxAdults, type, price, goods, host, description} = offerObj!;
+  if(offer === null){
+    return (<div style={{textAlign: 'center'}}>{<LoadingScreen />}<p>Загружаем предложение</p></div>);
+  }
 
-  const handleListItemHover = (listItemCardId: string) => {
-    const currentCard = rentsCard.find((item) => item.id === listItemCardId)?.id;
-    setCardMouseOver(currentCard);
-  };
+  const currentOffer : CardType | null = offer?.currentOffer;
+  const nearbyOffers : CardsType | null | undefined = offer?.nearby?.slice(0, 3);
+  const comments : CommentsType | undefined = offer?.comments;
+  const nearOffersForMap = [...nearbyOffers as [], currentOffer];
+  const {id, images, isPremium, isFavorite, title, rating, bedrooms, maxAdults, type, price, goods, host, description} = currentOffer!;
 
-  const handleListItemOut = () => {
-    setCardMouseOver(undefined);
+  const handleFavoriteClick = async() => {
+    if(!isAuthorization){
+      navigate('/login');
+    } else{
+      const responce = await dispatch(statusFavoriteOfferAction({
+        id: id,
+        favoriteStatus: isFavorite ? 0 : 1,
+      }));
+      const responceCard = responce.payload as CardType;
+      setCurrentFavorites(responceCard.isFavorite ? currentFavorites + 1 : currentFavorites - 1);
+    }
+
   };
 
   return (
     <div className="page">
-      <Header isLoggedIn={false} countFavorite={favoritesArray.length}/>
+      <HeaderMemo favorites={currentFavorites} />
 
       <main className="page__main page__main--offer">
         <section className="offer">
           <div className="offer__gallery-container container">
             <div className="offer__gallery">
-              {images.map((item : string) =>
+              {images.slice(0, 6).map((item : string) =>
                 (
                   <div key={`photo-${item}`} className="offer__image-wrapper">
                     <img className="offer__image" src={item} alt="Photo studio" />
@@ -57,9 +88,16 @@ function OfferPage({rentsCard} : OfferPageProps): JSX.Element {
 
               <div className="offer__name-wrapper">
                 <h1 className="offer__name">
+
                   {title}
+
                 </h1>
-                <button className={cn('offer__bookmark-button button', {'offer__bookmark-button--active': isFavorite})} type="button">
+                <button className={cn('offer__bookmark-button button', {'offer__bookmark-button--active': isFavorite})} type="button"
+                  onClick={(evt) => {
+                    evt.preventDefault();
+                    handleFavoriteClick();
+                  }}
+                >
                   <svg className="offer__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>
                   </svg>
@@ -71,17 +109,17 @@ function OfferPage({rentsCard} : OfferPageProps): JSX.Element {
                   <span style={{width: ratingCard(rating)}}></span>
                   <span className="visually-hidden">Rating</span>
                 </div>
-                <span className="offer__rating-value rating__value">4.8</span>
+                <span className="offer__rating-value rating__value">{rating}</span>
               </div>
               <ul className="offer__features">
                 <li className="offer__feature offer__feature--entire">
-                  {type}
+                  {getUpperCaseFirstLetter(type)}
                 </li>
                 <li className="offer__feature offer__feature--bedrooms">
-                  {bedrooms}
+                  {bedrooms} {bedrooms > 1 ? 'Bedrooms' : 'Bedroom'}
                 </li>
                 <li className="offer__feature offer__feature--adults">
-                  {maxAdults}
+                Max {maxAdults} {maxAdults > 1 ? 'adults' : 'adult'}
                 </li>
               </ul>
               <div className="offer__price">
@@ -111,31 +149,27 @@ function OfferPage({rentsCard} : OfferPageProps): JSX.Element {
                   <span className="offer__user-name">
                     {host.name}
                   </span>
-                  <span className="offer__user-status">
-                    {host.isPro ? 'Pro' : ''}
-                  </span>
+
+                  {host.isPro ? <span className="offer__user-status">Pro</span> : ''}
+
                 </div>
                 <div className="offer__description">
                   <p className="offer__text">
                     {description}
                   </p>
-                  <p className="offer__text">
-                    An independent House, strategically located between Rembrand Square and National Opera, but where the bustle of the city comes to rest in this alley flowery and colorful.
-                  </p>
+
                 </div>
               </div>
-              <Reviews commentList={arrayComment} />
+              <Reviews commentList={comments} />
 
             </div>
           </div>
-          <MapComponent rentsCard={rentsCard} selectedCard={cardMouseOver} />
+          <MapComponent rentsCard={nearOffersForMap} selectedCard={currentOffer?.id} />
         </section>
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
-            <ListOffers rentsCard={rentsCard} onListItemHover={handleListItemHover}
-              onListItemOut={handleListItemOut}
-            />
+            <ListOffers rentsCard={nearbyOffers} />
 
           </section>
         </div>
