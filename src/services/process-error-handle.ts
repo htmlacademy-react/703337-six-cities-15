@@ -1,6 +1,6 @@
 import { store } from '../store';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { setError } from '../store/action';
+import { setError } from '../store/offers-data/offers-data.slice';
 import { TIMEOUT_SHOW_ERROR } from '../const';
 //import { clearErrorAction } from '../store/api-actions';
 

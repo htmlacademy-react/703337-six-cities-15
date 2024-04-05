@@ -17,6 +17,7 @@ export type OffersData = {
   favorites: CardsType;
   isOffersDataLoading: boolean;
   error: string | null;
+  isFetchError: boolean;
 };
 
 export type OffersProcess = {

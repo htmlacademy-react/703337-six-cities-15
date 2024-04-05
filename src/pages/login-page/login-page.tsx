@@ -2,26 +2,41 @@ import { useRef, FormEvent } from 'react';
 import { useAppDispatch } from '../../hooks/hooks';
 import { loginAction } from '../../store/api-actions';
 import Header from '../../components/header/header-component';
-import { HeaderMemo } from '../../components/header/header-component';
+import { ChangeEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { processErrorHandle } from '../../services/process-error-handle';
 
 function LoginPage(): JSX.Element {
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const passwordRegex = /(?=.*[0-9])(?=.*[a-z])[0-9a-z]{2,}/i;
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
-    if (loginRef.current !== null && passwordRef.current !== null) {
+    if (loginRef.current !== null && passwordRef.current !== null && passwordRegex.test(passwordRef.current.value)) {
       dispatch(loginAction({
         login: loginRef.current.value,
         password: passwordRef.current.value
       }));
+      navigate('/');
+    }else{
+      processErrorHandle('Неверно заполнены поля.');
+    }
+
+  };
+
+  const handlePasswordChange = ({target}: ChangeEvent<HTMLInputElement>) => {
+    const {value} = target;
+    if(!passwordRegex.test(value)){
+      processErrorHandle('Пароль состоит минимум из одной буквы и цифры');
     }
   };
 
   return (
     <div className="page page--gray page--login">
-      <HeaderMemo />
+      <Header />
 
       <main className="page__main page__main--login">
         <div className="page__login-container container">
@@ -48,7 +63,7 @@ function LoginPage(): JSX.Element {
                   className="login__input form__input"
                   type="password"
                   name="password"
-                  placeholder="Password"
+                  placeholder="Password" onChange={handlePasswordChange}
                   required
                 />
               </div>

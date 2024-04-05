@@ -2,8 +2,8 @@ import { useState, FormEvent, ChangeEvent } from 'react';
 import { maxLengthComment, minLengthComment } from '../../util';
 import { useParams } from 'react-router-dom';
 import { useAppDispatch } from '../../hooks/hooks';
-import { setError } from '../../store/action';
-//import { clearErrorAction } from '../../store/api-actions';
+import { setError } from '../../store/offers-data/offers-data.slice';
+import { clearErrorAction } from '../../services/process-error-handle';
 import { fetchCommentAction } from '../../store/api-actions';
 import { DEFAULT_MAX_LENGTH } from '../../const';
 

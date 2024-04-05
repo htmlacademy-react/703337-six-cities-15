@@ -18,6 +18,7 @@ export const userProcess = createSlice({
       .addCase(checkAuthAction.fulfilled, (state, action) => {
         state.authorizationStatus = AuthorizationStatus.Auth;
         state.login = action.payload;
+        //store.dispatch(fetchFavoriteAction());
       })
       .addCase(checkAuthAction.rejected, (state) => {
         state.authorizationStatus = AuthorizationStatus.NoAuth;
@@ -30,6 +31,7 @@ export const userProcess = createSlice({
         state.authorizationStatus = AuthorizationStatus.NoAuth;
       })
       .addCase(logoutAction.fulfilled, (state) => {
+        state.login = null;
         state.authorizationStatus = AuthorizationStatus.NoAuth;
       });
   }

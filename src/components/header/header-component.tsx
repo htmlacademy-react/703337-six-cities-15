@@ -58,3 +58,5 @@ function Header({favorites} : HeaderComponentProps): JSX.Element {
 }
 //
 export const HeaderMemo = memo(Header, (prevProps, nextProps) => prevProps === nextProps);
+
+export default Header;

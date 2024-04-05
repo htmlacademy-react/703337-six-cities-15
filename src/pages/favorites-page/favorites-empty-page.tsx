@@ -19,7 +19,7 @@ function FavoritesPageEmpty(): JSX.Element {
                 <li className="header__nav-item user">
                   <a className="header__nav-link header__nav-link--profile" href="#">
                     <div className="header__avatar-wrapper user__avatar-wrapper">
-                    <img className="reviews__avatar user__avatar" src={login?.avatarUrl} width="54" height="54" alt="Reviews avatar" />
+                      <img className="reviews__avatar user__avatar" src={login?.avatarUrl} width="54" height="54" alt="Reviews avatar" />
                     </div>
                     <span className="header__user-name user__name">{login?.email}</span>
                     <span className="header__favorite-count">0</span>

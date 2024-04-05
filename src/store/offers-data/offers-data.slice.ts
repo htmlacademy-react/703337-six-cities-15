@@ -1,12 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { NameSpace, CITIES } from '../../const';
-import { fetchOffersAction, fetchOfferAction, fetchFavoriteAction } from '../api-actions';
+import { fetchOffersAction, fetchOfferAction, fetchFavoriteAction, statusFavoriteOfferAction, fetchCommentAction,
+  statusFavoritesActionMainPage } from '../api-actions';
 import { OffersData } from '../../types/state';
-import { sortObj } from '../../util';
+import { sortObj, removeCard, addCard } from '../../util';
 import { changeSortType } from '../offers-process/offers-process.slice';
 
 type SearchByName = {
   payload: string;
+  type: string;
+};
+
+type SearchByFlag = {
+  payload: boolean;
   type: string;
 };
 
@@ -18,6 +24,7 @@ const initialState: OffersData = {
   favorites:[],
   isOffersDataLoading: false,
   error: null,
+  isFetchError: false,
 };
 
 export const offersData = createSlice({
@@ -27,8 +34,14 @@ export const offersData = createSlice({
     changeCity: (state, action : SearchByName) => {
       state.city = action.payload;
     },
+    setError: (state, action) => {
+      state.error = action.payload as string;
+    },
+    setIsFetchError: (state, action : SearchByFlag) => {
+      state.isFetchError = action.payload;
+    },
     filterOffers: (state) => {
-      state.currentOffers = state.offers.filter((item) => item.city.name === state.city) ;
+      state.currentOffers = state.offers.filter((item) => item.city.name === state.city);
     }
   },
   extraReducers(builder) {
@@ -40,13 +53,12 @@ export const offersData = createSlice({
         state.offers = action.payload;
         //offersData.caseReducers.filterOffers(state);
         state.currentOffers = state.offers.filter((item) => item.city.name === state.city);
-
         state.isOffersDataLoading = false;
       })
-      .addCase(fetchOffersAction.rejected, (state, action) => {
-        console.log(action.payload);
+      .addCase(fetchOffersAction.rejected, (state) => {
         state.isOffersDataLoading = false;
-        state.error = 'error';
+        state.isFetchError = true;
+        state.error = 'Не удалось загрузить предложения!';
       })
       .addCase(changeSortType, (state, action) => {
         state.currentOffers = sortObj(action.payload, state.currentOffers);
@@ -55,16 +67,40 @@ export const offersData = createSlice({
         state.isOffersDataLoading = true;
       })
       .addCase(fetchOfferAction.fulfilled, (state, action) => {
-        console.log(action.payload)
         state.offer = action.payload;
-        state.isOffersDataLoading = false;
+        state.isFetchError = false;
+      })
+      .addCase(fetchOfferAction.rejected, (state) => {
+        state.isFetchError = true;
+        state.error = 'Неудалось загрузить предложение';
+      })
+      .addCase(fetchFavoriteAction.pending, (state) => {
+        state.isOffersDataLoading = true;
       })
       .addCase(fetchFavoriteAction.fulfilled, (state, action) => {
         state.favorites = action.payload;
         state.isOffersDataLoading = false;
+      })
+      .addCase(fetchFavoriteAction.rejected, (state) => {
+        state.isOffersDataLoading = false;
+        state.error = 'Не удалось загрузить Favorites!';
+      })
+      .addCase(statusFavoriteOfferAction.fulfilled, (state, action) => {
+        state.offer!.currentOffer = action.payload;
+        state.isOffersDataLoading = false;
+      })
+      .addCase(statusFavoritesActionMainPage.fulfilled, (state, action) => {
+        state.favorites = action.payload.isFavorite
+          ? addCard([...state.favorites], action.payload.id, action.payload)
+          : removeCard([...state.favorites], action.payload.id);
+
+        state.currentOffers = addCard([...state.currentOffers], action.payload.id, action.payload);
+      })
+      .addCase(fetchCommentAction.fulfilled, (state, action) => {
+        state.offer!.comments = [...state.offer!.comments, action.payload];
+        state.isOffersDataLoading = false;
       });
   }
 });
-const {filterOffers, changeCity} = offersData.actions;
-export {filterOffers, changeCity};
+export const { changeCity, setError, filterOffers, setIsFetchError} = offersData.actions;
 

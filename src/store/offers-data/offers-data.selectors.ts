@@ -11,8 +11,11 @@ export const getOfferState = (state : State) => state[NameSpace.Data].offer;
 export const getFavoritesState = (state : State) => state[NameSpace.Data].favorites;
 export const getCurrentCommentsState = (state : State) => state[NameSpace.Data].offer?.comments;
 export const getOffersDataLoadingState = (state : State) => state[NameSpace.Data].isOffersDataLoading;
+export const getErrorState = (state : State) => state[NameSpace.Data].error;
+export const getIsFetchError = (state : State) => state[NameSpace.Data].isFetchError;
 
 export const getCommentsSortState = createSelector(
   [getCurrentCommentsState], (comments) : CommentsType => [...comments as []].sort(sortComment).slice(0, 10)
-
 );
+
+

@@ -1,6 +1,5 @@
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-//import { changeCity, filterOffers} from '../../store/action';
-import { filterOffers, changeCity } from '../../store/offers-data/offers-data.slice';
+import { changeCity, filterOffers } from '../../store/offers-data/offers-data.slice';
 import { getCityNameState } from '../../store/offers-data/offers-data.selectors';
 import cn from 'classnames';
 

@@ -66,8 +66,18 @@ const sortComment = (a: CommentType, b : CommentType) => {
   return 0;
 };
 
-const removeFavorite = (arr : CardsType, id : string) => {
+const removeCard = (arr : CardsType, id : string) => {
   const favorite = [...arr].filter((item) => item.id !== id);
+  return favorite;
+};
+
+const addCard = (arr : CardsType, id : string, card : CardType) => {
+  const index = arr.findIndex((element) => element.id === id);
+  const favorite = [...arr];
+  if(index >= 0){
+    favorite.splice(index, 1, card);
+  } else{favorite.push(card);
+  }
   return favorite;
 };
 
@@ -78,4 +88,4 @@ const getUpperCaseFirstLetter = (str : string) => [...str].map((char, index) =>
   index === 0 ? char.toUpperCase() : char).join('');
 
 export {sortByPriceHigh, sortByPriceLow, sortByPriceRate, sortObj, getUpperCaseFirstLetter, sortComment,
-  maxLengthComment, minLengthComment, removeFavorite};
+  maxLengthComment, minLengthComment, removeCard, addCard};

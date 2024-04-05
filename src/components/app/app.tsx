@@ -1,4 +1,4 @@
-import {Route, BrowserRouter, Routes} from 'react-router-dom';
+import {Route, Routes} from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { AppRoute } from '../../const';
 import MainPage from '../../pages/main-page/main-page';
@@ -12,30 +12,30 @@ import LoadingScreen from '../../pages/loading-screen/loading-screen';
 import LoginRoute from '../private-route/login-route';
 import { useAppSelector } from '../../hooks/hooks';
 import ErrorLoad from '../error-message/error-load';
-import { AuthorizationStatus } from '../../const';
-import { getOffersDataLoadingState } from '../../store/offers-data/offers-data.selectors';
+import browserHistory from '../../browser-history';
+import HistoryRouter from '../history-route/history-route';
+
+import { getOffersDataLoadingState, getIsFetchError } from '../../store/offers-data/offers-data.selectors';
 import { getAuthorizationStatus } from '../../store/user-process/user-process.selectors';
 
 function App(): JSX.Element {
   console.info('<App />: Render');
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const isOffersDataLoading = useAppSelector(getOffersDataLoadingState);
-  const isFetchError = useAppSelector((state) => state.isFetchError);
-//console.log(isOffersDataLoading)
-  if (authorizationStatus === AuthorizationStatus.Unknown || isOffersDataLoading) {
-    return (
-      <LoadingScreen />
-    );
-  }
+  const isFetchError = useAppSelector(getIsFetchError);
 
-  if(isFetchError){
-    return <div><ErrorLoad />Это App</div>;
-  }
+  // if (isOffersDataLoading) {
+  //   return (
+  //     <LoadingScreen />
+  //   );
+  // }
+
+  
 
   return (
 
     <HelmetProvider>
-      <BrowserRouter>
+      <HistoryRouter history={browserHistory}>
         <ScrollToTop />
         <Routes>
           <Route
@@ -68,7 +68,7 @@ function App(): JSX.Element {
           />
 
         </Routes>
-      </BrowserRouter>
+      </HistoryRouter>
     </HelmetProvider>
   );
 }

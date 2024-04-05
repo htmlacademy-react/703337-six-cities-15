@@ -10,11 +10,12 @@ import LoadingScreen from '../loading-screen/loading-screen';
 import { AuthorizationStatus } from '../../const';
 import Reviews from '../../components/offer/reviews-component';
 import { ratingCard } from '../../const';
+import ErrorLoad from '../../components/error-message/error-load';
 import cn from 'classnames';
 import { store } from '../../store';
 import MapComponent from '../../components/map/map-component';
 import ListOffers from '../../components/main-components/list-offers';
-import { getFavoritesState, getOfferState } from '../../store/offers-data/offers-data.selectors';
+import { getFavoritesState, getOfferState, getIsFetchError } from '../../store/offers-data/offers-data.selectors';
 import { getAuthorizationStatus } from '../../store/user-process/user-process.selectors';
 import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
 import { statusFavoriteOfferAction } from '../../store/api-actions';
@@ -26,20 +27,26 @@ function OfferPage(): JSX.Element {
   const initialCount = favoritesArray.length;
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const isFetchError = useAppSelector(getIsFetchError);
   const isAuthorization = useAppSelector(getAuthorizationStatus) === AuthorizationStatus.Auth;
   const offer = useAppSelector(getOfferState);
   const [currentFavorites, setCurrentFavorites] = useState(initialCount);
 
   useEffect(() => {
     store.dispatch(fetchOfferAction(param));
-  }, []);
+  }, [param]);
 
+  if(isFetchError){
+    return <div><ErrorLoad /></div>;
+  }
+
+  
   if(offer === null){
     return (<div style={{textAlign: 'center'}}>{<LoadingScreen />}<p>Загружаем предложение</p></div>);
   }
 
   const currentOffer : CardType | null = offer?.currentOffer;
-  const nearbyOffers : CardsType | null = offer?.nearby;
+  const nearbyOffers : CardsType | null | undefined = offer?.nearby?.slice(0, 3);
   const comments : CommentsType | undefined = offer?.comments;
   const nearOffersForMap = [...nearbyOffers as [], currentOffer];
   const {id, images, isPremium, isFavorite, title, rating, bedrooms, maxAdults, type, price, goods, host, description} = currentOffer!;
@@ -48,16 +55,18 @@ function OfferPage(): JSX.Element {
 
   const handleListItemOut = () => null;
 
-  const handleFavoriteClick = () => {
+  const handleFavoriteClick = async() => {
     if(!isAuthorization){
       navigate('/login');
     } else{
-      dispatch(statusFavoriteOfferAction({
+      const responce = await dispatch(statusFavoriteOfferAction({
         id: id,
         favoriteStatus: isFavorite ? 0 : 1,
       }));
-      setCurrentFavorites(isFavorite ? currentFavorites - 1 : currentFavorites + 1);
+      const responceCard = responce.payload as CardType;
+      setCurrentFavorites(responceCard.isFavorite ? currentFavorites + 1 : currentFavorites - 1);
     }
+
   };
 
   return (
@@ -68,7 +77,7 @@ function OfferPage(): JSX.Element {
         <section className="offer">
           <div className="offer__gallery-container container">
             <div className="offer__gallery">
-              {images.map((item : string) =>
+              {images.slice(0, 6).map((item : string) =>
                 (
                   <div key={`photo-${item}`} className="offer__image-wrapper">
                     <img className="offer__image" src={item} alt="Photo studio" />
@@ -142,9 +151,9 @@ function OfferPage(): JSX.Element {
                   <span className="offer__user-name">
                     {host.name}
                   </span>
-                  <span className="offer__user-status">
-                    {host.isPro ? 'Pro' : ''}
-                  </span>
+
+                  {host.isPro ? <span className="offer__user-status">Pro</span> : ''}
+
                 </div>
                 <div className="offer__description">
                   <p className="offer__text">

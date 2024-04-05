@@ -3,7 +3,7 @@ import { ratingCard } from '../../const';
 import cn from 'classnames';
 import { Link } from 'react-router-dom';
 import { MouseEvent } from 'react';
-import { statusFavoritesAction, statusNotFavoritesAction } from '../../store/api-actions';
+import { statusFavoritesActionMainPage } from '../../store/api-actions';
 import { useAppDispatch } from '../../hooks/hooks';
 
 type FavoriteCardProps = {
@@ -13,26 +13,22 @@ type FavoriteCardProps = {
 
 const FAVORITE = 1;
 const UNFAVORITE = 0;
-
+//evt: MouseEvent<HTMLElement>
 function FavoritesCard({cardObj, onFavoriteClick} : FavoriteCardProps): JSX.Element {
   const dispatch = useAppDispatch();
   const {id, isPremium, isFavorite, previewImage, price, rating, title, type} = cardObj;
 
-  const handleListItemHover = (evt: MouseEvent<HTMLElement>) => {
-    evt.preventDefault();
-    if(isFavorite){
-      dispatch(statusNotFavoritesAction({
-        id: id,
-        favoriteStatus: isFavorite ? UNFAVORITE : FAVORITE,
-      }));
-    } else{
-      dispatch(statusFavoritesAction({
-        id: id,
-        favoriteStatus: isFavorite ? UNFAVORITE : FAVORITE,
-      }));
-    }
+  const handleListItemClick = async() => {
+    //evt.preventDefault();
+    let responceCard = null;
 
-    onFavoriteClick(isFavorite);
+    const responce = await dispatch(statusFavoritesActionMainPage({
+      id: id,
+      favoriteStatus: isFavorite ? UNFAVORITE : FAVORITE,
+    }));
+
+    responceCard = responce.payload as CardType;
+    onFavoriteClick(responceCard?.isFavorite);
   };
 
   return (
@@ -52,7 +48,7 @@ function FavoritesCard({cardObj, onFavoriteClick} : FavoriteCardProps): JSX.Elem
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
           <button className={cn('place-card__bookmark-button button', {'place-card__bookmark-button--active': isFavorite})} type="button"
-            onClick={handleListItemHover}
+            onClick={handleListItemClick}
           >
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"></use>

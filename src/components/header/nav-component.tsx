@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
 import { logoutAction} from '../../store/api-actions';
 import { getFavoritesState } from '../../store/offers-data/offers-data.selectors';
@@ -32,9 +33,9 @@ function NavComponent({favoritesCount} : NavComponentProps): JSX.Element {
           </Link>
         </li>
         <li className="header__nav-item" onClick={handleClickSignOut}>
-          <a className="header__nav-link" href="#">
+          <Link to="/login" className="header__nav-link" >
             <span className="header__signout">Sign out</span>
-          </a>
+          </Link>
         </li>
       </ul>
     </nav>
