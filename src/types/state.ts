@@ -7,8 +7,7 @@ export type UserProcess = {
     authorizationStatus: AuthorizationStatus;
     isAuthorization: boolean;
     login: null | UserData;
-    error: string | null;;
-    
+    isLoadLoginError: boolean;
   };
 
 export type OffersData = {

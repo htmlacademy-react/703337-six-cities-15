@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { NameSpace, CITIES } from '../../const';
 import { fetchOffersAction, fetchOfferAction, fetchFavoriteAction, statusFavoriteOfferAction, fetchCommentAction,
-  statusFavoritesActionMainPage } from '../api-actions';
+  statusFavoritesActionMainPage, loginAction} from '../api-actions';
 import { OffersData } from '../../types/state';
 import { sortObj, removeCard, addCard } from '../../util';
 import { changeSortType } from '../offers-process/offers-process.slice';
@@ -74,8 +74,8 @@ export const offersData = createSlice({
         state.isFetchError = true;
         state.error = 'Неудалось загрузить предложение';
       })
-      // .addCase(fetchFavoriteAction.pending, (state) => {
-      //   state.isDataLoading = true;
+      // .addCase(loginAction.rejected, (state) => {
+      //   state.error = 'Не удалось авторизоваться!';
       // })
       .addCase(fetchFavoriteAction.fulfilled, (state, action) => {
         state.favorites = action.payload;

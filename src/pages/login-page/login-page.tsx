@@ -1,18 +1,24 @@
 import { useRef, FormEvent } from 'react';
-import { useAppDispatch } from '../../hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { loginAction } from '../../store/api-actions';
 import Header from '../../components/header/header-component';
 import { ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { processErrorHandle } from '../../services/process-error-handle';
+import { getLoadError } from '../../store/user-process/user-process.selectors';
+import ErrorLoadLogin from '../../components/error-message/error-load-login';
 
 function LoginPage(): JSX.Element {
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const isErrorLoad = useAppSelector(getLoadError);
   const passwordRegex = /(?=.*[0-9])(?=.*[a-z])[0-9a-z]{2,}/i;
 
+  // if(isErrorLoad){
+  //   return(<ErrorLoadLogin/>);
+  // }
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
     if (loginRef.current !== null && passwordRef.current !== null && passwordRegex.test(passwordRef.current.value)) {
@@ -20,10 +26,10 @@ function LoginPage(): JSX.Element {
         login: loginRef.current.value,
         password: passwordRef.current.value
       }));
-      navigate('/');
-    }else{
-      processErrorHandle('Неверно заполнены поля.');
-    }
+      //navigate('/');
+    } //else{
+    //   processErrorHandle('Неверно заполнены поля.');
+    // }
 
   };
 

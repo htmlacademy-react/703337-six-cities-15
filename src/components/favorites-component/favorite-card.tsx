@@ -27,14 +27,14 @@ function FavoritesCard({cardObj, onFavoriteClick} : FavoriteCardProps): JSX.Elem
     responceCard = responce.payload as CardType;
     onFavoriteClick(responceCard?.isFavorite);
   };
-
+//{`/offer/${id}`}
   return (
     <article className="favorites__card place-card" data-id={id}>
 
       {isPremium ? <div className="place-card__mark"><span>Premium</span></div> : ''}
 
       <div className="favorites__image-wrapper place-card__image-wrapper">
-        <Link to={`/offer/${id}`}>
+        <Link to="/">
           <img className="place-card__image" src={previewImage} width="150" height="110" alt="Place image" />
         </Link>
       </div>

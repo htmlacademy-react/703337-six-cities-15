@@ -19,7 +19,6 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <ErrorMessage />
-      <SuccessMessage/>
       <App />
     </Provider>
   </React.StrictMode>
