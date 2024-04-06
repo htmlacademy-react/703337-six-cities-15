@@ -1,8 +1,7 @@
 import { NameSpace } from '../../const';
 import { expect } from 'vitest';
 import { getCurrentSortTypeState, getError } from './offers-process.selectors';
-import matchers from '@testing-library/jest-dom/matchers';
-expect.extend(matchers);
+
 
 describe('OffersProcess selectors', () => {
   const state = {

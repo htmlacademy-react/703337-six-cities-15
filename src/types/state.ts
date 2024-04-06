@@ -7,6 +7,8 @@ export type UserProcess = {
     authorizationStatus: AuthorizationStatus;
     isAuthorization: boolean;
     login: null | UserData;
+    error: string | null;;
+    
   };
 
 export type OffersData = {
@@ -21,8 +23,7 @@ export type OffersData = {
 };
 
 export type OffersProcess = {
-  sortType: string;
-  error: string | null;
+  sortType: string;  
 };
 
 export type State = ReturnType<typeof store.getState>;

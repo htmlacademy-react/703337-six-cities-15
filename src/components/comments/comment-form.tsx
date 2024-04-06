@@ -6,6 +6,11 @@ import { setError } from '../../store/offers-data/offers-data.slice';
 import { clearErrorAction } from '../../services/process-error-handle';
 import { fetchCommentAction } from '../../store/api-actions';
 import { DEFAULT_MAX_LENGTH } from '../../const';
+import { as } from 'vitest/dist/reporters-5f784f42.js';
+
+interface KeyTitle {
+  [key: string]: string;
+}
 
 function CommentForm(): JSX.Element {
   const[formData, setFormData] = useState({comment: '', rating: 0});
@@ -22,7 +27,16 @@ function CommentForm(): JSX.Element {
     }
   };
 
+  const ratingMap : KeyTitle = {
+    '5': 'perfect',
+    '4': 'good',
+    '3': 'not bad',
+    '2': 'badly',
+    '1': 'terribly',
+  };
+
   const handleFieldChange = ({target}: ChangeEvent<HTMLTextAreaElement>) => {
+
     const {value} = target;
     setFormData({...formData, comment: value});
 
@@ -71,7 +85,7 @@ function CommentForm(): JSX.Element {
               <input key={`${item}star-rating`} checked={`${item}` === String(formData.rating)} onChange={handleChangeRating} className="form__rating-input visually-hidden"
                 name="rating" value={item} id={`${item}-stars`} type="radio" disabled={disabled}
               />
-              <label htmlFor={`${item}-stars`} className="reviews__rating-label form__rating-label" title="perfect">
+              <label htmlFor={`${item}-stars`} className="reviews__rating-label form__rating-label" title={ratingMap[String(item)]}>
 
                 <svg className="form__star-image" width="37" height="33">
                   <use xlinkHref="#icon-star">
@@ -79,7 +93,8 @@ function CommentForm(): JSX.Element {
                 </svg>
               </label>
             </>
-          ))}
+          )
+        )}
 
       </div>
       <textarea onChange={handleFieldChange} value={formData.comment} className="reviews__textarea form__textarea" id="review" name="review"

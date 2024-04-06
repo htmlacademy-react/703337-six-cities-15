@@ -88,5 +88,9 @@ const minLengthComment = (comment : string) => comment.length > DEFAULT_MIN_LENG
 const getUpperCaseFirstLetter = (str : string) => [...str].map((char, index) =>
   index === 0 ? char.toUpperCase() : char).join('');
 
+function getRandomCity(min : number, max : number) {
+  return Math.random() * (max - min) + min;
+}
+
 export {sortByPriceHigh, sortByPriceLow, sortByPriceRate, sortObj, getUpperCaseFirstLetter, sortComment,
-  maxLengthComment, minLengthComment, removeCard, addCard};
+  maxLengthComment, minLengthComment, removeCard, addCard, getRandomCity};

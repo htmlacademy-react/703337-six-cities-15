@@ -63,9 +63,9 @@ export const offersData = createSlice({
       .addCase(changeSortType, (state, action) => {
         state.currentOffers = sortObj(action.payload, state.currentOffers);
       })
-      .addCase(fetchOfferAction.pending, (state) => {
-        state.isOffersDataLoading = true;
-      })
+      // .addCase(fetchOfferAction.pending, (state) => {
+      //   state.isOffersDataLoading = true;
+      // })
       .addCase(fetchOfferAction.fulfilled, (state, action) => {
         state.offer = action.payload;
         state.isFetchError = false;
@@ -74,9 +74,9 @@ export const offersData = createSlice({
         state.isFetchError = true;
         state.error = 'Неудалось загрузить предложение';
       })
-      .addCase(fetchFavoriteAction.pending, (state) => {
-        state.isOffersDataLoading = true;
-      })
+      // .addCase(fetchFavoriteAction.pending, (state) => {
+      //   state.isDataLoading = true;
+      // })
       .addCase(fetchFavoriteAction.fulfilled, (state, action) => {
         state.favorites = action.payload;
         state.isOffersDataLoading = false;
