@@ -1,10 +1,11 @@
-import { offersProcess, changeSortType } from "./offers-process.slice";
+import { offersProcess, changeSortType } from './offers-process.slice';
+
 describe('OffersProcess Slice', () => {
   it('should return initial state with empty action', () => {
     const emptyAction = { type: '' };
+
     const expectedState = {
       sortType: '',
-      error: null,
     };
 
     const result = offersProcess.reducer(expectedState, emptyAction);
@@ -14,7 +15,7 @@ describe('OffersProcess Slice', () => {
 
   it('should return default initial state with empty action and undefined state', () => {
     const emptyAction = { type: '' };
-    const expectedState = { sortType: 'Low', error: 'FIRST_GAME_STEP' };
+    const expectedState = { sortType: 'q', };
 
     const result = offersProcess.reducer(undefined, emptyAction);
 
@@ -22,43 +23,12 @@ describe('OffersProcess Slice', () => {
   });
 
   it('should change sort type with "changeSortType" action', () => {
-    const initialState = { sortType: 'high to low', step: 10 };
-    const expectedState = { mistakes: 0, step: FIRST_GAME_STEP };
+    const initialState = { sortType: 'high to low', };
+    const expectedState = { sortType: 'low to high', };
 
-    const result = gameProcess.reducer(initialState, resetGame);
+    const result = offersProcess.reducer(initialState, changeSortType('low to high'));
 
     expect(result).toEqual(expectedState);
   });
+});
 
-    it('should increment step with "incrementStep" action', () => {
-      const initialState = { mistakes: 333, step: 4 };
-      const expectedStep = 5;
-  
-      const result = gameProcess.reducer(initialState, incrementStep);
-  
-      expect(result.step).toBe(expectedStep);
-    });
-  
-    it('should not increment mistake count with "checkUserAnswer" action and correct answer', () => {
-      const initialState = { mistakes: 0, step: 4 };
-      const expectedMistakeCount = 0;
-      const question = makeFakeArtistQuestion();
-      const { artist: userAnswer } = question.song;
-  
-      const result = gameProcess.reducer(initialState, checkUserAnswer({ question, userAnswer }));
-  
-      expect(result.mistakes).toBe(expectedMistakeCount);
-    });
-  
-    it('should increment mistake count with "checkUserAnswer" action and not correct answer', () => {
-      const initialState = { mistakes: 0, step: 4 };
-      const expectedMistakeCount = 1;
-      const question = makeFakeArtistQuestion();
-      const userAnswer = 'unknown artist';
-  
-      const result = gameProcess.reducer(initialState, checkUserAnswer({ question, userAnswer }));
-  
-      expect(result.mistakes).toBe(expectedMistakeCount);
-    });
-  
-  });

@@ -1,8 +1,13 @@
 import { Link } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { logoutAction} from '../../store/api-actions';
 import { getFavoritesState } from '../../store/offers-data/offers-data.selectors';
 import { getLogin } from '../../store/user-process/user-process.selectors';
+import { AppRoute } from '../../const';
+import { redirectToRoute } from '../../store/action';
+// import LoadingLogoutScreen from '../../pages/loading-screen/logout-load';
+// import { getIsFetchError } from '../../store/offers-data/offers-data.selectors';
 
 type NavComponentProps = {
   favoritesCount?: number;
@@ -12,10 +17,12 @@ function NavComponent({favoritesCount} : NavComponentProps): JSX.Element {
   const loginState = useAppSelector(getLogin);
   const favorites = useAppSelector(getFavoritesState);
   const dispatch = useAppDispatch();
+  const location = useLocation().pathname === '/';
   console.info('<Nav />: Render');
 
-  const handleClickSignOut = () => {
-    dispatch(logoutAction());
+  const handleClickSignOut = async() => {
+    await dispatch(logoutAction());
+    if(location){dispatch(redirectToRoute(AppRoute.Root))}
   };
 
   return (
@@ -32,7 +39,7 @@ function NavComponent({favoritesCount} : NavComponentProps): JSX.Element {
           </Link>
         </li>
         <li className="header__nav-item" onClick={handleClickSignOut}>
-          <Link to="/login" className="header__nav-link" >
+          <Link to="/" className="header__nav-link" >
             <span className="header__signout">Sign out</span>
           </Link>
         </li>

@@ -10,7 +10,6 @@ type SearchByName = {
 
 const initialState: OffersProcess = {
   sortType: '',
-
 };
 
 export const offersProcess = createSlice({

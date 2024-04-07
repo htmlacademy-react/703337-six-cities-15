@@ -19,10 +19,11 @@ export type OffersData = {
   isOffersDataLoading: boolean;
   error: string | null;
   isFetchError: boolean;
+  isFetchLogout: boolean;
 };
 
 export type OffersProcess = {
-  sortType: string;  
+  sortType: string;
 };
 
 export type State = ReturnType<typeof store.getState>;
