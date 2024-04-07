@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { NameSpace, CITIES } from '../../const';
 import { fetchOffersAction, fetchOfferAction, fetchFavoriteAction, statusFavoriteOfferAction, fetchCommentAction,
-  statusFavoritesActionMainPage } from '../api-actions';
+  statusFavoritesActionMainPage, logoutAction} from '../api-actions';
 import { OffersData } from '../../types/state';
 import { sortObj, removeCard, addCard } from '../../util';
 import { changeSortType } from '../offers-process/offers-process.slice';
@@ -25,6 +25,7 @@ const initialState: OffersData = {
   isOffersDataLoading: false,
   error: null,
   isFetchError: false,
+  isFetchLogout: false,
 };
 
 export const offersData = createSlice({
@@ -63,9 +64,6 @@ export const offersData = createSlice({
       .addCase(changeSortType, (state, action) => {
         state.currentOffers = sortObj(action.payload, state.currentOffers);
       })
-      .addCase(fetchOfferAction.pending, (state) => {
-        state.isOffersDataLoading = true;
-      })
       .addCase(fetchOfferAction.fulfilled, (state, action) => {
         state.offer = action.payload;
         state.isFetchError = false;
@@ -74,12 +72,17 @@ export const offersData = createSlice({
         state.isFetchError = true;
         state.error = 'Неудалось загрузить предложение';
       })
-      .addCase(fetchFavoriteAction.pending, (state) => {
-        state.isOffersDataLoading = true;
+      .addCase(logoutAction.pending, (state) => {
+        //alert('pend')
+        state.isFetchLogout = true;
+      })
+      .addCase(logoutAction.fulfilled, (state) => {
+        //alert('full')
+        state.isFetchLogout = false;
       })
       .addCase(fetchFavoriteAction.fulfilled, (state, action) => {
         state.favorites = action.payload;
-        state.isOffersDataLoading = false;
+        //state.isOffersDataLoading = false;
       })
       .addCase(fetchFavoriteAction.rejected, (state) => {
         state.isOffersDataLoading = false;
@@ -87,7 +90,7 @@ export const offersData = createSlice({
       })
       .addCase(statusFavoriteOfferAction.fulfilled, (state, action) => {
         state.offer!.currentOffer = action.payload;
-        state.isOffersDataLoading = false;
+        //state.isOffersDataLoading = false;
       })
       .addCase(statusFavoritesActionMainPage.fulfilled, (state, action) => {
         state.favorites = action.payload.isFavorite
@@ -98,7 +101,7 @@ export const offersData = createSlice({
       })
       .addCase(fetchCommentAction.fulfilled, (state, action) => {
         state.offer!.comments = [...state.offer!.comments, action.payload];
-        state.isOffersDataLoading = false;
+        //state.isOffersDataLoading = false;
       });
   }
 });

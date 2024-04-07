@@ -7,22 +7,29 @@ import { clearErrorAction } from '../../services/process-error-handle';
 import { fetchCommentAction } from '../../store/api-actions';
 import { DEFAULT_MAX_LENGTH } from '../../const';
 
+interface KeyTitle {
+  [key: string]: string;
+}
+
 function CommentForm(): JSX.Element {
   const[formData, setFormData] = useState({comment: '', rating: 0});
-  const [disabled, setDisabled] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const param = useParams().id as string;
   const dispatch = useAppDispatch();
 
-  const isDisabledButton = () => {
-    if(!minLengthComment(formData.comment) || !maxLengthComment(formData.comment) || formData.rating === 0){
-      return true;
-    } else {
-      return false;
-    }
+  const isDisabledButton = () => !minLengthComment(formData.comment) || !maxLengthComment(formData.comment) || formData.rating === 0;
+
+  const ratingMap : KeyTitle = {
+    '5': 'perfect',
+    '4': 'good',
+    '3': 'not bad',
+    '2': 'badly',
+    '1': 'terribly',
   };
 
   const handleFieldChange = ({target}: ChangeEvent<HTMLTextAreaElement>) => {
+
     const {value} = target;
     setFormData({...formData, comment: value});
 
@@ -42,7 +49,7 @@ function CommentForm(): JSX.Element {
   const handleSubmitClick = async(evt : FormEvent) => {
     evt.preventDefault();
     try{
-      setDisabled(true);
+      setIsLoading(true);
       const responce = await dispatch(fetchCommentAction({id: param, comment: formData.comment, rating: formData.rating}));
       if(responce.type === 'user/Comment/rejected') {
         throw new Error();
@@ -51,7 +58,7 @@ function CommentForm(): JSX.Element {
     } catch(err){
       dispatch(setError('Отзыв не отправлен! Проверьте правильность заполнения.'));
     } finally{
-      setDisabled(false);
+      setIsLoading(false);
       dispatch(clearErrorAction());
     }
   };
@@ -69,9 +76,9 @@ function CommentForm(): JSX.Element {
           (
             <>
               <input key={`${item}star-rating`} checked={`${item}` === String(formData.rating)} onChange={handleChangeRating} className="form__rating-input visually-hidden"
-                name="rating" value={item} id={`${item}-stars`} type="radio" disabled={disabled}
+                name="rating" value={item} id={`${item}-stars`} type="radio" disabled={isLoading}
               />
-              <label htmlFor={`${item}-stars`} className="reviews__rating-label form__rating-label" title="perfect">
+              <label htmlFor={`${item}-stars`} className="reviews__rating-label form__rating-label" title={ratingMap[String(item)]}>
 
                 <svg className="form__star-image" width="37" height="33">
                   <use xlinkHref="#icon-star">
@@ -79,18 +86,19 @@ function CommentForm(): JSX.Element {
                 </svg>
               </label>
             </>
-          ))}
+          )
+        )}
 
       </div>
       <textarea onChange={handleFieldChange} value={formData.comment} className="reviews__textarea form__textarea" id="review" name="review"
-        placeholder="Tell how was your stay, what you like and what can be improved" required maxLength={DEFAULT_MAX_LENGTH} disabled={disabled}
+        placeholder="Tell how was your stay, what you like and what can be improved" required maxLength={DEFAULT_MAX_LENGTH} disabled={isLoading}
       >
       </textarea>
       <div className="reviews__button-wrapper">
         <p className="reviews__help">
           To submit review please make sure to set <span className="reviews__star">rating</span> and describe your stay with at least <b className="reviews__text-amount">50 characters</b>.
         </p>
-        <button className="reviews__submit form__submit button" type="submit" disabled={isDisabledButton()}>Submit</button>
+        <button className="reviews__submit form__submit button" type="submit" disabled={isLoading || isDisabledButton()}>Submit</button>
       </div>
     </form>
   );

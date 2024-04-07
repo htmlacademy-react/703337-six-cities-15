@@ -63,6 +63,8 @@ function OfferPage(): JSX.Element {
     }
 
   };
+  const handleListItemHover = () => null;
+  const handleListItemOut = () => null;
 
   return (
     <div className="page">
@@ -169,7 +171,7 @@ function OfferPage(): JSX.Element {
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
-            <ListOffers rentsCard={nearbyOffers} />
+            <ListOffers rentsCard={nearbyOffers} onListItemHover={handleListItemHover} onListItemOut={handleListItemOut}/>
 
           </section>
         </div>

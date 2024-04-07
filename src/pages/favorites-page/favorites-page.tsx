@@ -7,12 +7,17 @@ import { getAuthorizationStatus } from '../../store/user-process/user-process.se
 import { AuthorizationStatus } from '../../const';
 import FavoritesPageEmpty from './favorites-empty-page';
 import { useState } from 'react';
+import { getIsFetchError } from '../../store/offers-data/offers-data.selectors';
+import LoadingLogoutScreen from '../loading-screen/logout-load';
 
 function FavoritesPage(): JSX.Element {
+  
   const favoritesArray = useAppSelector(getFavoritesState);
   const initialCount = favoritesArray.length;
   const isAuthorization = useAppSelector(getAuthorizationStatus) === AuthorizationStatus.Auth;
   const [currentFavorites, setCurrentFavorites] = useState(initialCount);
+
+ 
 
   const handleFavoriteClick = (isfavorite : boolean) => {
     setCurrentFavorites(isfavorite ? currentFavorites + 0 : currentFavorites - 1);

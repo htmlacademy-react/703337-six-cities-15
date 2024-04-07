@@ -7,6 +7,7 @@ export type UserProcess = {
     authorizationStatus: AuthorizationStatus;
     isAuthorization: boolean;
     login: null | UserData;
+    isLoadLoginError: boolean;
   };
 
 export type OffersData = {
@@ -18,11 +19,11 @@ export type OffersData = {
   isOffersDataLoading: boolean;
   error: string | null;
   isFetchError: boolean;
+  isFetchLogout: boolean;
 };
 
 export type OffersProcess = {
   sortType: string;
-  error: string | null;
 };
 
 export type State = ReturnType<typeof store.getState>;
