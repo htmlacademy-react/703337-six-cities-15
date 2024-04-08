@@ -1,24 +1,21 @@
 import { useRef, FormEvent } from 'react';
-import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import { AppRoute } from '../../const';
+import { useAppDispatch } from '../../hooks/hooks';
 import { loginAction } from '../../store/api-actions';
 import Header from '../../components/header/header-component';
 import { ChangeEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { processErrorHandle } from '../../services/process-error-handle';
-import { getLoadError } from '../../store/user-process/user-process.selectors';
-import ErrorLoadLogin from '../../components/error-message/error-load-login';
+import { getRandomCity } from '../../util';
+import { changeCity, filterOffers } from '../../store/offers-data/offers-data.slice';
+import { Link } from 'react-router-dom';
 
 function LoginPage(): JSX.Element {
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-  const isErrorLoad = useAppSelector(getLoadError);
+  const city = getRandomCity();
   const passwordRegex = /(?=.*[0-9])(?=.*[a-z])[0-9a-z]{2,}/i;
 
-  // if(isErrorLoad){
-  //   return(<ErrorLoadLogin/>);
-  // }
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
     if (loginRef.current !== null && passwordRef.current !== null && passwordRegex.test(passwordRef.current.value)) {
@@ -26,11 +23,7 @@ function LoginPage(): JSX.Element {
         login: loginRef.current.value,
         password: passwordRef.current.value
       }));
-      //navigate('/');
-    } //else{
-    //   processErrorHandle('Неверно заполнены поля.');
-    // }
-
+    }
   };
 
   const handlePasswordChange = ({target}: ChangeEvent<HTMLInputElement>) => {
@@ -38,6 +31,11 @@ function LoginPage(): JSX.Element {
     if(!passwordRegex.test(value)){
       processErrorHandle('Пароль состоит минимум из одной буквы и цифры');
     }
+  };
+
+  const handleRandomCityClick = (item : string) => {
+    dispatch(changeCity(item));
+    dispatch(filterOffers());
   };
 
   return (
@@ -76,11 +74,11 @@ function LoginPage(): JSX.Element {
               <button className="login__submit form__submit button" type="submit">Sign in</button>
             </form>
           </section>
-          <section className="locations locations--login locations--current">
+          <section className="locations locations--login locations--current" >
             <div className="locations__item">
-              <a className="locations__item-link" href="#">
-                <span>Amsterdam</span>
-              </a>
+              <Link className="locations__item-link" to={AppRoute.Root} onClick={() => handleRandomCityClick(city)}>
+                <span>{city}</span>
+              </Link>
             </div>
           </section>
         </div>

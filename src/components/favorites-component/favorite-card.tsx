@@ -27,7 +27,7 @@ function FavoritesCard({cardObj, onFavoriteClick} : FavoriteCardProps): JSX.Elem
     responceCard = responce.payload as CardType;
     onFavoriteClick(responceCard?.isFavorite);
   };
-//{`/offer/${id}`}
+
   return (
     <article className="favorites__card place-card" data-id={id}>
 

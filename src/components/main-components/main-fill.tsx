@@ -5,13 +5,7 @@ import { useState } from 'react';
 import { getCurrentOffersState, getCityNameState } from '../../store/offers-data/offers-data.selectors';
 import { useAppSelector } from '../../hooks/hooks';
 
-type MainPgeFillProps = {
-  onFavoriteClick?: (isFavorite : boolean) => void;
-
-}
-
-function MainPageFill({onFavoriteClick} : MainPgeFillProps): JSX.Element {
-  console.info('<MainFill />: Render');
+function MainPageFill(): JSX.Element {
   const [cardMouseOver, setCardMouseOver] = useState<string | undefined>('');
 
   const city = useAppSelector(getCityNameState);
@@ -32,7 +26,7 @@ function MainPageFill({onFavoriteClick} : MainPgeFillProps): JSX.Element {
         <b className="places__found">{sortArray.length} {sortArray.length > 1 ? 'places' : 'place'} to stay in {city}</b>
         <SortingOptions />
         <ListOffers rentsCard={sortArray} onListItemHover={handleListItemHover}
-          onListItemOut={handleListItemOut} onFavoriteClick={onFavoriteClick}
+          onListItemOut={handleListItemOut}
         />
 
 

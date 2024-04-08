@@ -30,7 +30,6 @@ export const fetchOfferAction = createAsyncThunk<OfferType, string, {
 }>(
   'data/fetchOffer',
   async (idOffer, {extra: api}) => {
-    //try {
     const offer : OfferType = {
       currentOffer: null,
       nearby: [],
@@ -135,15 +134,4 @@ export const logoutAction = createAsyncThunk<void, undefined, {
     dropToken();
   },
 );
-
-// export const clearErrorLoadAction = createAsyncThunk(
-//   'clearErrorLoad',
-//   () => {
-//     setTimeout(
-//       () => store.dispatch(setFetchError(false)),
-//       TIMEOUT_SHOW_ERROR,
-//     );
-//   },
-// );
-
 

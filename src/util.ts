@@ -1,5 +1,5 @@
 import { CardType, CardsType, CommentType } from './types/types';
-import { SortType, DEFAULT_MAX_LENGTH, DEFAULT_MIN_LENGTH } from './const';
+import { SortType, DEFAULT_MAX_LENGTH, DEFAULT_MIN_LENGTH, CITIES, CITIES_COUNT } from './const';
 
 const sortByPriceLow = (a : CardType, b : CardType) => {
   if (a.price > b.price) {
@@ -88,9 +88,16 @@ const minLengthComment = (comment : string) => comment.length > DEFAULT_MIN_LENG
 const getUpperCaseFirstLetter = (str : string) => [...str].map((char, index) =>
   index === 0 ? char.toUpperCase() : char).join('');
 
-function getRandomCity(min : number, max : number) {
-  return Math.random() * (max - min) + min;
-}
+const getRandomInt = (min : number, max : number) => {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+};
+
+const getRandomCity = () : string => {
+  const city = getRandomInt(0, CITIES_COUNT - 1);
+  return CITIES[city];
+};
 
 export {sortByPriceHigh, sortByPriceLow, sortByPriceRate, sortObj, getUpperCaseFirstLetter, sortComment,
-  maxLengthComment, minLengthComment, removeCard, addCard, getRandomCity};
+  maxLengthComment, minLengthComment, removeCard, addCard, getRandomCity, getRandomInt};

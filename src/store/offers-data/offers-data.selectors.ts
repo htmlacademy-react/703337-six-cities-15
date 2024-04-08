@@ -14,6 +14,7 @@ export const getOffersDataLoadingState = (state : State) => state[NameSpace.Data
 export const getErrorState = (state : State) => state[NameSpace.Data].error;
 export const getIsFetchError = (state : State) => state[NameSpace.Data].isFetchError;
 export const getIsFetchLogout = (state : State) => state[NameSpace.Data].isFetchLogout;
+export const getIsOfferLoad = (state : State) => state[NameSpace.Data].isOfferLoad;
 
 export const getCommentsSortState = createSelector(
   [getCurrentCommentsState], (comments) : CommentsType => [...comments as []].sort(sortComment).slice(0, 10)

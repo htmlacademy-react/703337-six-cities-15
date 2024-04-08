@@ -19,7 +19,6 @@ import { getOffersDataLoadingState } from '../../store/offers-data/offers-data.s
 import { getIsFetchLogout } from '../../store/offers-data/offers-data.selectors';
 
 function App(): JSX.Element {
-  console.info('<App />: Render');
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const isOffersDataLoading = useAppSelector(getOffersDataLoadingState);
   const isFetchLogout = useAppSelector(getIsFetchLogout);

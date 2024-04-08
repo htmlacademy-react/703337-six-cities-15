@@ -14,11 +14,9 @@ type PlaceCardProps = {
   cardObj: CardType;
   onMouseOver?: (listItemCardId: string) => void;
   onMouseOut?: () => void;
-  onFavoriteClick?: (isFavorite : boolean) => void;
 }
 
-function PlaceCard ({cardObj, onMouseOver, onMouseOut, onFavoriteClick} : PlaceCardProps){
-  console.info('<PlaceCard />: Render');
+function PlaceCard ({cardObj, onMouseOver, onMouseOut} : PlaceCardProps){
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const isAuthorization = useAppSelector(getAuthorizationStatus) === AuthorizationStatus.Auth;
@@ -31,18 +29,15 @@ function PlaceCard ({cardObj, onMouseOver, onMouseOut, onFavoriteClick} : PlaceC
     onMouseOver!(id);
   };
 
-  const handleFavoriteClick = async(evt: MouseEvent<HTMLElement>) => {
+  const handleFavoriteClick = (evt: MouseEvent<HTMLElement>) => {
     evt.preventDefault();
     if(!isAuthorization){
       navigate('/login');
     } else{
-      let responceCard = null;
-      const responce = await dispatch(statusFavoritesActionMainPage({
+      dispatch(statusFavoritesActionMainPage({
         id: id,
         favoriteStatus: isFavorite ? 0 : 1,
       }));
-      responceCard = responce.payload as CardType;
-      onFavoriteClick!(responceCard.isFavorite);
     }
   };
 
@@ -68,9 +63,7 @@ function PlaceCard ({cardObj, onMouseOver, onMouseOut, onFavoriteClick} : PlaceC
           </div>
 
           <button className={cn('place-card__bookmark-button button', {'place-card__bookmark-button--active': isFavorite})} type="button"
-            onClick={(evt) => {
-              handleFavoriteClick(evt);
-            }}
+            onClick={handleFavoriteClick}
           >
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"></use>

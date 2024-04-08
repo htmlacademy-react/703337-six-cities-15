@@ -19,7 +19,9 @@ function Reviews({commentList} : ReviewsProps): JSX.Element {
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const list = useAppSelector(getCommentsSortState).map((item) =>{
     const {id, user, date, comment, rating} = item;
+    //console.log(id)
     const dateConfig = new Date(date).toLocaleString('en-US', options);
+
     return (
       <li key={`${id}-reviews`} className="reviews__item">
         <div className="reviews__user user">

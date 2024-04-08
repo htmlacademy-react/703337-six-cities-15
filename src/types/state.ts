@@ -20,6 +20,7 @@ export type OffersData = {
   error: string | null;
   isFetchError: boolean;
   isFetchLogout: boolean;
+  isOfferLoad: boolean;
 };
 
 export type OffersProcess = {
