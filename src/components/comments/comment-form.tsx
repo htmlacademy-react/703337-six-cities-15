@@ -1,4 +1,4 @@
-import { useState, FormEvent, ChangeEvent } from 'react';
+import { useState, FormEvent, ChangeEvent, Fragment } from 'react';
 import { maxLengthComment, minLengthComment } from '../../util';
 import { useParams } from 'react-router-dom';
 import { useAppDispatch } from '../../hooks/hooks';
@@ -74,8 +74,8 @@ function CommentForm(): JSX.Element {
       <div className="reviews__rating-form form__rating" >
         {[5, 4, 3, 2, 1].map((item) =>
           (
-            <>
-              <input key={`${item}star-rating`} checked={`${item}` === String(formData.rating)} onChange={handleChangeRating} className="form__rating-input visually-hidden"
+            <Fragment key={item}>
+              <input checked={`${item}` === String(formData.rating)} onChange={handleChangeRating} className="form__rating-input visually-hidden"
                 name="rating" value={item} id={`${item}-stars`} type="radio" disabled={isLoading}
               />
               <label htmlFor={`${item}-stars`} className="reviews__rating-label form__rating-label" title={ratingMap[String(item)]}>
@@ -85,7 +85,7 @@ function CommentForm(): JSX.Element {
                   </use>
                 </svg>
               </label>
-            </>
+            </Fragment>
           )
         )}
 

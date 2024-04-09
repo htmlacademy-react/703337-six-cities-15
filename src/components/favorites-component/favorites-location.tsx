@@ -1,5 +1,7 @@
 import { CardsType } from '../../types/types';
 import FavoritesCard from './favorite-card';
+import { Link } from 'react-router-dom';
+import { AppRoute } from '../../const';
 
 type FavoritesLocationsProps = {
   onFavoriteClick: (isfavorite: boolean) => void;
@@ -11,9 +13,9 @@ function FavoritesLocations({rentsLocation, onFavoriteClick} : FavoritesLocation
     <li className="favorites__locations-items">
       <div className="favorites__locations locations locations--current">
         <div className="locations__item">
-          <a className="locations__item-link" href="#">
+          <Link className="locations__item-link" to={AppRoute.Root}>
             <span>{rentsLocation[0].city.name}</span>
-          </a>
+          </Link>
         </div>
       </div>
       <div className="favorites__places">

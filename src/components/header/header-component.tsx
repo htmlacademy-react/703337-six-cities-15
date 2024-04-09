@@ -16,10 +16,9 @@ type HeaderComponentProps = {
 }
 
 const getClassForNavLink = ({isActive} : NavLinkPropsCust) : string =>
-  isActive ? 'visually-hidden' : '';
+  isActive ? 'header__nav-link header__nav-link--profile visually-hidden' : 'header__nav-link header__nav-link--profile';
 
 function Header({favorites} : HeaderComponentProps): JSX.Element {
-  console.info('<Header />: Render');
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
   if (authorizationStatus === AuthorizationStatus.NoAuth || authorizationStatus === AuthorizationStatus.Unknown) {
     return (
@@ -27,19 +26,18 @@ function Header({favorites} : HeaderComponentProps): JSX.Element {
         <div className="container">
           <div className="header__wrapper">
             <Logo />
-            <NavLink to="/login" className={getClassForNavLink}>
-              <nav className="header__nav">
-                <ul className="header__nav-list">
-                  <li className="header__nav-item user">
-                    <a className="header__nav-link header__nav-link--profile" href="#">
-                      <div className="header__avatar-wrapper user__avatar-wrapper">
-                      </div>
-                      <span className="header__login">Sign in</span>
-                    </a>
-                  </li>
-                </ul>
-              </nav>
-            </NavLink>
+
+            <nav className="header__nav">
+              <ul className="header__nav-list">
+                <li className="header__nav-item user">
+                  <NavLink to="/login" className={getClassForNavLink} >
+                    <div className="header__avatar-wrapper user__avatar-wrapper">
+                    </div>
+                    <span className="header__login">Sign in</span>
+                  </NavLink>
+                </li>
+              </ul>
+            </nav>
 
           </div>
         </div>

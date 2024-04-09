@@ -2,10 +2,8 @@ import { getUpperCaseFirstLetter } from '../../util';
 import { CardType, CardsType, CommentsType } from '../../types/types';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useState, useEffect} from 'react';
-//import Header from '../../components/header/header-component';
 import { HeaderMemo } from '../../components/header/header-component';
 import { fetchOfferAction } from '../../store/api-actions';
-
 import LoadingScreen from '../loading-screen/loading-screen';
 import { AuthorizationStatus } from '../../const';
 import Reviews from '../../components/offer/reviews-component';
@@ -15,19 +13,19 @@ import cn from 'classnames';
 import { store } from '../../store';
 import MapComponent from '../../components/map/map-component';
 import ListOffers from '../../components/main-components/list-offers';
-import { getFavoritesState, getOfferState, getIsFetchError } from '../../store/offers-data/offers-data.selectors';
+import { getFavoritesState, getOfferState, getIsFetchError, getIsOfferLoad } from '../../store/offers-data/offers-data.selectors';
 import { getAuthorizationStatus } from '../../store/user-process/user-process.selectors';
 import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
 import { statusFavoriteOfferAction } from '../../store/api-actions';
 
 function OfferPage(): JSX.Element {
-  console.info('<OfferPage />: Render');
   const param = useParams().id as string;
   const favoritesArray = useAppSelector(getFavoritesState);
   const initialCount = favoritesArray.length;
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const isFetchError = useAppSelector(getIsFetchError);
+  const isOfferLoad = useAppSelector(getIsOfferLoad);
   const isAuthorization = useAppSelector(getAuthorizationStatus) === AuthorizationStatus.Auth;
   const offer = useAppSelector(getOfferState);
   const [currentFavorites, setCurrentFavorites] = useState(initialCount);
@@ -40,7 +38,7 @@ function OfferPage(): JSX.Element {
     return <div><ErrorLoad /></div>;
   }
 
-  if(offer === null){
+  if(offer === null || isOfferLoad){
     return (<div style={{textAlign: 'center'}}>{<LoadingScreen />}<p>Загружаем предложение</p></div>);
   }
 
@@ -179,5 +177,5 @@ function OfferPage(): JSX.Element {
     </div>
   );
 }
-//console.log('sheep')
+
 export default OfferPage;

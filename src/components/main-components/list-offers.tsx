@@ -7,17 +7,16 @@ type ListOffersProps = {
   rentsCard?: CardsType | null;
   onListItemHover?: (listItemCardId: string) => void;
   onListItemOut?: () => void;
-  onFavoriteClick?: (isFavorite : boolean) => void;
 }
 
-function ListOffers({ rentsCard, onListItemHover, onListItemOut, onFavoriteClick}: ListOffersProps): JSX.Element {
+function ListOffers({ rentsCard, onListItemHover, onListItemOut}: ListOffersProps): JSX.Element {
   const location = useLocation().pathname === '/';
 
   return (
     <div className={cn('places__list', {'cities__places-list tabs__content': location, 'near-places__list': !location})}>
       {rentsCard?.map((item) => (
         <PlaceCardMemo key={item?.id} cardObj={item} onMouseOver={onListItemHover}
-          onMouseOut={onListItemOut} onFavoriteClick={onFavoriteClick}
+          onMouseOut={onListItemOut}
         />))}
     </div>
   );

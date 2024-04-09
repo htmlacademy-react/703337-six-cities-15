@@ -3,21 +3,13 @@ import { HeaderMemo } from '../../components/header/header-component';
 import { getFavoritesState } from '../../store/offers-data/offers-data.selectors';
 import FavoritesList from '../../components/favorites-component/list-favorites-component';
 import { useAppSelector } from '../../hooks/hooks';
-import { getAuthorizationStatus } from '../../store/user-process/user-process.selectors';
-import { AuthorizationStatus } from '../../const';
 import FavoritesPageEmpty from './favorites-empty-page';
 import { useState } from 'react';
-import { getIsFetchError } from '../../store/offers-data/offers-data.selectors';
-import LoadingLogoutScreen from '../loading-screen/logout-load';
 
 function FavoritesPage(): JSX.Element {
-  
   const favoritesArray = useAppSelector(getFavoritesState);
   const initialCount = favoritesArray.length;
-  const isAuthorization = useAppSelector(getAuthorizationStatus) === AuthorizationStatus.Auth;
   const [currentFavorites, setCurrentFavorites] = useState(initialCount);
-
- 
 
   const handleFavoriteClick = (isfavorite : boolean) => {
     setCurrentFavorites(isfavorite ? currentFavorites + 0 : currentFavorites - 1);

@@ -26,6 +26,7 @@ const initialState: OffersData = {
   error: null,
   isFetchError: false,
   isFetchLogout: false,
+  isOfferLoad: false,
 };
 
 export const offersData = createSlice({
@@ -52,7 +53,7 @@ export const offersData = createSlice({
       })
       .addCase(fetchOffersAction.fulfilled, (state, action) => {
         state.offers = action.payload;
-        //offersData.caseReducers.filterOffers(state);
+
         state.currentOffers = state.offers.filter((item) => item.city.name === state.city);
         state.isOffersDataLoading = false;
       })
@@ -64,7 +65,11 @@ export const offersData = createSlice({
       .addCase(changeSortType, (state, action) => {
         state.currentOffers = sortObj(action.payload, state.currentOffers);
       })
+      .addCase(fetchOfferAction.pending, (state) => {
+        state.isOfferLoad = true;
+      })
       .addCase(fetchOfferAction.fulfilled, (state, action) => {
+        state.isOfferLoad = false;
         state.offer = action.payload;
         state.isFetchError = false;
       })
@@ -73,16 +78,13 @@ export const offersData = createSlice({
         state.error = 'Неудалось загрузить предложение';
       })
       .addCase(logoutAction.pending, (state) => {
-        //alert('pend')
         state.isFetchLogout = true;
       })
       .addCase(logoutAction.fulfilled, (state) => {
-        //alert('full')
         state.isFetchLogout = false;
       })
       .addCase(fetchFavoriteAction.fulfilled, (state, action) => {
         state.favorites = action.payload;
-        //state.isOffersDataLoading = false;
       })
       .addCase(fetchFavoriteAction.rejected, (state) => {
         state.isOffersDataLoading = false;
@@ -90,7 +92,7 @@ export const offersData = createSlice({
       })
       .addCase(statusFavoriteOfferAction.fulfilled, (state, action) => {
         state.offer!.currentOffer = action.payload;
-        //state.isOffersDataLoading = false;
+
       })
       .addCase(statusFavoritesActionMainPage.fulfilled, (state, action) => {
         state.favorites = action.payload.isFavorite
@@ -101,7 +103,7 @@ export const offersData = createSlice({
       })
       .addCase(fetchCommentAction.fulfilled, (state, action) => {
         state.offer!.comments = [...state.offer!.comments, action.payload];
-        //state.isOffersDataLoading = false;
+
       });
   }
 });

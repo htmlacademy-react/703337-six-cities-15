@@ -5,7 +5,6 @@ const getClassForNavLink = ({isActive} : IsActiveType) : string =>
   isActive ? 'header__logo-link header__logo-link--active' : 'header__logo-link';
 
 function Logo(): JSX.Element {
-  console.info('<Logo />: Render');
   return (
     <div className="header__left">
       <NavLink to="/" className={getClassForNavLink}>
