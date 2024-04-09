@@ -15,7 +15,7 @@ describe('OffersProcess Slice', () => {
 
   it('should return default initial state with empty action and undefined state', () => {
     const emptyAction = { type: '' };
-    const expectedState = { sortType: 'q', };
+    const expectedState = { sortType: '', };
 
     const result = offersProcess.reducer(undefined, emptyAction);
 
