@@ -31,4 +31,4 @@ describe('OffersProcess Slice', () => {
     expect(result).toEqual(expectedState);
   });
 });
-
+console.log('ttt')
